@@ -3,7 +3,7 @@
   "info": {
     "title": "agentes.chat operator API",
     "version": "test",
-    "description": "Each server process's memory and event loop delay and how long runs wait to be claimed, workspace and account lookups, what a run did and why a message started one or none, what a workspace connected, recorded, asked and scheduled, what a person was notified of and reaches, the messages no run answered, the job queue, the emails queued to an address and what model calls spent, the times a member asked for help, one piece of what a workspace wrote read with a reason and a member's support request answered by email (the reveal door), a workspace told afterwards that its content was read to investigate suspected abuse, workspace standing, billing holds and limits (ADR 0079), a workspace's logo and accent color (ADR 0193), the extra hostnames this server answers on with their look (ADR 0194), outside collaborators (ADR 0191), the events feed and review blocks, the workspaces' computers from an external provisioner, who may sign up (the waiting list and early-access invitations, ADR 0078), how new Claude sign-ins for all agents are made (ADR 0150), and how connectors are used (ADR 0103), for the people who run this instance (ADR 0056)."
+    "description": "Each server process's memory and event loop delay and how long runs wait to be claimed, workspace and account lookups, what a run did and why a message started one or none, what a workspace connected, recorded, asked and scheduled, what a person was notified of and reaches, the messages no run answered, the job queue, the emails queued to an address and what model calls spent, the times a member asked for help, one piece of what a workspace wrote read with a reason and a member's support request answered by email (the reveal door), a workspace told afterwards that its content was read to investigate suspected abuse, workspace standing, billing holds and limits (ADR 0079), a workspace's logo and accent color (ADR 0193), the extra hostnames this server answers on with their look (ADR 0194), outside collaborators (ADR 0191), the events feed and review blocks, the workspaces' computers from an external provisioner, who may sign up (the waiting list and early-access invitations, ADR 0078), how new Claude sign-ins for all agents are made (ADR 0150), how connectors are used (ADR 0103), and how recent runs ended with a live-update round trip, for a status page, for the people who run this instance (ADR 0056)."
   },
   "servers": [
     {
@@ -8488,6 +8488,64 @@
           }
         },
         "required": ["name"]
+      },
+      "OperatorStatusSignals": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "ISO 8601, UTC."
+          },
+          "to": {
+            "type": "string",
+            "description": "ISO 8601, UTC."
+          },
+          "runs": {
+            "type": "object",
+            "properties": {
+              "ended": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Runs created in the window that ended, `done` or `failed`."
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "errorCode": {
+                      "type": "string"
+                    },
+                    "runs": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": ["errorCode", "runs"]
+                },
+                "description": "Of those, the `failed` ones by the app's error code, most frequent first."
+              },
+              "more": {
+                "type": "boolean",
+                "description": "Too many different stored errors to count them all."
+              }
+            },
+            "required": ["ended", "errors", "more"]
+          },
+          "realtime": {
+            "type": ["object", "null"],
+            "properties": {
+              "roundTripMs": {
+                "type": ["integer", "null"],
+                "minimum": 0,
+                "description": "How long an event published by this process took to come back to it through the pub/sub (Postgres LISTEN/NOTIFY with several replicas); null: it didn't within 5 seconds."
+              }
+            },
+            "required": ["roundTripMs"],
+            "description": "Null on a server without live updates."
+          }
+        },
+        "required": ["from", "to", "runs", "realtime"]
       }
     },
     "parameters": {}
@@ -14885,6 +14943,69 @@
           },
           "404": {
             "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status-signals": {
+      "get": {
+        "tags": ["Operator"],
+        "summary": "How the instance's recent runs ended, by error code, and a live-update round trip",
+        "description": "Counts and one timing, across every workspace: never a run, a workspace or what anyone wrote. The window is at most 60 minutes.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Runs created at or after. Default: 15 minutes before `to`."
+            },
+            "required": false,
+            "description": "Runs created at or after. Default: 15 minutes before `to`.",
+            "name": "from",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Runs created before. Default: now."
+            },
+            "required": false,
+            "description": "Runs created before. Default: now.",
+            "name": "to",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperatorStatusSignals"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or wrong token",
             "content": {
               "application/json": {
                 "schema": {

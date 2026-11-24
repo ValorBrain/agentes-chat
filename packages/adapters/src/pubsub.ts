@@ -101,6 +101,34 @@ class Registry {
   }
 }
 
+/** The topic `pubsubRoundTrip` sends its probe on: nothing else subscribes to it. */
+export const probeTopic = "pubsub.probe";
+
+/**
+ * How long an event takes to come back to this instance through `pubsub`, in whole milliseconds, or null when it
+ * doesn't within `timeoutMs`: what a browser socket on this server would wait for an event published here.
+ */
+export function pubsubRoundTrip(pubsub: PubSub, timeoutMs = NOTIFY_TIMEOUT_MS): Promise<number | null> {
+  const id = crypto.randomUUID();
+  const started = performance.now();
+  return new Promise((resolve) => {
+    let settled = false;
+    let unsubscribe: Unsubscribe = () => {};
+    const done = (ms: number | null) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      unsubscribe();
+      resolve(ms);
+    };
+    const timer = setTimeout(() => done(null), timeoutMs);
+    unsubscribe = pubsub.subscribe(probeTopic, (event) => {
+      if (event.id === id) done(Math.round(performance.now() - started));
+    });
+    pubsub.publish(probeTopic, { type: "probe", id }).catch(() => done(null));
+  });
+}
+
 /** Single-process pub/sub. Default for tests and single-instance self-host. */
 export function createMemoryPubSub(): PubSub {
   const registry = new Registry();

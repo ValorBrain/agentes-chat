@@ -345,6 +345,28 @@ export async function operatorRunErrors(db: Database, orgId: string, query: RunF
   return { from, to, errors, more };
 }
 
+/**
+ * The instance's runs created in `[from, to)` that ended, done or failed, and the failed ones counted by error code,
+ * most frequent first: what share of agents' work fails, and why, across every workspace.
+ */
+export async function operatorRunOutcomes(db: Database, { from, to }: { from: Date; to: Date }) {
+  const created = and(gte(agentRuns.createdAt, from), lt(agentRuns.createdAt, to));
+  const [ended] = await db
+    .select({ runs: count() })
+    .from(agentRuns)
+    .where(and(created, inArray(agentRuns.status, ["done", "failed"])));
+  const { texts, more } = await errorTexts(db, and(created, eq(agentRuns.status, "failed")));
+  const byCode = new Map<string, number>();
+  for (const e of texts) {
+    const errorCode = errorCodeOf(e.error, false);
+    if (errorCode) byCode.set(errorCode, (byCode.get(errorCode) ?? 0) + e.runs);
+  }
+  const errors = [...byCode]
+    .map(([errorCode, runs]) => ({ errorCode, runs }))
+    .sort((a, b) => b.runs - a.runs || a.errorCode.localeCompare(b.errorCode));
+  return { ended: ended?.runs ?? 0, errors, more };
+}
+
 // ── What an agent asked of people ────────────────────────────────────────────
 
 /** Every table an agent's ask to a person lives in has these columns. */

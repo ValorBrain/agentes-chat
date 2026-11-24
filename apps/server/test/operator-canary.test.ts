@@ -940,11 +940,13 @@ beforeAll(async () => {
   const hours = `from=${new Date(Date.now() - 3600_000).toISOString()}&to=${new Date(Date.now() + 3600_000).toISOString()}`;
   const ref = (text: string, inOrg = true) =>
     `/resolve?ref=${encodeURIComponent(text)}${inOrg ? `&orgId=${orgId}` : ""}`;
+  const lastHour = `from=${new Date(Date.now() - 50 * 60_000).toISOString()}&to=${new Date(Date.now() + 5 * 60_000).toISOString()}`;
   const review = "reason=a%20report&operator=someone";
   const paths = [
     "/openapi.json",
     "/health",
     "/vitals",
+    `/status-signals?${lastHour}`,
     "/storage",
     "/orgs?limit=200",
     "/orgs?q=acme",
