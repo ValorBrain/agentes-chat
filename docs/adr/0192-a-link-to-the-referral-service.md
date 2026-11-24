@@ -3,7 +3,7 @@
 - Status: Accepted
 - Date: 2026-11-17
 - Extends: ADR 0002 (the core knows no plans), ADR 0079 (§3, the signed link to the billing service)
-- Code: `packages/engine/src/referrals-link.ts`, `packages/engine/src/billing-link.ts` (`signLinkToken`, `linkReturnPath`, `linkUrl`), `apps/server/src/routes/app/referrals.ts`, `apps/server/src/routes/app/account.ts` (`referralsUrl`), `packages/config/src/schema.ts` (`REFERRALS_URL`, `REFERRALS_LINK_SECRET`), `packages/config/src/index.ts` (`referralsLinkSecret`), `apps/web/src/components/Sidebar.tsx` (`AccountMenu`), `apps/web/src/routes/refer.tsx`, `apps/mobile/src/features/me/MeScreen.tsx`
+- Code: `packages/engine/src/referrals-link.ts`, `packages/engine/src/billing-link.ts` (`sealLinkToken`, `linkReturnPath`, `linkUrl`), `apps/server/src/routes/app/referrals.ts`, `apps/server/src/routes/app/account.ts` (`referralsUrl`), `packages/config/src/schema.ts` (`REFERRALS_URL`, `REFERRALS_LINK_SECRET`), `packages/config/src/index.ts` (`referralsLinkSecret`), `apps/web/src/components/Sidebar.tsx` (`AccountMenu`), `apps/web/src/routes/refer.tsx`, `apps/mobile/src/features/me/MeScreen.tsx`
 
 ## Context
 
