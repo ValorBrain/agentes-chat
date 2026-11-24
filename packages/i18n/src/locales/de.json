@@ -54,6 +54,13 @@
     "offline": "Du bist offline. Prüf deine Verbindung und versuch es noch einmal.",
     "unreachable": "agentes.chat ist gerade nicht erreichbar. Versuch es gleich noch einmal."
   },
+  "reconnect": {
+    "device": "Neu verbinden… Kein Internet auf diesem Gerät.",
+    "server": "Neu verbinden… Der Server ist nicht erreichbar oder startet neu.",
+    "signedOut": "Du bist abgemeldet.",
+    "retry": "Jetzt erneut versuchen",
+    "signIn": "Anmelden"
+  },
   "roles": {
     "owner": "Inhaber",
     "admin": "Admin",
@@ -424,7 +431,7 @@
     },
     "manage_agents": {
       "title": "Agenten bearbeiten",
-      "desc": "Anweisungen, Gehirn, Budget und was jeder nutzt, bei den Agenten, mit denen die Person spricht. Private Agenten anderer Personen bleiben außen vor.",
+      "desc": "Anweisungen, Gehirn, Budget und was jeder nutzt, bei den Agenten, mit denen die Person spricht. Von privaten Agenten anderer Personen nur Name, Verantwortliche und Nutzung.",
       "short": "Agenten bearbeiten",
       "say": "bearbeitet die Agenten, mit denen sie spricht"
     },
@@ -3024,7 +3031,6 @@
       "mineHelp": "Dein Gespräch mit {{name}} denkt mit deinem Abo oder einem, das mit dir geteilt wurde, und nur deins.",
       "connectMine": "Mein Abo verbinden",
       "useWorkspace": "Die des Workspace nutzen",
-      "useMine": "Mein Abo nutzen",
       "mineYours": "dein Abo",
       "mineOf": "Abo von {{owner}}",
       "mineKey": "Schlüssel des Workspace",
@@ -5952,6 +5958,19 @@
           "missed_other": "{{count}} Agenten wurden nicht geändert."
         },
         "add": {
+          "pickTitle": "Konto hinzufügen",
+          "pickFoot": "Du meldest dich auf der Seite der KI selbst an.",
+          "have_one": "Du hast {{count}}",
+          "have_other": "Du hast {{count}}",
+          "others": "Anderer Plan",
+          "key": "API-Schlüssel",
+          "keyLine": "Nach Nutzung bezahlt",
+          "titlePlan": "{{plan}} hinzufügen",
+          "againTitle": "Erneut bei {{brand}} anmelden",
+          "haveNote": "Du hast hier schon {{accounts}}. Um dich mit einem anderen Konto anzumelden, melde dich zuerst im Browser bei {{brand}} ab, oder kopiere den Link und öffne ihn in einem privaten Fenster.",
+          "againNote": "Melde dich erneut als {{account}} an. {{name}} denkt wieder damit, sobald du fertig bist.",
+          "footSignIn": "Du gibst dein Passwort auf der Seite von {{brand}} ein.",
+          "footKey": "Der Schlüssel geht verschlüsselt direkt an {{computer}}.",
           "title": {
             "claude_code": "Claude-Konto hinzufügen",
             "codex": "ChatGPT-Konto hinzufügen",
@@ -6033,34 +6052,24 @@
           "title": "Wer für {{name}} denkt",
           "only": "Gilt nur für {{name}}.",
           "more": "Weitere Optionen",
-          "switch": "Konto wechseln",
-          "switchTitle": "Konto von {{name}} wechseln",
-          "inUse": "In Verwendung",
-          "switchTo": "Zu {{label}} wechseln",
-          "teamTitle": "Konto des Teams wechseln",
-          "teamAria": "Für wen es ist",
-          "justOne": "Nur {{name}}",
-          "everyone": "Alle mit diesem Konto",
-          "target": "Wechseln zu",
-          "switchMany_one": "{{count}} Agenten wechseln",
-          "switchMany_other": "Alle {{count}} Agenten wechseln",
-          "limitTitle": "Das Konto von {{name}} ist am Limit",
           "limitBack": "{{account}} ist {{when}} zurück",
           "limitSoon": "{{account}} ist zurück, wenn sich das Abo erneuert",
           "limitHelp": "Bis dahin kann {{name}} mit einem anderen Konto denken, das schon verbunden ist.",
           "fullWait": "Mit diesem Konto wartet {{name}}, bis sich der Plan erneuert.",
-          "seeUsage": "Nutzung ansehen",
-          "wait": "Warten",
           "modelTitle": "Modell von {{name}}",
           "moreTitle": "Weitere Optionen für {{name}}",
           "computer": "Computer",
-          "doneTitle": "Alles erledigt",
-          "doneSub": "Was gerade lief, geht mit dem neuen Konto weiter.",
           "finish": "Fertig",
           "undo": "Rückgängig",
           "undone": "Wieder wie vorher.",
           "missed_one": "{{names}} behält das bisherige Konto.",
-          "missed_other": "{{names}} behalten ihre bisherigen Konten."
+          "missed_other": "{{names}} behalten ihre bisherigen Konten.",
+          "added": "Konto hinzugefügt. {{name}} denkt jetzt mit {{account}}.",
+          "alsoUses_one": "{{names}} denkt auch mit {{account}}.",
+          "alsoUses_other": "{{names}} denken auch mit {{account}}.",
+          "alsoSwitch": "Auch wechseln",
+          "signedOut": "{{account}} ist bei {{brand}} abgemeldet. {{name}} antwortet nicht, bis du dich erneut anmeldest oder ein anderes Konto wählst.",
+          "empty": "{{name}} hat noch kein KI-Konto zum Denken."
         }
       },
       "computer": {
@@ -6228,6 +6237,20 @@
     },
     "copyHandle": "@{{handle}} kopieren",
     "copied": "@{{handle}} kopiert.",
+    "facts": {
+      "private": "Privat",
+      "created": "Erstellt",
+      "createdBy": "{{name}}, {{date}}",
+      "usage": "Nutzung im {{month}}",
+      "budget": "Budget",
+      "budgetUsed": "{{percent}} verbraucht",
+      "last": "Letzte Aktivität",
+      "never": "Noch keine",
+      "title": "Was er tut",
+      "locked": "Anweisungen, Gedächtnis, Werkzeuge, Unterhaltungen, Routinen und Dateien von {{name}} bleiben bei {{owner}}, bei denen, die diese Person zum Bearbeiten holt, und bei den Admins.",
+      "lockedNoOwner": "Anweisungen, Gedächtnis, Werkzeuge, Unterhaltungen, Routinen und Dateien von {{name}} bleiben bei denen, die ihn bearbeiten dürfen, und bei den Admins.",
+      "ask": "{{owner}} fragen"
+    },
     "overview": {
       "approvals_one": "{{count}} Freigabeanfrage",
       "approvals_other": "{{count}} Freigabeanfragen",
@@ -6322,6 +6345,22 @@
       "playbook": "So arbeitet {{name}}",
       "playbookNote": "Arbeitsweisen, die es für sich behält. Sie erscheinen nicht im Chat. Was es von außen aufgenommen und nie wieder genutzt hat, landet von selbst unter Archiviert.",
       "details": "Technische Details",
+      "learning": {
+        "title": "So lernt es",
+        "fromYou": "Lernt aus deinen Unterhaltungen",
+        "fromYouHint": "Was es in deiner DM lernt, bleibt bei dir. Was es in einem Kanal lernt, sieht jeder, der diesen Kanal liest. Was es über dich lernt, bleibt bei dir.",
+        "workspaceOff": "Für den ganzen Workspace aus",
+        "forgetAll": "Alles vergessen",
+        "forgetAllHint": "Löscht, was es von selbst von dir gelernt hat. Was du es dir merken lassen wolltest, bleibt.",
+        "forgetTitle": "Vergessen, was es von dir gelernt hat?",
+        "forgetText": "Alles, was es von selbst von dir gelernt hat, wird endgültig gelöscht. Was du es dir merken lassen wolltest, bleibt, ebenso was es in Kanälen gelernt hat.",
+        "forgotten": "Erledigt. Was es von selbst von dir gelernt hat, ist weg.",
+        "workspace": "Lernt in diesem Workspace",
+        "workspaceHint": "Aus, lernt es von niemandem von selbst. So oder so kann niemand die Erinnerungen anderer lesen.",
+        "onlyYou": "Nur du",
+        "everyoneIn": "Alle in #{{channel}}",
+        "everyone": "Alle, die es sehen können"
+      },
       "skills": "Selbst erstellte Skills",
       "skillUses_one": "einmal geladen",
       "skillUses_other": "{{count}}-mal geladen",
@@ -6378,7 +6417,8 @@
         "stuck": "Gestoppt, weil er feststeckte.",
         "brain_interrupted": "Die KI hat aufgehört, bevor sie fertig war.",
         "brain_unavailable": "Die KI auf seinem Computer konnte nicht antworten. Prüfe den Computer und frag noch einmal.",
-        "empty_reply": "Das Modell hat nichts zurückgegeben.",
+        "empty_reply": "Die KI hat ihren Zug beendet, ohne eine Antwort zu schreiben. Versuche es noch einmal oder wähle in den Einstellungen des Agenten ein anderes Modell.",
+        "empty_reply_limit": "Die KI hat ihr Ausgabelimit erreicht, bevor sie eine Antwort geschrieben hat. Versuche es noch einmal oder wähle in den Einstellungen des Agenten ein anderes Modell.",
         "model_refused": "Das Modell hat die Antwort verweigert.",
         "agent_archived": "Der Agent wurde archiviert.",
         "code_session_unavailable": "Der Worktree der Sitzung ist auf dem Computer nicht verfügbar.",
@@ -9138,6 +9178,7 @@
       "provider_unavailable": "Das Modell hat nicht geantwortet",
       "gave_up": "Das Modell hat nach mehreren Versuchen nicht geantwortet",
       "empty_reply": "Das Modell hat nichts geantwortet",
+      "empty_reply_limit": "Das Modell hat sein Ausgabelimit erreicht, bevor es geantwortet hat",
       "model_refused": "Das Modell hat die Antwort verweigert",
       "runner_outdated": "Das Programm auf dem Computer braucht ein Update",
       "too_many_tool_calls": "Hat das Schrittlimit für eine Ausführung überschritten",
@@ -10695,6 +10736,9 @@
     "of": "von {{name}}",
     "moreSpeed": "Geschwindigkeit und Kontextfenster",
     "whoThinks": "Wer denkt",
+    "thinks_one": "{{names}} denkt damit",
+    "thinks_other": "{{names}} denken damit",
+    "thinksNone": "Kein Agent denkt damit",
     "bulk": {
       "sub": "Wähle die KI und dann die Agenten, die sie übernehmen."
     },
@@ -10704,10 +10748,14 @@
       "search": "Nach Name, KI, Abo oder Besitzer suchen",
       "noMatch": "Kein Konto gefunden.",
       "noModel": "Kein Modell gefunden.",
+      "empty": "Noch kein Konto.",
+      "add": "Konto hinzufügen",
+      "addLine": "Claude, ChatGPT, Gemini und weitere, oder ein API-Schlüssel",
+      "manage": "Konten verwalten",
       "groups": {
-        "yours": "Deine",
+        "yours": "Deine Konten",
         "others": "Vom Team",
-        "keys": "Vom Workspace"
+        "keys": "API-Schlüssel"
       }
     },
     "order": {
@@ -12236,8 +12284,6 @@
     "steered": "{{name}} hat sie während der Aufgabe bekommen",
     "stillWorking": "{{name}} arbeitet noch",
     "inProgress": "läuft",
-    "quiet": "seit {{minutes}} Min. nichts Neues",
-    "refresh": "Aktualisieren",
     "stop": "Stoppen",
     "stopping": "Wird gestoppt…",
     "stopHint": "Aufgabe stoppen · Esc",
@@ -15975,6 +16021,7 @@
       "widenForbidden": "Admins können nur einschränken, wer das eigene Gerät einer Person nutzen darf.",
       "spillOwnerOnly": "Nur wer diesen Computer verbunden hat, kann Antworten hier denken lassen. Ausschalten kannst du es.",
       "tasksOwnerOnly": "Nur wer diesen Computer verbunden hat, kann ändern, wie viele Aufgaben er gleichzeitig ausführt.",
+      "tasksCloud": "Die Cloud bemisst den Platz dieses Computers für Aufgaben selbst.",
       "notHome": "Agenten leben auf dem Computer des Workspace und nutzen diesen, wenn sie ihn beim Namen nennen."
     },
     "machine": {
@@ -16393,6 +16440,11 @@
     "phonesHere": "Handys an diesem Computer",
     "maxTasks": "Aufgaben gleichzeitig",
     "maxTasksHint": "Wie viele Hintergrundaufgaben Agenten hier gleichzeitig ausführen. Die übrigen warten, bis sie dran sind.",
+    "tasksAutoRoom": "Automatisch · {{running}} laufen · Platz für etwa {{more}} weitere",
+    "tasksAutoFull": "Automatisch · {{running}} laufen · gerade voll",
+    "tasksAutoHint": "Agenten starten Hintergrundaufgaben, solange dieser Computer Arbeitsspeicher übrig hat, und lassen 1,5 GB für deine eigenen Apps frei. Die übrigen warten, bis sie dran sind.",
+    "pushHarder": "Mehr herausholen",
+    "pushHarderHint": "Mehr Aufgaben gleichzeitig: Nur 0,5 GB Arbeitsspeicher bleiben frei, und ein ausgelasteter Prozessor hält sie nicht auf. Deine eigenen Apps können langsamer werden.",
     "belongs": "Gehört dem Workspace",
     "belongsHint": "Es bleibt, wenn die Person geht, die es verbunden hat, und alle können es nutzen, solange es niemandem gehört.",
     "spillOwn": "Deine Antworten können hier denken",
@@ -16447,6 +16499,7 @@
       "inUse": "In Nutzung",
       "inUseBy": "Genutzt von {{name}}",
       "busy": "Ausgelastet {{running}}/{{max}}",
+      "busyRunning": "Ausgelastet · {{running}} laufen",
       "needs": "Braucht dich",
       "preparing": "Wird vorbereitet",
       "paused": "Pausiert",
@@ -16470,6 +16523,9 @@
       "tasksChange": "Aufgaben gleichzeitig hier: {{max}}. Unten änderst du das.",
       "tasksOwner": "Aufgaben gleichzeitig hier: {{max}}. Wer ihn verbunden hat, kann das ändern.",
       "tasksUpdate": "Aufgaben gleichzeitig hier: {{max}}. Aktualisiere seine App, um das von hier zu ändern.",
+      "tasksNoMemory": "Gerade kein Platz für eine weitere Aufgabe: {{gb, number}} GB Arbeitsspeicher frei. Die nächste startet, sobald eine fertig ist.",
+      "tasksNoCpu": "Gerade kein Platz für eine weitere Aufgabe: Der Prozessor ist fast voll ausgelastet. Die nächste startet, sobald er sich beruhigt.",
+      "tasksPushing": "Mehr herausholen: {{gb, number}} GB Arbeitsspeicher frei. Deine eigenen Apps können langsamer werden.",
       "offline": "Agenten warten, bis es zurück ist.",
       "offlineSeen": "Zuletzt gesehen {{time}}. Agenten warten, bis es zurück ist.",
       "offlineWithHost": "{{host}} ist offline. Agenten warten, bis es zurück ist.",
@@ -16569,17 +16625,21 @@
       "rolesHint": "Alle mit der Rolle können es nutzen, auch wer sie später bekommt.",
       "computerHint": "Wessen Agenten hier Aufgaben ausführen dürfen. Admins können den Kreis verkleinern, nur der Inhaber kann ihn erweitern.",
       "phoneHint": "Wer ein Handy freigibt, gibt nie {{host}} frei.",
-      "followsHint": "Ein iPhone folgt der Regel des Macs, an dem es hängt.",
-      "serverHelp": "Jeder Agent läuft dort als eigener Benutzer.",
-      "computerHelp": "Die Befehle der Agenten laufen dort als dein Benutzer."
+      "followsHint": "Ein iPhone folgt der Regel des Macs, an dem es hängt."
+    },
+    "share": {
+      "title": "Den ganzen Workspace nutzen lassen",
+      "off": "Vorerst nur du",
+      "on": "Alle in {{org}}",
+      "hint": "Die Agenten aller in {{org}} können dort Aufgaben ausführen, als dein Benutzer.",
+      "hintServer": "Die Agenten aller in {{org}} können dort Aufgaben ausführen, jeder als eigener Benutzer."
     },
     "request": {
       "title": "{{name}} möchte {{org}} beitreten",
       "list": "Möchten beitreten",
       "letJoin": "Beitreten lassen",
       "deny": "Ablehnen",
-      "denied": "{{name}} tritt nicht bei.",
-      "joined": "{{name}} ist beigetreten."
+      "denied": "{{name}} tritt nicht bei."
     },
     "empty": {
       "title": "Noch keine Geräte",
@@ -17844,7 +17904,6 @@
     "removeUsedNone_one": "{{agents}} denkt mit diesem Schlüssel und hat nichts anderes. Ohne ihn antwortet der Agent nicht mehr, bis du eine andere KI verbindest.",
     "removeUsedNone_other": "{{agents}} denken mit diesem Schlüssel und haben nichts anderes. Ohne ihn antworten sie nicht mehr, bis du eine andere KI verbindest.",
     "noKeys": "Mit einem API-Schlüssel zahlst du direkt beim Anbieter und wählst die Modelle.",
-    "noKeysTitle": "Bring deinen eigenen KI-Schlüssel mit",
     "platformAvailable": "Der Claude-Schlüssel dieses Servers ist auch verfügbar.",
     "usageTitle": "API-Ausgaben nach Art",
     "usageAgentLine": "{{spent}} von {{budget}}",
@@ -18919,6 +18978,8 @@
       "surfaceUnlinked": "{{surface}} wurde getrennt, weil sich die Identität geändert hat. Verknüpfe es in den Einstellungen neu, wenn du das warst.",
       "surfaceVoiceDropped": "Ich konnte die Sprachnachricht nicht verstehen. Kannst du sie noch mal schicken oder es schreiben?",
       "done": "Fertig.",
+      "no_reply": "Die KI hat ihren Zug beendet, ohne eine Antwort zu schreiben. Was sie geändert hat, steht unten. Frag noch einmal nach ihrer Antwort.",
+      "no_reply_limit": "Die KI hat ihr Ausgabelimit erreicht, bevor sie eine Antwort geschrieben hat. Was sie geändert hat, steht unten. Frag noch einmal nach ihrer Antwort.",
       "stretch_paused_runs_one": "{{agents}} hat kurz angehalten, um sich mit dir abzustimmen, bevor es weitergeht",
       "stretch_paused_runs_other": "{{agents}} haben kurz angehalten, um sich mit dir abzustimmen, bevor es weitergeht",
       "stretch_paused_spend_one": "{{agents}} hat angehalten, um sich mit dir abzustimmen · hat {{percent}} % des Monatsbudgets verbraucht",

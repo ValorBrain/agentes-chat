@@ -29,7 +29,10 @@ async function options(combobox: HTMLElement) {
   await settle(3);
   return screen().getAllByRole("option");
 }
-const name = (o: Element) => o.querySelector(".aa-opt__name")?.textContent ?? o.textContent ?? "";
+/** An option's name: the first line of its row. */
+const name = (o: Element) => o.querySelector(".aa-row > span:first-child")?.textContent ?? o.textContent ?? "";
+/** The line under an option's name: its plan and whose it is. */
+const sub = (o: Element | undefined) => o?.querySelector(".aa-row > .ac-menu__desc");
 
 const MAC: AiComputer = {
   machineId: "machine_1",
@@ -99,19 +102,25 @@ describe("Quem pensa: the one picker", () => {
     expect(conta.querySelector(".aa-opt__name")?.textContent).toBe("Trabalho");
     expect(conta.querySelector(".aa-meta__plan")?.textContent).toBe("Max");
     const rows = await options(conta);
-    expect(rows.map(name)).toEqual(["Trabalho", "Claude do João", "Pessoal da Marina", "Claude da Acme"]);
+    // Ada works on no computer yet: ChatGPT is the MacBook's, the agent moving there with it.
+    expect(rows.map(name)).toEqual(["Trabalho", "ChatGPT", "Claude do João", "Pessoal da Marina", "Claude da Acme"]);
+    expect(sub(rows[1])?.textContent).toBe("Vai para o MacBook");
     expect(
       [...screen().getAllByRole("group")]
         .filter((g) => g.closest(".ac-tz__list"))
         .map((g) => g.getAttribute("aria-label")),
-    ).toEqual(["Suas", "Do time", "Do workspace"]);
-    const marina = rows[2] as HTMLElement;
+    ).toEqual(["Suas contas", "Do time", "Chaves de API"]);
+    const marina = rows[3] as HTMLElement;
     expect(marina.getAttribute("aria-disabled")).toBe("true");
     expect(marina.querySelector(".aa-room")?.textContent).toBe("Só Marina usa");
-    expect(rows[1]?.querySelector(".aa-meta__plan")?.textContent).toBe("Max · de João");
-    // The one in use: its plate and heavier name, no check column.
+    // Two lines: the name over its plan and whose it is.
+    expect(sub(rows[2])?.textContent).toBe("Max · de João");
+    // The one in use: its plate and a check at its end.
     expect(rows[0]?.getAttribute("aria-selected")).toBe("true");
-    expect(document.querySelector(".ac-tz__check")).toBeNull();
+    expect(rows.map((o) => o.querySelector(".ac-tz__check")?.childElementCount ?? 0)).toEqual([1, 0, 0, 0, 0]);
+    // Under the list, whatever is typed: Adicionar conta and Gerenciar contas.
+    expect(screen().getByRole("button", { name: /^Adicionar conta/ })).toBeTruthy();
+    expect(screen().getByRole("button", { name: "Gerenciar contas" })).toBeTruthy();
   });
 
   test("the search finds an account by its owner's name; no match says so", async () => {
@@ -157,7 +166,7 @@ describe("Quem pensa: the one picker", () => {
     ).toMatchObject({ model: "auto", effort: "auto" });
   });
 
-  test("a long name ends in an ellipsis on one line, whole in its tooltip", async () => {
+  test("a long name ends in an ellipsis on its line, whole in its tooltip", async () => {
     const long = account("acct_long", "Conta compartilhada do time de engenharia de dados e plataforma", {
       ownerName: "Maria Fernanda Albuquerque Cavalcanti",
       ownerId: "u-maria",
@@ -167,10 +176,10 @@ describe("Quem pensa: the one picker", () => {
     const d = await brainDialog();
     const rows = await options(within(d).getByRole("combobox", { name: "Conta" }));
     const row = rows.find((o) => name(o).startsWith("Conta compartilhada")) as HTMLElement;
-    expect(row.querySelector(".aa-opt__name")?.getAttribute("title")).toBe(
+    expect(row.querySelector(".aa-row > span:first-child")?.getAttribute("title")).toBe(
       "Conta compartilhada do time de engenharia de dados e plataforma",
     );
-    expect(row.querySelector(".aa-meta__plan")?.getAttribute("title")).toBe("Max · de Maria");
+    expect(sub(row)?.getAttribute("title")).toBe("Max · de Maria");
   });
 });
 

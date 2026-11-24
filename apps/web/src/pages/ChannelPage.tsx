@@ -25,20 +25,19 @@ import {
   agentStateOfRun,
   browserHandoffOf,
   browserTrailOf,
+  cardsInto,
   codeSuggestionOf,
   consultsIn,
   desktopTrailOf,
   fileConversationOf,
   heldRowsIn,
   inMainTimeline,
-  isQuiet,
   isScreenTool,
   keys,
   type LiveRun,
   MESSAGES_PAGE,
   messageLiveRef,
   OPEN_THREAD,
-  QUIET_AFTER_MS,
   runsInChannel,
   type StreamsState,
   sendHelpers,
@@ -442,7 +441,6 @@ import { reportPainted } from "@/lib/perf";
 import { useToast } from "@/lib/toast";
 import { useValueStore } from "@/lib/value-store";
 import {
-  reconcileChannelRuns,
   useChannelRealtime,
   useDismissRun,
   useLive,
@@ -519,6 +517,8 @@ export interface ChannelChrome {
    * and first cards, ADR 0137, which say it themselves).
    */
   intro?: ReactNode;
+  /** What the intro draws from (or who it is) is still loading: the conversation waits as its skeleton, then shows whole. */
+  introPending?: boolean;
   /** The composer's label and placeholder ("Responder na thread"). */
   composerLabel?: string;
   /** In place of the composer (an archived thread's read-only note). */
@@ -903,6 +903,11 @@ function ChannelView({
   const pushAsk = usePushAsk(thread || !isMember ? undefined : topLevel);
   // Read from the server (a thread's root the channel held stands in until then: its replies are still unknown).
   const serverRead = messages.isSuccess && !messages.isPlaceholderData;
+  // A thread whose replies are still loading: only their skeleton shows, never the root the channel holds above it,
+  // which the replies would push out of view. It opens on them, at its end, in one paint.
+  const repliesPending = Boolean(thread && messages.isPlaceholderData && thread.replyCount > 0);
+  // An agent's DM whose setup checklist still reads its data: shown with the messages once it can draw as it stays.
+  const introPending = Boolean(!thread && chrome?.introPending);
   // The channel's threads: closed lines, context marks, markers (not in a thread view or while adjusting).
   const listsThreads = readable && !thread;
   const openThreads = useChannelThreads(org.id, channel.id, "all", listsThreads);
@@ -1357,7 +1362,7 @@ function ChannelView({
     }
     setOlderState("loading");
     api.chat
-      .messages(org.id, channel.id, { before: oldest.createdAt, limit })
+      .messages(org.id, channel.id, { before: oldest.createdAt, limit, onCards: cardsInto(qc, org.id) })
       .then((page) => {
         // Keep what's on screen where it is: remember the distance from the bottom.
         const el = scroller.current;
@@ -1387,7 +1392,7 @@ function ChannelView({
     if (!gap || newerLoading || !newest) return;
     setNewerLoading(true);
     api.chat
-      .messages(org.id, channel.id, { after: newest.createdAt, limit: OLDER_PAGE })
+      .messages(org.id, channel.id, { after: newest.createdAt, limit: OLDER_PAGE, onCards: cardsInto(qc, org.id) })
       .then((page) => {
         const known = new Set(older.map((m) => m.id));
         const start = channelMessages.data?.[0]?.createdAt;
@@ -2183,7 +2188,7 @@ function ChannelView({
     if (around?.id === focusTarget) return;
     setAround({ id: focusTarget, done: false });
     api.chat
-      .messages(org.id, channel.id, { around: focusTarget, limit: FOCUS_PAGE })
+      .messages(org.id, channel.id, { around: focusTarget, limit: FOCUS_PAGE, onCards: cardsInto(qc, org.id) })
       .then((page) => {
         showAround(page);
         setAround({ id: focusTarget, done: true });
@@ -2902,8 +2907,8 @@ function ChannelView({
                             {/* Pushes short channels down, next to the composer. */}
                             <div className="channel__spacer" aria-hidden="true" />
                             {chrome?.top}
-                            {chrome?.intro}
-                            {messages.isLoading && <LoadingConversation />}
+                            {!introPending && chrome?.intro}
+                            {(messages.isLoading || introPending) && <LoadingConversation />}
                             {messages.isError && !messages.data && (
                               <ErrorState error={messages.error} onRetry={() => void messages.refetch()} />
                             )}
@@ -2972,8 +2977,9 @@ function ChannelView({
                             ) : (
                               <>
                                 <Timeline
-                                  items={timeline}
-                                  ready={serverRead}
+                                  items={repliesPending || introPending ? NO_ROWS : timeline}
+                                  // Held rows aren't its first load: counted then, they would all enter as new ones.
+                                  ready={serverRead && !repliesPending && !introPending}
                                   slots={gap ? NO_SLOTS : slots}
                                   runKeys={runKeys.current}
                                   divider={divider}
@@ -2986,9 +2992,8 @@ function ChannelView({
                                   progressive={opensAtEnd}
                                   openThreadId={panel?.id ?? null}
                                 />
-                                {/* A thread's root is on screen from the channel: only its replies are loading. */}
-                                {thread && messages.isPlaceholderData && thread.replyCount > 0 && (
-                                  <LoadingConversation count={Math.min(thread.replyCount, 6)} />
+                                {repliesPending && (
+                                  <LoadingConversation count={Math.min((thread?.replyCount ?? 0) + 1, 6)} />
                                 )}
                                 {!thread && (
                                   <ArchivedThreadsNote
@@ -3346,6 +3351,7 @@ function ChannelView({
                         channel={channel}
                         people={channelPeople}
                         agents={channelAgents}
+                        pending={!members.data || dir.loading}
                         {...(addsMembers ? { onAdd: addMembers } : {})}
                       />
                     )
@@ -3756,6 +3762,7 @@ const HELD_RECENT_MS = 12 * 60 * 60_000;
 const NO_LABELS = new Map<string, string>();
 const NO_MARKS: ReadonlySet<string> = new Set();
 const NO_SLOTS: RunSlot[] = [];
+const NO_ROWS: ReturnType<typeof buildTimeline> = [];
 
 /** The live run as a message, while it has none (the block's header comes from the run): from when it started. */
 function liveMessageOf(r: LiveRun): MessageType {
@@ -3810,10 +3817,7 @@ function RunBlock({
     [liveId, liveAgent, liveChannel, liveThread, liveStart],
   );
   // At work the bar above the composer speaks for it, and the block draws only for something to show (`rowShows`).
-  // A run gone quiet meanwhile draws for "sem notícias · Atualizar": wake when that moment comes.
-  const waits = Boolean(live && !message && waitsForWords(live));
-  useDue(live?.lastEventAt ?? liveStart ?? null, QUIET_AFTER_MS, waits);
-  const hidden = Boolean(live && !message && !rowShows(live, Date.now()));
+  const hidden = Boolean(live && !message && !rowShows(live));
   const shown = message ?? placeholder;
   // Its live row on the page: the view measures which blocks are in view again (the bar speaks for those out of it).
   const rowDrawn = useContext(RowDrawnContext);
@@ -3959,50 +3963,6 @@ function RunTail({ run }: { run: LiveRun }) {
   );
 }
 
-/** Under a live block: "sem notícias há 4 min · Atualizar" (what it does now is the bar's to say). */
-function LiveRunStatus({ run }: { run: LiveRun }) {
-  const { t } = useTranslation();
-  const { org } = useOrg();
-  const api = useApi();
-  const qc = useQueryClient();
-  const liveStore = useLiveStore();
-  // A run with no news for minutes (orphaned by a restart?): say so and offer to check.
-  const [, tick] = useState(0);
-  useEffect(() => {
-    const again = () => tick((n) => n + 1);
-    const timer = setInterval(again, 15_000);
-    // Back to the tab after a while: check right away.
-    window.addEventListener("focus", again);
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener("focus", again);
-    };
-  }, []);
-  const [checking, setChecking] = useState(false);
-  if (!isQuiet(run)) return null;
-  const recheck = () => {
-    setChecking(true);
-    void reconcileChannelRuns(api, liveStore, org.id, run.channelId, [run.runId])
-      .then((dropped) => {
-        if (dropped) void qc.invalidateQueries({ queryKey: keys.messages(org.id, run.channelId) });
-      })
-      .finally(() => setChecking(false));
-  };
-  return (
-    <div className="run-status">
-      <p className="ac-msg__activity run-quiet">
-        {t("run.quiet", {
-          minutes: Math.max(3, Math.floor((Date.now() - (run.lastEventAt ?? run.startedAt ?? 0)) / 60_000)),
-        })}
-        {" · "}
-        <Button variant="ghost" size="sm" loading={checking} onClick={recheck}>
-          {t("run.refresh")}
-        </Button>
-      </p>
-    </div>
-  );
-}
-
 /**
  * Under a stopped answer: "Parado por você · Continuar", or "No limite de passos · Continuar" under the
  * reply of a run that reached its step limit, or just Continuar under the end of a long work its AI provider failed. Continuar starts a new run of the same agent from where it
@@ -4086,27 +4046,6 @@ function StoppedLine({
       className="run-canceled"
     />
   );
-}
-
-/** Shows only after `ms` while `on` ("enviando" waits half a second: most sends never show it). */
-/** True from `from + ms` on (now when `from` is unknown, i.e. counted from the mount), while `on`. */
-function useDue(from: number | null, ms: number, on: boolean) {
-  const [start] = useState(() => Date.now());
-  const at = (from ?? start) + ms;
-  const [, tick] = useState(0);
-  const wait = at - Date.now();
-  useEffect(() => {
-    if (!on || wait <= 0) return;
-    const again = () => tick((n) => n + 1);
-    const timer = setTimeout(again, wait);
-    // Back to the tab after a while: look again at once (a sleeping computer's timers run late).
-    window.addEventListener("focus", again);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("focus", again);
-    };
-  }, [on, wait]);
-  return !on || wait <= 0;
 }
 
 function useAfter(ms: number, on: boolean) {
@@ -4491,7 +4430,7 @@ function ActivityBar({
               </>
             )}
             {/* "Ver" once its row is in the conversation (before that, there is nothing to go back to). */}
-            {!seeConsult && soloAway && rowShows(soloAway, now) && (
+            {!seeConsult && soloAway && rowShows(soloAway) && (
               <>
                 <span className="ac-typing__sep" aria-hidden="true" />
                 <button type="button" className="ac-typing__see" onClick={() => onSee(soloAway.runId)}>
@@ -4982,7 +4921,6 @@ export const TimelineMessage = memo(function TimelineMessage({
       >
         {live && waiting ? (
           <Parts resetKey={m}>
-            <LiveRunStatus run={live} />
             {makingImage(live) && <ImageMaking color={colorOf(agent)} />}
             {/* Its subagents and workflows at work, in a code session (ADR 0215). */}
             <LiveSubagents work={live.work ?? []} agentName={name} color={colorOf(agent)} />

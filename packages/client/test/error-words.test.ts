@@ -407,6 +407,9 @@ const PLAIN_LINE = new Set([
   // A file's conversation (ADR 0199): the apps start one only on a live file, never offer a task's or a file's
   // conversation to join, leave or rename, and build a message's `liveRef` from the selection themselves.
   "artifact.no_conversation",
+  // An audio file's wave: kept by the apps on their own after measuring it, silently, and only for an audio file.
+  "artifact.not_audio",
+  "artifact.wave_invalid",
   "channel.file_conversation",
   "channel.task_conversation",
   "message.live_ref",

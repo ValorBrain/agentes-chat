@@ -54,6 +54,13 @@
     "offline": "Kamu sedang offline. Periksa koneksimu dan coba lagi.",
     "unreachable": "agentes.chat tidak bisa dijangkau sekarang. Coba lagi sebentar lagi."
   },
+  "reconnect": {
+    "device": "Menghubungkan ulang… Tidak ada internet di perangkat ini.",
+    "server": "Menghubungkan ulang… Server tidak terjangkau atau sedang dimulai ulang.",
+    "signedOut": "Anda sudah keluar.",
+    "retry": "Coba lagi sekarang",
+    "signIn": "Masuk"
+  },
   "roles": {
     "owner": "Pemilik",
     "admin": "Admin",
@@ -411,7 +418,7 @@
     },
     "manage_agents": {
       "title": "Edit agen",
-      "desc": "Instruksi, otak, anggaran, dan apa yang dipakai masing-masing, di agen yang diajak bicara orang itu. Agen pribadi milik orang lain tidak termasuk.",
+      "desc": "Instruksi, otak, anggaran, dan apa yang dipakai masing-masing, di agen yang diajak bicara orang itu. Dari agen pribadi milik orang lain, hanya nama, penanggung jawab, dan pemakaiannya.",
       "short": "edit agen",
       "say": "mengedit agen yang diajak bicara"
     },
@@ -2909,7 +2916,6 @@
       "mineHelp": "Percakapanmu dengan {{name}} berpikir dengan paketmu atau paket yang dibagikan kepadamu, dan hanya percakapanmu.",
       "connectMine": "Hubungkan paket saya",
       "useWorkspace": "Pakai milik workspace",
-      "useMine": "Pakai paket saya",
       "mineYours": "paket kamu",
       "mineOf": "paket {{owner}}",
       "mineKey": "kunci workspace",
@@ -5736,6 +5742,18 @@
           "missed_other": "{{count}} agen tidak berubah."
         },
         "add": {
+          "pickTitle": "Tambah akun",
+          "pickFoot": "Kamu masuk di halaman AI itu sendiri.",
+          "have_other": "Kamu punya {{count}}",
+          "others": "Paket lain",
+          "key": "Kunci API",
+          "keyLine": "Bayar sesuai pemakaian",
+          "titlePlan": "Tambah {{plan}}",
+          "againTitle": "Masuk lagi ke {{brand}}",
+          "haveNote": "Kamu sudah punya {{accounts}} di sini. Untuk masuk dengan akun lain, keluar dulu dari {{brand}} di browser, atau salin tautannya dan buka di jendela pribadi.",
+          "againNote": "Masuk lagi sebagai {{account}}. {{name}} kembali berpikir dengannya begitu kamu selesai.",
+          "footSignIn": "Kamu mengetik kata sandi di halaman {{brand}}.",
+          "footKey": "Kuncinya dikirim terenkripsi langsung ke {{computer}}.",
           "title": {
             "claude_code": "Tambah akun Claude",
             "codex": "Tambah akun ChatGPT",
@@ -5817,32 +5835,22 @@
           "title": "Siapa yang berpikir untuk {{name}}",
           "only": "Hanya untuk {{name}}.",
           "more": "Opsi lainnya",
-          "switch": "Ganti akun",
-          "switchTitle": "Ganti akun {{name}}",
-          "inUse": "Sedang dipakai",
-          "switchTo": "Ganti ke {{label}}",
-          "teamTitle": "Ganti akun tim",
-          "teamAria": "Untuk siapa",
-          "justOne": "Hanya {{name}}",
-          "everyone": "Semua di akun ini",
-          "target": "Ganti ke",
-          "switchMany_other": "Ganti {{count}} agen",
-          "limitTitle": "Akun {{name}} mencapai batas",
           "limitBack": "{{account}} kembali {{when}}",
           "limitSoon": "{{account}} kembali saat paketnya diperbarui",
           "limitHelp": "Sementara itu {{name}} bisa berpikir dengan akun lain yang sudah terhubung.",
           "fullWait": "Di akun ini {{name}} menunggu sampai paketnya diperbarui.",
-          "seeUsage": "Lihat penggunaan",
-          "wait": "Tunggu",
           "modelTitle": "Model {{name}}",
           "moreTitle": "Opsi lainnya untuk {{name}}",
           "computer": "Komputer",
-          "doneTitle": "Beres",
-          "doneSub": "Yang sedang berjalan lanjut dengan akun baru.",
           "finish": "Selesai",
           "undo": "Batalkan",
           "undone": "Kembali seperti semula.",
-          "missed_other": "{{names}} tetap memakai akun sebelumnya."
+          "missed_other": "{{names}} tetap memakai akun sebelumnya.",
+          "added": "Akun ditambahkan. {{name}} sekarang berpikir dengan {{account}}.",
+          "alsoUses_other": "{{names}} juga berpikir dengan {{account}}.",
+          "alsoSwitch": "Ganti juga",
+          "signedOut": "{{account}} keluar dari {{brand}}. {{name}} tidak akan menjawab sampai kamu masuk lagi atau memilih akun lain.",
+          "empty": "{{name}} belum punya akun AI untuk berpikir."
         }
       },
       "computer": {
@@ -6001,6 +6009,20 @@
     },
     "copyHandle": "Salin @{{handle}}",
     "copied": "@{{handle}} disalin.",
+    "facts": {
+      "private": "Pribadi",
+      "created": "Dibuat",
+      "createdBy": "{{name}}, {{date}}",
+      "usage": "Pemakaian bulan {{month}}",
+      "budget": "Anggaran",
+      "budgetUsed": "{{percent}} terpakai",
+      "last": "Aktivitas terakhir",
+      "never": "Belum ada",
+      "title": "Apa yang dikerjakannya",
+      "locked": "Instruksi, memori, alat, percakapan, rutinitas, dan file {{name}} tetap di {{owner}}, orang yang diajaknya mengedit, dan admin.",
+      "lockedNoOwner": "Instruksi, memori, alat, percakapan, rutinitas, dan file {{name}} tetap di orang yang bisa mengeditnya dan admin.",
+      "ask": "Minta ke {{owner}}"
+    },
     "overview": {
       "approvals_other": "{{count}} permintaan persetujuan",
       "approvalsYou": "Setujui atau tolak di Persetujuan atau di chat",
@@ -6093,6 +6115,22 @@
       "playbook": "Cara kerja {{name}}",
       "playbookNote": "Cara kerja yang disimpannya untuk dirinya sendiri. Tidak muncul di obrolan. Yang didapatnya dari luar dan tidak pernah dipakai lagi pindah sendiri ke Diarsipkan.",
       "details": "Detail teknis",
+      "learning": {
+        "title": "Cara belajarnya",
+        "fromYou": "Belajar dari percakapanmu",
+        "fromYouHint": "Yang dipelajarinya di DM-mu tetap milikmu. Yang dipelajarinya di kanal bisa dilihat semua orang yang membaca kanal itu. Yang dipelajarinya tentang kamu tetap milikmu.",
+        "workspaceOff": "Mati untuk seluruh workspace",
+        "forgetAll": "Lupakan semua",
+        "forgetAllHint": "Menghapus yang dipelajarinya sendiri darimu. Yang kamu minta untuk diingat tetap ada.",
+        "forgetTitle": "Lupakan yang dipelajarinya darimu?",
+        "forgetText": "Semua yang dipelajarinya sendiri darimu akan hilang selamanya. Yang kamu minta untuk diingat tetap ada, begitu juga yang dipelajarinya di kanal.",
+        "forgotten": "Selesai. Yang dipelajarinya sendiri darimu sudah dihapus.",
+        "workspace": "Belajar di workspace ini",
+        "workspaceHint": "Jika mati, ia tidak belajar sendiri dari siapa pun. Bagaimanapun, tidak ada yang bisa membaca memori orang lain.",
+        "onlyYou": "Hanya kamu",
+        "everyoneIn": "Semua orang di #{{channel}}",
+        "everyone": "Semua yang bisa melihatnya"
+      },
       "skills": "Skill yang dibuatnya",
       "skillUses_other": "dimuat {{count}} kali",
       "view": "Lihat",
@@ -6145,7 +6183,8 @@
         "stuck": "Berhenti karena macet.",
         "brain_interrupted": "AI berhenti sebelum selesai.",
         "brain_unavailable": "AI di komputernya tidak bisa menjawab. Periksa komputernya lalu minta lagi.",
-        "empty_reply": "Model tidak mengembalikan apa pun.",
+        "empty_reply": "AI mengakhiri gilirannya tanpa menulis balasan. Coba lagi, atau pilih model lain di pengaturan agen.",
+        "empty_reply_limit": "AI mencapai batas keluarannya sebelum menulis balasan. Coba lagi, atau pilih model lain di pengaturan agen.",
         "model_refused": "Model menolak menjawab.",
         "agent_archived": "Agen sudah diarsipkan.",
         "code_session_unavailable": "Worktree sesi tidak tersedia di komputer.",
@@ -8851,6 +8890,7 @@
       "provider_unavailable": "Modelnya tidak menjawab",
       "gave_up": "Modelnya tidak menjawab setelah beberapa kali dicoba",
       "empty_reply": "Modelnya tidak menjawab apa-apa",
+      "empty_reply_limit": "Model mencapai batas keluarannya sebelum menjawab",
       "model_refused": "Modelnya menolak menjawab",
       "runner_outdated": "Program di komputer perlu diperbarui",
       "too_many_tool_calls": "Melewati batas langkah untuk satu proses",
@@ -10317,6 +10357,8 @@
     "of": "milik {{name}}",
     "moreSpeed": "Kecepatan dan jendela konteks",
     "whoThinks": "Siapa yang berpikir",
+    "thinks_other": "{{names}} berpikir dengannya",
+    "thinksNone": "Tidak ada agen yang berpikir dengannya",
     "bulk": {
       "sub": "Pilih AI-nya, lalu agen yang memakainya."
     },
@@ -10326,10 +10368,14 @@
       "search": "Cari menurut nama, AI, paket, atau pemilik",
       "noMatch": "Tidak ada akun yang cocok.",
       "noModel": "Tidak ada model yang cocok.",
+      "empty": "Belum ada akun.",
+      "add": "Tambah akun",
+      "addLine": "Claude, ChatGPT, Gemini, dan lainnya, atau kunci API",
+      "manage": "Kelola akun",
       "groups": {
-        "yours": "Milikmu",
+        "yours": "Akunmu",
         "others": "Milik tim",
-        "keys": "Milik ruang kerja"
+        "keys": "Kunci API"
       }
     },
     "order": {
@@ -11796,8 +11842,6 @@
     "steered": "{{name}} menerimanya saat sedang mengerjakan tugas",
     "stillWorking": "{{name}} masih bekerja",
     "inProgress": "sedang berjalan",
-    "quiet": "tidak ada kabar selama {{minutes}} mnt",
-    "refresh": "Muat ulang",
     "stop": "Hentikan",
     "stopping": "Menghentikan…",
     "stopHint": "Hentikan tugas · Esc",
@@ -15451,6 +15495,7 @@
       "widenForbidden": "Admin hanya bisa mempersempit siapa yang boleh memakai perangkat milik seseorang.",
       "spillOwnerOnly": "Hanya orang yang menghubungkan komputer ini yang bisa membiarkan balasan berpikir di sini. Kamu bisa mematikannya.",
       "tasksOwnerOnly": "Hanya orang yang menghubungkan komputer ini yang bisa mengubah berapa tugas yang dijalankannya sekaligus.",
+      "tasksCloud": "Cloud menentukan sendiri ruang komputer ini untuk tugas.",
       "notHome": "Agen tinggal di komputer workspace dan memakai komputer ini saat menyebut namanya."
     },
     "machine": {
@@ -15867,6 +15912,11 @@
     "phonesHere": "Ponsel di komputer ini",
     "maxTasks": "Tugas sekaligus",
     "maxTasksHint": "Berapa banyak tugas latar belakang yang dijalankan agen di sini secara bersamaan. Sisanya menunggu giliran.",
+    "tasksAutoRoom": "Otomatis · {{running}} berjalan · muat sekitar {{more}} lagi",
+    "tasksAutoFull": "Otomatis · {{running}} berjalan · penuh untuk saat ini",
+    "tasksAutoHint": "Agen memulai tugas latar belakang selama komputer ini masih punya memori lebih, dengan menyisakan 1,5 GB untuk aplikasimu sendiri. Sisanya menunggu giliran.",
+    "pushHarder": "Paksa lebih keras",
+    "pushHarderHint": "Lebih banyak tugas sekaligus: hanya 0,5 GB memori yang tetap bebas dan prosesor yang sibuk tidak menahannya. Aplikasimu sendiri bisa melambat.",
     "belongs": "Milik ruang kerja",
     "belongsHint": "Perangkat ini tetap ada saat orang yang menghubungkannya keluar, dan semua orang bisa memakainya selama tidak ada pemiliknya.",
     "spillOwn": "Balasan untukmu bisa berpikir di sini",
@@ -15921,6 +15971,7 @@
       "inUse": "Sedang dipakai",
       "inUseBy": "Dipakai {{name}}",
       "busy": "Sibuk {{running}}/{{max}}",
+      "busyRunning": "Sibuk · {{running}} berjalan",
       "needs": "Butuh kamu",
       "preparing": "Menyiapkan",
       "paused": "Dijeda",
@@ -15943,6 +15994,9 @@
       "tasksChange": "Tugas sekaligus di sini: {{max}}. Ubah di bawah.",
       "tasksOwner": "Tugas sekaligus di sini: {{max}}. Orang yang menghubungkannya bisa mengubahnya.",
       "tasksUpdate": "Tugas sekaligus di sini: {{max}}. Perbarui aplikasinya untuk mengubahnya dari sini.",
+      "tasksNoMemory": "Belum ada ruang untuk tugas lain: {{gb, number}} GB memori bebas. Tugas berikutnya mulai saat satu selesai.",
+      "tasksNoCpu": "Belum ada ruang untuk tugas lain: prosesor hampir penuh. Tugas berikutnya mulai saat bebannya turun.",
+      "tasksPushing": "Memaksa lebih keras: {{gb, number}} GB memori bebas. Aplikasimu sendiri bisa melambat.",
       "offline": "Agen menunggu sampai perangkat ini kembali.",
       "offlineSeen": "Terakhir terlihat {{time}}. Agen menunggu sampai perangkat ini kembali.",
       "offlineWithHost": "{{host}} sedang offline. Agen menunggu sampai komputer itu kembali.",
@@ -16040,17 +16094,21 @@
       "rolesHint": "Siapa pun dengan peran ini bisa memakainya, termasuk yang mendapat peran itu nanti.",
       "computerHint": "Agen siapa yang boleh menjalankan tugas di sini. Admin bisa mempersempitnya, hanya pemiliknya yang bisa memperluasnya.",
       "phoneHint": "Membagikan ponsel tidak pernah membagikan {{host}}.",
-      "followsHint": "iPhone mengikuti aturan Mac tempat ia dicolokkan.",
-      "serverHelp": "Setiap agen berjalan di sana sebagai penggunanya sendiri.",
-      "computerHelp": "Perintah agen berjalan di sana sebagai penggunamu."
+      "followsHint": "iPhone mengikuti aturan Mac tempat ia dicolokkan."
+    },
+    "share": {
+      "title": "Izinkan seluruh ruang kerja memakainya",
+      "off": "Hanya kamu untuk saat ini",
+      "on": "Semua orang di {{org}}",
+      "hint": "Agen semua orang di {{org}} bisa menjalankan tugas di sana sebagai penggunamu.",
+      "hintServer": "Agen semua orang di {{org}} bisa menjalankan tugas di sana, masing-masing sebagai penggunanya sendiri."
     },
     "request": {
       "title": "{{name}} ingin bergabung ke {{org}}",
       "list": "Minta bergabung",
       "letJoin": "Izinkan bergabung",
       "deny": "Tolak",
-      "denied": "{{name}} tidak akan bergabung.",
-      "joined": "{{name}} sudah bergabung."
+      "denied": "{{name}} tidak akan bergabung."
     },
     "empty": {
       "title": "Belum ada perangkat",
@@ -17295,7 +17353,6 @@
     "removeUsedOther_other": "{{agents}} berpikir dengan kunci ini. Setelah kunci hilang, mereka pindah ke kunci lain, atau meminta AI jika tidak ada yang cocok dengan modelnya.",
     "removeUsedNone_other": "{{agents}} berpikir dengan kunci ini dan tidak punya yang lain. Setelah kunci hilang, mereka berhenti menjawab sampai kamu menghubungkan AI lain.",
     "noKeys": "Dengan kunci API, kamu membayar langsung ke penyedia dan memilih modelnya.",
-    "noKeysTitle": "Bawa kunci AI-mu sendiri",
     "platformAvailable": "Kunci Claude server ini juga tersedia.",
     "usageTitle": "Pengeluaran API per jenis",
     "usageAgentLine": "{{spent}} dari {{budget}}",
@@ -18354,6 +18411,8 @@
       "surfaceUnlinked": "Tautan {{surface}} diputus karena identitasnya berubah. Tautkan lagi di Pengaturan kalau itu kamu.",
       "surfaceVoiceDropped": "Aku tidak bisa menangkap pesan suara itu. Bisa kirim lagi atau ketik saja?",
       "done": "Selesai.",
+      "no_reply": "AI mengakhiri gilirannya tanpa menulis balasan. Yang diubahnya ada di bawah. Minta lagi jawabannya.",
+      "no_reply_limit": "AI mencapai batas keluarannya sebelum menulis balasan. Yang diubahnya ada di bawah. Minta lagi jawabannya.",
       "stretch_paused_runs_other": "{{agents}} berhenti sebentar untuk memastikan denganmu sebelum lanjut",
       "stretch_paused_spend_other": "{{agents}} berhenti untuk memastikan denganmu · memakai {{percent}}% anggaran bulan ini",
       "stretch_paused_spend_cost_other": "{{agents}} berhenti untuk memastikan denganmu · memakai {{amount}} ({{percent}}% anggaran bulan ini)",

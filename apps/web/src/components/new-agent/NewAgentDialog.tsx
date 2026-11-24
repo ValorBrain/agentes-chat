@@ -1181,6 +1181,8 @@ export function NewAgentDialog({
                             value={brain.choice}
                             onChange={setAiPick}
                             disabled={busy}
+                            // Connect over this form: a plan connected there thinks for the agents the person creates.
+                            {...(connectAi ? { onAdd: () => connectAi.open({ forNewAgent: true }) } : {})}
                           />
                         </section>
                       )}

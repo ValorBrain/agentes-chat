@@ -9586,6 +9586,14 @@ html:not([data-pointer]) .ac-recur__day:focus-visible {
   font-size: 13px;
   color: var(--muted);
 }
+/* SearchSelect's `footer`: under the list whatever is typed, past a menu's separator, its rows drawn as a menu's. */
+.ac-tz__foot {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 var(--menu-pad) var(--menu-pad);
+}
 .ac-tz__option[aria-disabled="true"] {
   color: var(--ink-muted);
   cursor: not-allowed;

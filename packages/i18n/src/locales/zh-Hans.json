@@ -54,6 +54,13 @@
     "offline": "你已离线，请检查网络连接后重试。",
     "unreachable": "暂时无法连接 agentes.chat，请稍后再试。"
   },
+  "reconnect": {
+    "device": "正在重新连接… 此设备没有网络连接。",
+    "server": "正在重新连接… 服务器无法访问或正在重启。",
+    "signedOut": "你已退出登录。",
+    "retry": "立即重试",
+    "signIn": "登录"
+  },
   "roles": {
     "owner": "所有者",
     "admin": "管理员",
@@ -411,7 +418,7 @@
     },
     "manage_agents": {
       "title": "编辑智能体",
-      "desc": "指令、大脑、预算，以及每个智能体使用的东西，限于此人可以对话的智能体。其他人的私人智能体不在其中。",
+      "desc": "指令、大脑、预算，以及每个智能体使用的东西，限于此人可以对话的智能体。其他人的私人智能体只显示名称、负责人和用量。",
       "short": "编辑智能体",
       "say": "编辑可对话的智能体"
     },
@@ -2908,7 +2915,6 @@
       "mineHelp": "你与{{name}}的对话使用你的套餐或共享给你的套餐思考，且仅限你的对话。",
       "connectMine": "连接我的套餐",
       "useWorkspace": "使用工作区的",
-      "useMine": "使用我的套餐",
       "mineYours": "你的套餐",
       "mineOf": "{{owner}}的套餐",
       "mineKey": "工作区的密钥",
@@ -5737,6 +5743,18 @@
           "missed_other": "{{count}} 个智能体未更改。"
         },
         "add": {
+          "pickTitle": "添加账号",
+          "pickFoot": "你在 AI 自己的页面上登录。",
+          "have_other": "你有 {{count}} 个",
+          "others": "其他套餐",
+          "key": "API 密钥",
+          "keyLine": "按用量付费",
+          "titlePlan": "添加 {{plan}}",
+          "againTitle": "重新登录 {{brand}}",
+          "haveNote": "你在这里已经有 {{accounts}}。要用其他账号登录，请先在浏览器中退出 {{brand}}，或复制链接在无痕窗口中打开。",
+          "againNote": "以 {{account}} 重新登录。你一完成，{{name}} 就会再次用它思考。",
+          "footSignIn": "你在 {{brand}} 的页面上输入密码。",
+          "footKey": "密钥会加密后直接发送到 {{computer}}。",
           "title": {
             "claude_code": "添加 Claude 账号",
             "codex": "添加 ChatGPT 账号",
@@ -5818,32 +5836,22 @@
           "title": "{{name}} 的思考方式",
           "only": "仅适用于 {{name}}。",
           "more": "更多选项",
-          "switch": "更换账号",
-          "switchTitle": "更换 {{name}} 的账号",
-          "inUse": "使用中",
-          "switchTo": "切换到 {{label}}",
-          "teamTitle": "更换团队的账号",
-          "teamAria": "适用对象",
-          "justOne": "仅 {{name}}",
-          "everyone": "此账号上的所有智能体",
-          "target": "切换到",
-          "switchMany_other": "切换 {{count}} 个智能体",
-          "limitTitle": "{{name}} 的账号已达上限",
           "limitBack": "{{account}} {{when}}恢复",
           "limitSoon": "{{account}} 会在套餐续期后恢复",
           "limitHelp": "在此期间，{{name}} 可以用另一个已连接的账号思考。",
           "fullWait": "在这个账号上，{{name}} 会等到套餐续期。",
-          "seeUsage": "查看用量",
-          "wait": "等待",
           "modelTitle": "{{name}} 的模型",
           "moreTitle": "{{name}} 的更多选项",
           "computer": "电脑",
-          "doneTitle": "都好了",
-          "doneSub": "进行中的工作会用新账号继续。",
           "finish": "完成",
           "undo": "撤销",
           "undone": "已恢复原样。",
-          "missed_other": "{{names}} 仍使用原来的账号。"
+          "missed_other": "{{names}} 仍使用原来的账号。",
+          "added": "已添加账号。{{name}} 现在用 {{account}} 思考。",
+          "alsoUses_other": "{{names}} 也在用 {{account}} 思考。",
+          "alsoSwitch": "也切换",
+          "signedOut": "{{account}} 已退出 {{brand}}。在你重新登录或选择其他账号之前，{{name}} 不会回复。",
+          "empty": "{{name}} 还没有用来思考的 AI 账号。"
         }
       },
       "computer": {
@@ -6011,6 +6019,20 @@
     },
     "copyHandle": "复制 @{{handle}}",
     "copied": "已复制 @{{handle}}。",
+    "facts": {
+      "private": "私人",
+      "created": "创建",
+      "createdBy": "{{name}}，{{date}}",
+      "usage": "{{month}}的用量",
+      "budget": "预算",
+      "budgetUsed": "已用 {{percent}}",
+      "last": "最近活动",
+      "never": "还没有",
+      "title": "它做什么",
+      "locked": "{{name}} 的指令、记忆、工具、对话、例行任务和文件只留给 {{owner}}、此人请来编辑的人和管理员。",
+      "lockedNoOwner": "{{name}} 的指令、记忆、工具、对话、例行任务和文件只留给可以编辑它的人和管理员。",
+      "ask": "请 {{owner}} 帮忙"
+    },
     "overview": {
       "approvals_other": "{{count}} 个审批请求",
       "approvalsYou": "在“审批”或聊天中批准或拒绝",
@@ -6105,6 +6127,22 @@
       "playbook_female": "{{name}} 的工作方式",
       "playbookNote": "它为自己保留的工作方法。不会出现在聊天中。从外部获得且再也没用过的会自动移到“已归档”。",
       "details": "技术细节",
+      "learning": {
+        "title": "它如何学习",
+        "fromYou": "从你的对话中学习",
+        "fromYouHint": "它在你的私信中学到的只属于你。它在频道中学到的，所有能阅读该频道的人都能看到。它学到的关于你的内容只属于你。",
+        "workspaceOff": "已对整个工作区关闭",
+        "forgetAll": "全部忘记",
+        "forgetAllHint": "删除它自行从你那里学到的内容。你让它记住的内容会保留。",
+        "forgetTitle": "忘记它从你那里学到的内容？",
+        "forgetText": "它自行从你那里学到的所有内容都会被永久删除。你让它记住的内容会保留，它在频道中学到的内容也会保留。",
+        "forgotten": "完成。它自行从你那里学到的内容已删除。",
+        "workspace": "在这个工作区中学习",
+        "workspaceHint": "关闭后，它不会自行从任何人那里学习。无论如何，任何人都无法读取他人的记忆。",
+        "onlyYou": "仅你",
+        "everyoneIn": "#{{channel}} 中的所有人",
+        "everyone": "所有能看到的人"
+      },
       "skills": "它创建的技能",
       "skillUses_other": "已加载 {{count}} 次",
       "view": "查看",
@@ -6157,7 +6195,8 @@
         "stuck": "因卡住而停止。",
         "brain_interrupted": "AI 在完成前停止了。",
         "brain_unavailable": "其电脑上的 AI 无法回答。请检查电脑后再试一次。",
-        "empty_reply": "模型没有返回任何内容。",
+        "empty_reply": "AI 结束了这一轮，但没有写回复。请重试，或在智能体设置中选择其他模型。",
+        "empty_reply_limit": "AI 在写回复前就达到了输出上限。请重试，或在智能体设置中选择其他模型。",
         "model_refused": "模型拒绝回答。",
         "agent_archived": "该智能体已归档。",
         "code_session_unavailable": "会话的 worktree 在电脑上不可用。",
@@ -8852,6 +8891,7 @@
       "provider_unavailable": "模型没有响应",
       "gave_up": "多次尝试后模型仍没有响应",
       "empty_reply": "模型没有返回任何内容",
+      "empty_reply_limit": "模型在回答前达到了输出上限",
       "model_refused": "模型拒绝回答",
       "runner_outdated": "电脑上的程序需要更新",
       "too_many_tool_calls": "超过了单次运行的步骤上限",
@@ -10306,6 +10346,8 @@
     "of": "{{name}} 的",
     "moreSpeed": "速度和上下文窗口",
     "whoThinks": "由谁思考",
+    "thinks_other": "{{names}} 用它思考",
+    "thinksNone": "没有智能体用它思考",
     "bulk": {
       "sub": "先选 AI，再选使用它的智能体。"
     },
@@ -10315,10 +10357,14 @@
       "search": "按名称、AI、套餐或所有者搜索",
       "noMatch": "没有匹配的账号。",
       "noModel": "没有匹配的模型。",
+      "empty": "还没有账号。",
+      "add": "添加账号",
+      "addLine": "Claude、ChatGPT、Gemini 等，或 API 密钥",
+      "manage": "管理账号",
       "groups": {
-        "yours": "你的",
+        "yours": "你的账号",
         "others": "团队的",
-        "keys": "工作区的"
+        "keys": "API 密钥"
       }
     },
     "order": {
@@ -11810,8 +11856,6 @@
     "steered": "{{name}} 在任务进行中收到了",
     "stillWorking": "{{name}} 仍在工作",
     "inProgress": "进行中",
-    "quiet": "{{minutes}} 分钟没有新进展",
-    "refresh": "刷新",
     "stop": "停止",
     "stopping": "正在停止…",
     "stopHint": "停止任务 · Esc",
@@ -15461,6 +15505,7 @@
       "widenForbidden": "管理员只能缩小可以使用他人个人设备的人员范围。",
       "spillOwnerOnly": "只有连接这台电脑的人才能让回复在这里思考。你可以把它关掉。",
       "tasksOwnerOnly": "只有连接这台电脑的人才能更改它同时运行的任务数。",
+      "tasksCloud": "这台电脑用于任务的余量由 Cloud 自己决定。",
       "notHome": "智能体住在工作区的电脑上，点名时才使用这台电脑。"
     },
     "machine": {
@@ -15877,6 +15922,11 @@
     "phonesHere": "这台电脑上的手机",
     "maxTasks": "同时运行的任务数",
     "maxTasksHint": "智能体在这里同时运行多少个后台任务。其余的排队等待。",
+    "tasksAutoRoom": "自动 · {{running}} 个运行中 · 还能再放约 {{more}} 个",
+    "tasksAutoFull": "自动 · {{running}} 个运行中 · 暂时已满",
+    "tasksAutoHint": "只要这台电脑还有富余内存，智能体就会启动后台任务，并为你自己的应用留出 1.5 GB。其余任务排队等候。",
+    "pushHarder": "加大马力",
+    "pushHarderHint": "同时运行更多任务：只留 0.5 GB 空闲内存，处理器忙碌时也不再暂停。你自己的应用可能会变慢。",
     "belongs": "归工作区所有",
     "belongsHint": "连接它的人离开后它仍会保留，没有所有者时所有人都可以使用。",
     "spillOwn": "给你的回复可以在这里思考",
@@ -15931,6 +15981,7 @@
       "inUse": "使用中",
       "inUseBy": "{{name}} 正在使用",
       "busy": "忙碌 {{running}}/{{max}}",
+      "busyRunning": "忙碌 · {{running}} 个运行中",
       "needs": "需要你处理",
       "preparing": "准备中",
       "paused": "已暂停",
@@ -15953,6 +16004,9 @@
       "tasksChange": "这里同时运行的任务数：{{max}}。在下方更改。",
       "tasksOwner": "这里同时运行的任务数：{{max}}。连接它的人可以更改。",
       "tasksUpdate": "这里同时运行的任务数：{{max}}。更新它的应用后即可在这里更改。",
+      "tasksNoMemory": "现在没有余量再开一个任务：空闲内存 {{gb, number}} GB。有一个结束后，下一个就会开始。",
+      "tasksNoCpu": "现在没有余量再开一个任务：处理器几乎满载。等它缓下来，下一个就会开始。",
+      "tasksPushing": "正在加大马力：空闲内存 {{gb, number}} GB。你自己的应用可能会变慢。",
       "offline": "智能体会等它回来。",
       "offlineSeen": "上次在线 {{time}}。智能体会等它回来。",
       "offlineWithHost": "{{host}} 已离线。智能体会等它回来。",
@@ -16050,17 +16104,21 @@
       "rolesHint": "拥有该角色的任何人都可以使用，包括以后获得该角色的人。",
       "computerHint": "谁的智能体可以在这里运行任务。管理员可以缩小范围，只有所有者可以扩大。",
       "phoneHint": "共享手机绝不会共享 {{host}}。",
-      "followsHint": "iPhone 遵循它所连接的 Mac 的规则。",
-      "serverHelp": "每个智能体在上面以各自的用户身份运行。",
-      "computerHelp": "智能体的命令在上面以你的用户身份运行。"
+      "followsHint": "iPhone 遵循它所连接的 Mac 的规则。"
+    },
+    "share": {
+      "title": "让整个工作区使用",
+      "off": "目前只有你",
+      "on": "{{org}} 的所有人",
+      "hint": "{{org}} 所有人的智能体都能以你的用户身份在上面运行任务。",
+      "hintServer": "{{org}} 所有人的智能体都能在上面以各自的用户身份运行任务。"
     },
     "request": {
       "title": "{{name}} 想加入 {{org}}",
       "list": "请求加入",
       "letJoin": "允许加入",
       "deny": "拒绝",
-      "denied": "{{name}} 不会加入。",
-      "joined": "{{name}} 已加入。"
+      "denied": "{{name}} 不会加入。"
     },
     "empty": {
       "title": "还没有设备",
@@ -17305,7 +17363,6 @@
     "removeUsedOther_other": "{{agents}} 正在用这个密钥思考。删除后会改用其他密钥。如果没有适合其模型的密钥，则会请求连接 AI。",
     "removeUsedNone_other": "{{agents}} 正在用这个密钥思考，且没有其他方式。删除后将停止回复，直到你连接其他 AI。",
     "noKeys": "使用 API 密钥，你直接向提供商付费并自选模型。",
-    "noKeysTitle": "使用你自己的 AI 密钥",
     "platformAvailable": "也可以使用此服务器的 Claude 密钥。",
     "usageTitle": "按类型划分的 API 花费",
     "usageAgentLine": "{{spent}} / {{budget}}",
@@ -18370,6 +18427,8 @@
       "surfaceUnlinked": "{{surface}} 因身份变更已解除关联。如果是你，请在设置中重新关联。",
       "surfaceVoiceDropped": "我没听清那条语音消息。可以再发一次，或者打字告诉我吗？",
       "done": "完成。",
+      "no_reply": "AI 结束了这一轮，但没有写回复。它所做的更改在下方。请再次向它要回复。",
+      "no_reply_limit": "AI 在写回复前就达到了输出上限。它所做的更改在下方。请再次向它要回复。",
       "stretch_paused_runs_other": "{{agents}} 暂停下来，先向你确认再继续",
       "stretch_paused_spend_other": "{{agents}} 暂停下来向你确认 · 每个已用掉本月预算的 {{percent}}%",
       "stretch_paused_spend_cost_other": "{{agents}} 暂停下来向你确认 · 每个已用掉 {{amount}}（本月预算的 {{percent}}%）",

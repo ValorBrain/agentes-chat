@@ -1,14 +1,28 @@
 import type { LearnedSkill, Memory, Proposal } from "@agenteschat/client";
-import { useLearnedSkills, useMemory, useMemoryAction, useProposals, useSkillAction } from "@agenteschat/client";
+import {
+  useForgetRightHandLearned,
+  useLearnedSkills,
+  useMemory,
+  useMemoryAction,
+  useProposals,
+  useSetTeamWeekPrefs,
+  useSettings,
+  useSkillAction,
+  useTeamWeekPrefs,
+  useUpdateSettings,
+} from "@agenteschat/client";
+import { errorText } from "@agenteschat/client/lib/errors";
 import { FIELD_LIMITS } from "@agenteschat/client/lib/field-limits";
 import { formatShortDate } from "@agenteschat/client/lib/format";
 import { can } from "@agenteschat/client/lib/permissions";
 import { memoryLine, pendingOnAgent, proposalTitle, proposalWhy } from "@agenteschat/client/lib/proposals";
-import { isRightHand } from "@agenteschat/client/lib/right-hand";
+import { isRightHand, memoryAudienceGroups } from "@agenteschat/client/lib/right-hand";
 import {
   Button,
   Card,
   CardHeader,
+  Dialog,
+  DialogFooter,
   Diff,
   diffLines,
   EmptyState,
@@ -21,6 +35,7 @@ import {
   overLimit,
   SearchField,
   Segmented,
+  Switch,
   Textarea,
   Toolbar,
 } from "@agenteschat/ui";
@@ -30,6 +45,7 @@ import { useTranslation } from "react-i18next";
 import { AskAgentButton } from "@/components/AskAgentButton";
 import { HelpLink } from "@/components/HelpLink";
 import { ErrorState, LoadingLine } from "@/components/Loading";
+import { PrefRow } from "@/components/NoticePrefs";
 import { useOrg } from "@/components/org-context";
 import { useTextLimit } from "@/hooks/useTextLimit";
 import { useLandOn } from "@/lib/land-on";
@@ -332,6 +348,134 @@ function RulesCard({ rules }: { rules: Memory[] }) {
 }
 
 /**
+ * The right hand's learning, on top of its Memory tab: the person's own switch, Forget all (only their own), and for
+ * who configures the workspace, the workspace's switch. Nobody reads anyone else's memories, admins included.
+ */
+function RightHandLearningCard() {
+  const { t } = useTranslation();
+  const { org } = useOrg();
+  const { agent } = useAgentEdit();
+  const toast = useToast();
+  const prefs = useTeamWeekPrefs(org.id).data;
+  const setPrefs = useSetTeamWeekPrefs(org.id);
+  const settings = useSettings(org.id).data;
+  const setSettings = useUpdateSettings(org.id);
+  const forget = useForgetRightHandLearned(org.id, agent.id);
+  const [asking, setAsking] = useState(false);
+  const failed = (e: unknown) => toast.show(errorText(t, e), "error");
+  const workspaceOn = settings?.rightHandLearns !== false;
+  return (
+    <Card as="section" className="agp-card" aria-labelledby="mem-learning">
+      <CardHead id="mem-learning" icon="bulb" title={t("agentPage.memory.learning.title")} />
+      <div className="settings-rows">
+        <PrefRow
+          id="mem-learn-mine"
+          icon="person"
+          label={t("agentPage.memory.learning.fromYou")}
+          hint={t("agentPage.memory.learning.fromYouHint")}
+          status={!workspaceOn ? t("agentPage.memory.learning.workspaceOff") : undefined}
+          control={
+            <Switch
+              aria-label={t("agentPage.memory.learning.fromYou")}
+              checked={workspaceOn && !prefs?.learnOff}
+              disabled={!prefs || !workspaceOn}
+              onCheckedChange={(on) => setPrefs.mutate({ learnOff: !on }, { onError: failed })}
+            />
+          }
+        />
+        <PrefRow
+          id="mem-learn-forget"
+          icon="trash"
+          label={t("agentPage.memory.learning.forgetAll")}
+          hint={t("agentPage.memory.learning.forgetAllHint")}
+          control={
+            <Button size="sm" variant="danger" onClick={() => setAsking(true)}>
+              {t("agentPage.memory.forget")}
+            </Button>
+          }
+        />
+        {can(org, "configure") && settings && (
+          <PrefRow
+            id="mem-learn-workspace"
+            icon="audienceEveryone"
+            label={t("agentPage.memory.learning.workspace")}
+            hint={t("agentPage.memory.learning.workspaceHint")}
+            value={t("rightHand.settings.groupWorkspace")}
+            control={
+              <Switch
+                aria-label={t("agentPage.memory.learning.workspace")}
+                checked={workspaceOn}
+                disabled={setSettings.isPending}
+                onCheckedChange={(on) => setSettings.mutate({ rightHandLearns: on }, { onError: failed })}
+              />
+            }
+          />
+        )}
+      </div>
+      <Dialog
+        open={asking}
+        onOpenChange={(o) => !o && setAsking(false)}
+        title={t("agentPage.memory.learning.forgetTitle")}
+        description={t("agentPage.memory.learning.forgetText")}
+        closeLabel={t("common.close")}
+        width={460}
+      >
+        <DialogFooter>
+          <Button disabled={forget.isPending} onClick={() => setAsking(false)}>
+            {t("common.cancel")}
+          </Button>
+          <Button
+            variant="danger"
+            loading={forget.isPending}
+            disabled={forget.isPending}
+            onClick={() =>
+              forget.mutate(undefined, {
+                onSuccess: () => {
+                  toast.show(t("agentPage.memory.learning.forgotten"));
+                  setAsking(false);
+                },
+                onError: failed,
+              })
+            }
+          >
+            {t("agentPage.memory.learning.forgetAll")}
+          </Button>
+        </DialogFooter>
+      </Dialog>
+    </Card>
+  );
+}
+
+/**
+ * The right hand's list in its groups ("Only you", "Everyone in #eng"); any other agent's as one list.
+ */
+function AudienceGroups({ list, row }: { list: Memory[]; row: (m: Memory) => ReactNode }) {
+  const { t } = useTranslation();
+  const { agent } = useAgentEdit();
+  if (!isRightHand(agent)) return <ul className="agp-list agp-mems">{list.map(row)}</ul>;
+  return (
+    <div className="ac-groups">
+      {memoryAudienceGroups(list).map((group) => {
+        const title =
+          group.key === "you"
+            ? t("agentPage.memory.learning.onlyYou")
+            : group.channel
+              ? t("agentPage.memory.learning.everyoneIn", { channel: group.channel })
+              : t("agentPage.memory.learning.everyone");
+        return (
+          <div key={group.key}>
+            <GroupHeading level={3} title={title} />
+            <ul className="agp-list agp-mems" aria-label={title}>
+              {group.items.map(row)}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
  * What the agent learned on its own, newest first: what matters to people (preferences, facts, decisions), then how
  * it works (its playbook: how-tos, lessons and notes it keeps for itself, none of them in the chat) and the skills it
  * made.
@@ -357,13 +501,7 @@ function LearnedList({ list }: { list: Memory[] }) {
   const how = t("agentPage.memory.playbook", g);
   return (
     <div className="ac-groups">
-      {people.length > 0 && (
-        <ul className="agp-list agp-mems">
-          {people.map((m) => (
-            <LearnedRow key={m.id} m={m} />
-          ))}
-        </ul>
-      )}
+      {people.length > 0 && <AudienceGroups list={people} row={(m) => <LearnedRow key={m.id} m={m} />} />}
       {playbook.length > 0 && (
         <div>
           <GroupHeading
@@ -467,6 +605,7 @@ export function MemoryTab({ item }: { item?: string }) {
           {pending.map((p) => (
             <ProposalCard key={p.id} proposal={p} />
           ))}
+          {isRightHand(agent) && <RightHandLearningCard />}
           {rules.length > 0 && <RulesCard rules={rules} />}
           <Card as="section" className="agp-card" aria-labelledby="mem-known">
             <CardHead
@@ -526,8 +665,9 @@ export function MemoryTab({ item }: { item?: string }) {
             ) : shown.length === 0 ? (
               <NoMemories agent={agent} q={q} none={list.length === 0} onClear={() => setQ("")} />
             ) : (
-              <ul className="agp-list agp-mems">
-                {shown.map((m) => (
+              <AudienceGroups
+                list={shown}
+                row={(m) => (
                   <li key={m.id} className="agp-mem" data-item-id={m.id}>
                     <span>{memoryLine(t, m)}</span>
                     <span className="agp-mem__meta">
@@ -539,8 +679,8 @@ export function MemoryTab({ item }: { item?: string }) {
                       </span>
                     </span>
                   </li>
-                ))}
-              </ul>
+                )}
+              />
             )}
           </Card>
           <p className="page__note">

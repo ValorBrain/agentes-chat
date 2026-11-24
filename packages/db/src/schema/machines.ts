@@ -106,6 +106,8 @@ export interface MachineSizeRecord {
   limit?: { cpus: number; memoryGb: number };
   /** Background tasks it runs at once (protocol 75), also as `runner.state` and `limits.set` said it since. */
   maxTasks?: number;
+  /** Protocol 78: about how many more tasks fit now, where memory is read (`TaskRoomReport` in the protocol). */
+  room?: { more: number; freeGb: number; cpuBusy: boolean; pushHarder: boolean };
 }
 
 /** How busy a computer got over the last day (protocol 22: `MachineLoad` in the protocol), and when it said so. */

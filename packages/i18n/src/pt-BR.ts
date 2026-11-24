@@ -69,6 +69,13 @@ export const ptBR = {
     offline: "Você está sem internet. Confira a conexão e tente de novo.",
     unreachable: "Sem conexão com o agentes.chat agora. Tente de novo em instantes.",
   },
+  reconnect: {
+    device: "Reconectando… Sem internet neste aparelho.",
+    server: "Reconectando… O servidor não responde ou está reiniciando.",
+    signedOut: "Sua sessão terminou.",
+    retry: "Tentar agora",
+    signIn: "Entrar",
+  },
   roles: {
     owner: "Dono",
     admin: "Admin",
@@ -450,7 +457,7 @@ export const ptBR = {
     },
     manage_agents: {
       title: "Editar agentes",
-      desc: "Instruções, cérebro, orçamento e o que cada um usa, nos agentes com que a pessoa fala. Os privados de outras pessoas ficam de fora.",
+      desc: "Instruções, cérebro, orçamento e o que cada um usa, nos agentes com que a pessoa fala. Dos privados de outras pessoas, só o nome, o dono e o uso.",
       short: "editar agentes",
       say: "edita os agentes com que fala",
     },
@@ -3136,7 +3143,6 @@ export const ptBR = {
       mineHelp_female: "Sua conversa com a {{name}} pensa com um plano seu ou compartilhado com você, e só a sua.",
       connectMine: "Conectar meu plano",
       useWorkspace: "Usar a do workspace",
-      useMine: "Usar meu plano",
       mineYours: "seu plano",
       mineOf: "plano de {{owner}}",
       mineKey: "chave do workspace",
@@ -6284,6 +6290,26 @@ export const ptBR = {
           missed_other: "{{count}} agentes não mudaram.",
         },
         add: {
+          /** "Add account" in "Quem pensa": one line per AI, then that AI's sign-in. */
+          pickTitle: "Adicionar conta",
+          pickFoot: "Você entra na página da própria IA.",
+          /** At the end of an AI's line: how many accounts of it the person already has there. */
+          have_one: "Você tem 1",
+          have_other: "Você tem {{count}}",
+          others: "Outro plano",
+          key: "Chave de API",
+          keyLine: "Pago pelo uso",
+          /** A coding plan's sign-in: its key. */
+          titlePlan: "Adicionar o {{plan}}",
+          againTitle: "Entrar de novo no {{brand}}",
+          /** Before a new sign-in where the person has accounts of that AI there: the browser would bring one of those back. */
+          haveNote:
+            "Você já tem {{accounts}} aqui. Para entrar com outra conta, saia do {{brand}} no navegador antes, ou copie o link e abra numa janela anônima.",
+          againNote: "Entre de novo como {{account}}. O {{name}} volta a pensar com ela assim que você terminar.",
+          againNote_female:
+            "Entre de novo como {{account}}. A {{name}} volta a pensar com ela assim que você terminar.",
+          footSignIn: "Você digita a senha na página do {{brand}}.",
+          footKey: "A chave vai cifrada direto para o {{computer}}.",
           title: {
             claude_code: "Adicionar conta do Claude",
             codex: "Adicionar conta do ChatGPT",
@@ -6391,26 +6417,6 @@ export const ptBR = {
           only_female: "Vale só para a {{name}}.",
           /** A line on the first screen that opens effort, speed, context and the rest. */
           more: "Mais opções",
-          switch: "Trocar de conta",
-          switchTitle: "Trocar a conta do {{name}}",
-          switchTitle_female: "Trocar a conta da {{name}}",
-          /** The label over the account the agent uses now. */
-          inUse: "Em uso",
-          /** The main button: `label` is the account's title ("Claude 2 · Max"). */
-          switchTo: "Trocar para {{label}}",
-          teamTitle: "Trocar a conta do time",
-          /** The two cards of the team screen, for a screen reader: whom the switch is for. */
-          teamAria: "Para quem é",
-          /** Two cards, when the account thinks for all of its owner's agents: whom the switch is for. */
-          justOne: "Só o {{name}}",
-          justOne_female: "Só a {{name}}",
-          everyone: "Todos nesta conta",
-          /** The label over the account they switch to. */
-          target: "Trocar para",
-          switchMany_one: "Trocar {{count}} agente",
-          switchMany_other: "Trocar os {{count}} agentes",
-          limitTitle: "A conta do {{name}} está no limite",
-          limitTitle_female: "A conta da {{name}} está no limite",
           /** `when` is a day and a time ("sábado às 18:00"). */
           limitBack: "{{account}} volta {{when}}",
           /** When the time it's back isn't known. */
@@ -6420,17 +6426,12 @@ export const ptBR = {
           /** Under the list, with an account at its limit picked: the row above says until when. */
           fullWait: "Nesta conta o {{name}} espera até o plano renovar.",
           fullWait_female: "Nesta conta a {{name}} espera até o plano renovar.",
-          /** A link to the usage page, after `fullWait`. */
-          seeUsage: "Ver uso",
-          wait: "Esperar",
           modelTitle: "Modelo do {{name}}",
           modelTitle_female: "Modelo da {{name}}",
           moreTitle: "Mais opções do {{name}}",
           moreTitle_female: "Mais opções da {{name}}",
           /** A line under More options where several computers can run it. */
           computer: "Computador",
-          doneTitle: "Pronto",
-          doneSub: "O que estava em andamento continua com a conta nova.",
           /** The main button of the first screen, of More options and of the last screen. */
           finish: "Concluído",
           undo: "Desfazer",
@@ -6439,6 +6440,21 @@ export const ptBR = {
           /** The agents the server didn't move when switching everyone on the account: `names` lists them. */
           missed_one: "{{names}} ficou com a conta de antes.",
           missed_other: "{{names}} ficaram com a conta de antes.",
+          /** Under the account, after one a sign-in here just brought became the one in use. */
+          added: "Conta adicionada. O {{name}} já pensa com {{account}}.",
+          added_female: "Conta adicionada. A {{name}} já pensa com {{account}}.",
+          /** After a switch: the others of the person's agents still on the account it left (`names` lists them). */
+          alsoUses_one: "{{names}} também pensa com {{account}}.",
+          alsoUses_other: "{{names}} também pensam com {{account}}.",
+          alsoSwitch: "Trocar também",
+          /** The account in use signed out on its computer. `brand`: its AI ("Claude"). */
+          signedOut:
+            "{{account}} saiu do {{brand}}. O {{name}} não responde até você entrar de novo ou escolher outra conta.",
+          signedOut_female:
+            "{{account}} saiu do {{brand}}. A {{name}} não responde até você entrar de novo ou escolher outra conta.",
+          /** No AI to think with at all. */
+          empty: "O {{name}} ainda não tem uma conta de IA para pensar.",
+          empty_female: "A {{name}} ainda não tem uma conta de IA para pensar.",
         },
       },
       computer: {
@@ -6629,6 +6645,28 @@ export const ptBR = {
     },
     copyHandle: "Copiar @{{handle}}",
     copied: "@{{handle}} copiado.",
+    facts: {
+      private: "Privado",
+      created: "Criado",
+      created_female: "Criada",
+      createdBy: "{{name}}, {{date}}",
+      usage: "Uso em {{month}}",
+      budget: "Orçamento",
+      budgetUsed: "{{percent}} usado",
+      last: "Última atividade",
+      never: "Nenhuma ainda",
+      title: "O que ele faz",
+      title_female: "O que ela faz",
+      locked:
+        "Instruções, memória, ferramentas, conversas, rotinas e arquivos do {{name}} ficam com {{owner}}, quem essa pessoa chamar para editar e os admins.",
+      locked_female:
+        "Instruções, memória, ferramentas, conversas, rotinas e arquivos da {{name}} ficam com {{owner}}, quem essa pessoa chamar para editar e os admins.",
+      lockedNoOwner:
+        "Instruções, memória, ferramentas, conversas, rotinas e arquivos do {{name}} ficam com quem pode editá-lo e os admins.",
+      lockedNoOwner_female:
+        "Instruções, memória, ferramentas, conversas, rotinas e arquivos da {{name}} ficam com quem pode editá-la e os admins.",
+      ask: "Pedir a {{owner}}",
+    },
     overview: {
       approvals_one: "{{count}} pedido de aprovação",
       approvals_other: "{{count}} pedidos de aprovação",
@@ -6723,6 +6761,25 @@ export const ptBR = {
       playbookNote:
         "Jeitos de trabalhar que guardou para si. Não aparecem na conversa. O que pegou de fora e não voltou a usar vai sozinho para Arquivadas.",
       details: "Detalhes técnicos",
+      learning: {
+        title: "Como aprende",
+        fromYou: "Aprende com as suas conversas",
+        fromYouHint:
+          "O que aprende na sua DM fica só com você. O que aprende num canal, todo mundo que lê aquele canal vê. O que aprende sobre você fica só com você.",
+        workspaceOff: "Desligado para o workspace inteiro",
+        forgetAll: "Esquecer tudo",
+        forgetAllHint: "Apaga o que aprendeu com você por conta própria. O que você pediu para lembrar fica.",
+        forgetTitle: "Esquecer o que aprendeu com você?",
+        forgetText:
+          "Tudo o que aprendeu com você por conta própria vai embora, para sempre. O que você pediu para lembrar fica, e o que aprendeu nos canais também.",
+        forgotten: "Pronto. O que aprendeu com você por conta própria foi apagado.",
+        workspace: "Aprende neste workspace",
+        workspaceHint:
+          "Desligado, não aprende com ninguém por conta própria. De todo jeito, ninguém lê as memórias de outra pessoa.",
+        onlyYou: "Só você",
+        everyoneIn: "Todo mundo em #{{channel}}",
+        everyone: "Todo mundo que pode ver",
+      },
       skills: "Skills que criou",
       skillUses_zero: "nunca carregada",
       skillUses_one: "carregada uma vez",
@@ -6775,7 +6832,10 @@ export const ptBR = {
         stuck: "Parou porque travou.",
         brain_interrupted: "A IA parou antes de terminar.",
         brain_unavailable: "A IA do computador não conseguiu responder. Confira o computador e peça de novo.",
-        empty_reply: "O modelo não respondeu nada.",
+        empty_reply:
+          "A IA terminou a vez dela sem escrever uma resposta. Tente de novo ou escolha outro modelo nas configurações do agente.",
+        empty_reply_limit:
+          "A IA chegou ao limite de saída antes de escrever uma resposta. Tente de novo ou escolha outro modelo nas configurações do agente.",
         model_refused: "O modelo se recusou a responder.",
         agent_archived: "O agente foi arquivado.",
         code_session_unavailable: "A worktree da sessão não está disponível no computador.",
@@ -9593,6 +9653,7 @@ export const ptBR = {
       provider_unavailable: "O modelo não respondeu",
       gave_up: "O modelo não respondeu depois de várias tentativas",
       empty_reply: "O modelo não respondeu nada",
+      empty_reply_limit: "O modelo chegou ao limite de saída antes de responder",
       model_refused: "O modelo se recusou a responder",
       runner_outdated: "O programa no computador precisa ser atualizado",
       too_many_tool_calls: "Passou do limite de passos numa execução",
@@ -11091,6 +11152,10 @@ export const ptBR = {
     of: "de {{name}}",
     moreSpeed: "Velocidade e janela de contexto",
     whoThinks: "Quem pensa",
+    /** Under an account in Contas de IA: the agents that think with it (`names` lists them). */
+    thinks_one: "{{names}} pensa com ela",
+    thinks_other: "{{names}} pensam com ela",
+    thinksNone: "Nenhum agente pensa com ela",
     bulk: {
       sub: "Escolha a IA e depois os agentes que passam a usar.",
     },
@@ -11100,10 +11165,15 @@ export const ptBR = {
       search: "Buscar por nome, IA, plano ou dono",
       noMatch: "Nenhuma conta encontrada.",
       noModel: "Nenhum modelo encontrado.",
+      empty: "Nenhuma conta ainda.",
+      /** The account list's foot, under every row. */
+      add: "Adicionar conta",
+      addLine: "Claude, ChatGPT, Gemini e outras, ou uma chave de API",
+      manage: "Gerenciar contas",
       groups: {
-        yours: "Suas",
+        yours: "Suas contas",
         others: "Do time",
-        keys: "Do workspace",
+        keys: "Chaves de API",
       },
     },
     order: {
@@ -12704,8 +12774,6 @@ export const ptBR = {
     steered: "{{name}} recebeu durante a tarefa",
     stillWorking: "{{name}} ainda trabalhando",
     inProgress: "em andamento",
-    quiet: "sem notícias há {{minutes}} min",
-    refresh: "Atualizar",
     stop: "Parar",
     stopping: "Parando…",
     stopHint: "Parar tarefa · Esc",
@@ -16305,6 +16373,7 @@ export const ptBR = {
       widenForbidden: "Admins só podem restringir quem usa o dispositivo de outra pessoa.",
       spillOwnerOnly: "Só quem conectou este computador pode deixar respostas pensarem nele. Você pode desligar.",
       tasksOwnerOnly: "Só quem conectou este computador pode mudar quantas tarefas ele roda ao mesmo tempo.",
+      tasksCloud: "A Cloud dimensiona sozinha o espaço deste computador para tarefas.",
       notHome: "Os agentes moram no computador do workspace e usam este quando o citam pelo nome.",
     },
     machine: {
@@ -16721,6 +16790,13 @@ export const ptBR = {
     phonesHere: "Celulares neste computador",
     maxTasks: "Tarefas ao mesmo tempo",
     maxTasksHint: "Quantas tarefas em segundo plano os agentes rodam aqui ao mesmo tempo. As outras esperam a vez.",
+    tasksAutoRoom: "Automático · {{running}} rodando · cabem mais umas {{more}}",
+    tasksAutoFull: "Automático · {{running}} rodando · cheio por enquanto",
+    tasksAutoHint:
+      "Os agentes começam tarefas em segundo plano enquanto este computador tem memória sobrando, deixando 1,5 GB livres para os seus apps. As outras esperam a vez.",
+    pushHarder: "Forçar mais",
+    pushHarderHint:
+      "Mais tarefas ao mesmo tempo: só 0,5 GB de memória fica livre e o processador ocupado não as segura. Os seus apps podem ficar lentos.",
     belongs: "Pertence ao workspace",
     belongsHint: "Ele fica quando quem o conectou sai, e todos podem usá-lo enquanto ninguém for dono dele.",
     spillOwn: "Suas respostas podem pensar aqui",
@@ -16778,6 +16854,7 @@ export const ptBR = {
       inUse: "Em uso",
       inUseBy: "Em uso por {{name}}",
       busy: "Ocupado {{running}}/{{max}}",
+      busyRunning: "Ocupado · {{running}} rodando",
       needs: "Precisa de você",
       preparing: "Preparando",
       paused: "Pausado",
@@ -16801,6 +16878,11 @@ export const ptBR = {
       tasksChange: "Tarefas ao mesmo tempo aqui: {{max}}. Mude abaixo.",
       tasksOwner: "Tarefas ao mesmo tempo aqui: {{max}}. Quem conectou este computador pode mudar isso.",
       tasksUpdate: "Tarefas ao mesmo tempo aqui: {{max}}. Atualize o app dele para mudar isso daqui.",
+      tasksNoMemory:
+        "Sem espaço para outra tarefa agora: {{gb, number}} GB de memória livres. A próxima começa quando uma terminar.",
+      tasksNoCpu:
+        "Sem espaço para outra tarefa agora: o processador está quase cheio. A próxima começa quando ele aliviar.",
+      tasksPushing: "Forçando mais: {{gb, number}} GB de memória livres. Os seus apps podem ficar lentos.",
       offline: "Os agentes esperam ele voltar.",
       offlineSeen: "Visto às {{time}}. Os agentes esperam ele voltar.",
       offlineWithHost: "{{host}} está offline. Os agentes esperam ele voltar.",
@@ -16903,8 +16985,13 @@ export const ptBR = {
         "De quem os agentes podem rodar tarefas aqui. Admins podem restringir, só o dono pode abrir para mais gente.",
       phoneHint: "Compartilhar um celular nunca compartilha {{host}}.",
       followsHint: "Um iPhone segue a regra do Mac em que está conectado.",
-      serverHelp: "Cada agente roda nele com o próprio usuário.",
-      computerHelp: "Os comandos dos agentes rodam nele com o seu usuário.",
+    },
+    share: {
+      title: "Deixar o workspace todo usar",
+      off: "Só você por enquanto",
+      on: "Todos em {{org}}",
+      hint: "Os agentes de todos em {{org}} podem rodar tarefas nele, com o seu usuário.",
+      hintServer: "Os agentes de todos em {{org}} podem rodar tarefas nele, cada um com o próprio usuário.",
     },
     request: {
       title: "{{name}} quer entrar em {{org}}",
@@ -16912,7 +16999,6 @@ export const ptBR = {
       letJoin: "Deixar entrar",
       deny: "Recusar",
       denied: "{{name}} não vai entrar.",
-      joined: "{{name}} entrou.",
     },
     empty: {
       title: "Nenhum dispositivo ainda",
@@ -18240,7 +18326,6 @@ export const ptBR = {
     removeUsedNone_other:
       "{{agents}} pensam com esta chave e não têm outra. Sem ela, param de responder até você conectar outra IA.",
     noKeys: "Com uma chave de API, você paga direto ao provedor e escolhe os modelos.",
-    noKeysTitle: "Traga sua própria chave de IA",
     platformAvailable: "A chave do Claude deste servidor também está disponível.",
     usageTitle: "Gastos da API por tipo",
     usageAgentLine: "{{spent}} de {{budget}}",
@@ -19400,6 +19485,10 @@ export const ptBR = {
         "{{surface}} foi desvinculado porque a identidade mudou. Vincule de novo em Configurações se foi você.",
       surfaceVoiceDropped: "Não consegui entender esse áudio. Pode mandar de novo ou escrever?",
       done: "Pronto.",
+      no_reply:
+        "A IA terminou a vez dela sem escrever uma resposta. O que ela mudou está abaixo. Peça de novo a resposta.",
+      no_reply_limit:
+        "A IA chegou ao limite de saída antes de escrever uma resposta. O que ela mudou está abaixo. Peça de novo a resposta.",
       /**
        * A stretch's pause card (ADR 0089): `agents` their names, `count` how many; `percent` the share of each one's
        * monthly budget, and with `_cost` it in money (`amount`).

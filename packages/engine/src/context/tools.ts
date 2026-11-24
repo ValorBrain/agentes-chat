@@ -33,7 +33,7 @@ import { announceMessageMemories } from "../message-memories";
 import { quietNoticeSql } from "../notices";
 import { can, getMembership } from "../organizations";
 import { personWords, runReadOutsideById, UNASKED_DESTINATION, unaskedDestination } from "../outside";
-import { personBehindCall, wikiActorOfCall } from "../requester";
+import { personBehindCall, triggerPerson, wikiActorOfCall } from "../requester";
 import { isRightHandId, rightHandReader } from "../right-hand";
 import {
   agentSearchChannels,
@@ -1210,18 +1210,6 @@ const notRequested = {
     "Changes to what a person wrote, or to what the whole team knows, need a person's request in this conversation; nothing was changed.",
   isError: true,
 };
-
-/**
- * Who wrote the message this run answers, when a person did in their own words: one sent through an AI app carries
- * `meta.readOutside` and counts as outside content (ADR 0119).
- */
-async function triggerPerson(ctx: ToolContext): Promise<{ id: string; body: string } | null> {
-  const [m] = await ctx.db
-    .select({ type: messages.authorType, userId: messages.authorUserId, meta: messages.meta, body: messages.body })
-    .from(messages)
-    .where(and(eq(messages.orgId, ctx.orgId), eq(messages.id, ctx.triggerMessageId)));
-  return m?.type === "person" && m.meta.readOutside !== true && m.userId ? { id: m.userId, body: m.body } : null;
-}
 
 /** A person's message as a memory's text (ADR 0167): their words as written, within an item's length. */
 const quoteOf = (body: string) => cutText(body.trim(), 2000);

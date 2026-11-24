@@ -589,6 +589,24 @@ describe("Preferences: a setting's explanation behind its ⓘ", () => {
       },
     ));
 
+  test("Advanced: where tasks start on the computer's room, no count of them to set", () =>
+    pane(
+      "selfhost",
+      <Advanced />,
+      (el) => el.querySelectorAll(".dk-card").length === 3 && el.querySelector(".dk-path"),
+      async (el) => {
+        const titles = () => rows(el.querySelector(".dk-card") as HTMLElement).map((r) => r.title);
+        await until(() => titles().length === 1);
+        expect(titles()).toEqual(["Longest each one may run"]);
+      },
+      {
+        host: (h) => {
+          for (const r of h.runners.values())
+            (r as unknown as { config: { tasksOnRoom?: boolean } }).config.tasksOnRoom = true;
+        },
+      },
+    ));
+
   test("Updates: no lead; Update and reopen alone, and the manual way keeps what stays", async () => {
     const latest = { version: "9.9.9", url: "https://app.agentes.chat/api/desktop/download/9.9.9/agentes.dmg" };
     const update: UpdateCheck = {

@@ -152,6 +152,21 @@
   "common.unreachable": {
     "value": "Can't reach agentes.chat right now. Try again in a moment."
   },
+  "reconnect.device": {
+    "value": "Reconnecting… No internet on this device."
+  },
+  "reconnect.server": {
+    "value": "Reconnecting… The server is unreachable or restarting."
+  },
+  "reconnect.signedOut": {
+    "value": "You're signed out."
+  },
+  "reconnect.retry": {
+    "value": "Try again now"
+  },
+  "reconnect.signIn": {
+    "value": "Sign in"
+  },
   "roles.owner": {
     "value": "Owner"
   },
@@ -1041,7 +1056,7 @@
     "value": "Edit agents"
   },
   "permissions.manage_agents.desc": {
-    "value": "Instructions, brain, budget and what each one uses, on the agents they talk to. Other people's private agents stay out."
+    "value": "Instructions, brain, budget and what each one uses, on the agents they talk to. Of other people's private agents, only the name, owner and usage."
   },
   "permissions.manage_agents.short": {
     "value": "edit agents"
@@ -7519,9 +7534,6 @@
   },
   "rightHand.settings.useWorkspace": {
     "value": "Use the workspace's"
-  },
-  "rightHand.settings.useMine": {
-    "value": "Use my plan"
   },
   "rightHand.settings.mineYours": {
     "value": "your plan"
@@ -14632,6 +14644,45 @@
       "other": "{{count}} agents didn't change."
     }
   },
+  "agentPage.work.brain.add.pickTitle": {
+    "value": "Add account"
+  },
+  "agentPage.work.brain.add.pickFoot": {
+    "value": "You sign in on the AI's own page."
+  },
+  "agentPage.work.brain.add.have": {
+    "value": {
+      "one": "You have 1",
+      "other": "You have {{count}}"
+    }
+  },
+  "agentPage.work.brain.add.others": {
+    "value": "Another plan"
+  },
+  "agentPage.work.brain.add.key": {
+    "value": "API key"
+  },
+  "agentPage.work.brain.add.keyLine": {
+    "value": "Pay as you go"
+  },
+  "agentPage.work.brain.add.titlePlan": {
+    "value": "Add {{plan}}"
+  },
+  "agentPage.work.brain.add.againTitle": {
+    "value": "Sign in to {{brand}} again"
+  },
+  "agentPage.work.brain.add.haveNote": {
+    "value": "You already have {{accounts}} here. To sign in with another account, sign out of {{brand}} in your browser first, or copy the link and open it in a private window."
+  },
+  "agentPage.work.brain.add.againNote": {
+    "value": "Sign in again as {{account}}. {{name}} thinks with it again as soon as you're done."
+  },
+  "agentPage.work.brain.add.footSignIn": {
+    "value": "You type your password on {{brand}}'s page."
+  },
+  "agentPage.work.brain.add.footKey": {
+    "value": "The key goes encrypted straight to {{computer}}."
+  },
   "agentPage.work.brain.add.title.claude_code": {
     "value": "Add a Claude account"
   },
@@ -14839,42 +14890,6 @@
   "agentPage.work.brain.v2.more": {
     "value": "More options"
   },
-  "agentPage.work.brain.v2.switch": {
-    "value": "Change account"
-  },
-  "agentPage.work.brain.v2.switchTitle": {
-    "value": "Change {{name}}'s account"
-  },
-  "agentPage.work.brain.v2.inUse": {
-    "value": "In use"
-  },
-  "agentPage.work.brain.v2.switchTo": {
-    "value": "Switch to {{label}}"
-  },
-  "agentPage.work.brain.v2.teamTitle": {
-    "value": "Change the team's account"
-  },
-  "agentPage.work.brain.v2.teamAria": {
-    "value": "Whom it is for"
-  },
-  "agentPage.work.brain.v2.justOne": {
-    "value": "Only {{name}}"
-  },
-  "agentPage.work.brain.v2.everyone": {
-    "value": "Everyone on this account"
-  },
-  "agentPage.work.brain.v2.target": {
-    "value": "Switch to"
-  },
-  "agentPage.work.brain.v2.switchMany": {
-    "value": {
-      "one": "Switch {{count}} agent",
-      "other": "Switch the {{count}} agents"
-    }
-  },
-  "agentPage.work.brain.v2.limitTitle": {
-    "value": "{{name}}'s account is at its limit"
-  },
   "agentPage.work.brain.v2.limitBack": {
     "value": "{{account}} is back {{when}}"
   },
@@ -14887,12 +14902,6 @@
   "agentPage.work.brain.v2.fullWait": {
     "value": "On this account {{name}} waits until the plan renews."
   },
-  "agentPage.work.brain.v2.seeUsage": {
-    "value": "See usage"
-  },
-  "agentPage.work.brain.v2.wait": {
-    "value": "Wait"
-  },
   "agentPage.work.brain.v2.modelTitle": {
     "value": "{{name}}'s model"
   },
@@ -14901,12 +14910,6 @@
   },
   "agentPage.work.brain.v2.computer": {
     "value": "Computer"
-  },
-  "agentPage.work.brain.v2.doneTitle": {
-    "value": "All set"
-  },
-  "agentPage.work.brain.v2.doneSub": {
-    "value": "What was under way goes on with the new account."
   },
   "agentPage.work.brain.v2.finish": {
     "value": "Done"
@@ -14922,6 +14925,24 @@
       "one": "{{names}} kept the account it had.",
       "other": "{{names}} kept the accounts they had."
     }
+  },
+  "agentPage.work.brain.v2.added": {
+    "value": "Account added. {{name}} now thinks with {{account}}."
+  },
+  "agentPage.work.brain.v2.alsoUses": {
+    "value": {
+      "one": "{{names}} also thinks with {{account}}.",
+      "other": "{{names}} also think with {{account}}."
+    }
+  },
+  "agentPage.work.brain.v2.alsoSwitch": {
+    "value": "Switch them too"
+  },
+  "agentPage.work.brain.v2.signedOut": {
+    "value": "{{account}} signed out of {{brand}}. {{name}} won't answer until you sign in again or pick another account."
+  },
+  "agentPage.work.brain.v2.empty": {
+    "value": "{{name}} has no AI account to think with yet."
   },
   "agentPage.work.computer.title": {
     "value": "Where does {{name}} work?"
@@ -15330,6 +15351,42 @@
   "agentPage.copied": {
     "value": "@{{handle}} copied."
   },
+  "agentPage.facts.private": {
+    "value": "Private"
+  },
+  "agentPage.facts.created": {
+    "value": "Made"
+  },
+  "agentPage.facts.createdBy": {
+    "value": "{{name}}, {{date}}"
+  },
+  "agentPage.facts.usage": {
+    "value": "Usage in {{month}}"
+  },
+  "agentPage.facts.budget": {
+    "value": "Budget"
+  },
+  "agentPage.facts.budgetUsed": {
+    "value": "{{percent}} used"
+  },
+  "agentPage.facts.last": {
+    "value": "Last activity"
+  },
+  "agentPage.facts.never": {
+    "value": "None yet"
+  },
+  "agentPage.facts.title": {
+    "value": "What it does"
+  },
+  "agentPage.facts.locked": {
+    "value": "{{name}}'s instructions, memory, tools, conversations, routines and files stay with {{owner}}, whoever they ask to edit it and the admins."
+  },
+  "agentPage.facts.lockedNoOwner": {
+    "value": "{{name}}'s instructions, memory, tools, conversations, routines and files stay with whoever edits it and the admins."
+  },
+  "agentPage.facts.ask": {
+    "value": "Ask {{owner}}"
+  },
   "agentPage.overview.approvals": {
     "value": {
       "one": "{{count}} approval request",
@@ -15575,6 +15632,48 @@
   "agentPage.memory.details": {
     "value": "Technical details"
   },
+  "agentPage.memory.learning.title": {
+    "value": "How it learns"
+  },
+  "agentPage.memory.learning.fromYou": {
+    "value": "Learns from your conversations"
+  },
+  "agentPage.memory.learning.fromYouHint": {
+    "value": "What it learns in your DM stays yours. What it learns in a channel, everyone who reads that channel sees. What it learns about you stays yours."
+  },
+  "agentPage.memory.learning.workspaceOff": {
+    "value": "Off for the whole workspace"
+  },
+  "agentPage.memory.learning.forgetAll": {
+    "value": "Forget all"
+  },
+  "agentPage.memory.learning.forgetAllHint": {
+    "value": "Removes what it learned from you on its own. What you asked it to remember stays."
+  },
+  "agentPage.memory.learning.forgetTitle": {
+    "value": "Forget what it learned from you?"
+  },
+  "agentPage.memory.learning.forgetText": {
+    "value": "Everything it learned from you on its own goes, for good. What you asked it to remember stays, and so does what it learned in channels."
+  },
+  "agentPage.memory.learning.forgotten": {
+    "value": "Done. What it learned from you on its own is gone."
+  },
+  "agentPage.memory.learning.workspace": {
+    "value": "Learns in this workspace"
+  },
+  "agentPage.memory.learning.workspaceHint": {
+    "value": "Off, it learns from nobody on its own. Either way, nobody can read anyone else's memories."
+  },
+  "agentPage.memory.learning.onlyYou": {
+    "value": "Only you"
+  },
+  "agentPage.memory.learning.everyoneIn": {
+    "value": "Everyone in #{{channel}}"
+  },
+  "agentPage.memory.learning.everyone": {
+    "value": "Everyone who can see it"
+  },
   "agentPage.memory.skills": {
     "value": "Skills it made"
   },
@@ -15730,7 +15829,10 @@
     "value": "The AI on its computer couldn't answer. Check the computer and ask again."
   },
   "agentPage.activity.errors.empty_reply": {
-    "value": "The model returned nothing."
+    "value": "The AI ended its turn without writing a reply. Try again, or choose another model in the agent's settings."
+  },
+  "agentPage.activity.errors.empty_reply_limit": {
+    "value": "The AI hit its output limit before writing a reply. Try again, or choose another model in the agent's settings."
   },
   "agentPage.activity.errors.model_refused": {
     "value": "The model refused to answer."
@@ -22116,6 +22218,9 @@
   "routines.code.empty_reply": {
     "value": "The model answered nothing"
   },
+  "routines.code.empty_reply_limit": {
+    "value": "The model hit its output limit before answering"
+  },
   "routines.code.model_refused": {
     "value": "The model refused to answer"
   },
@@ -25987,6 +26092,15 @@
   "aiHub.whoThinks": {
     "value": "Who thinks"
   },
+  "aiHub.thinks": {
+    "value": {
+      "one": "{{names}} thinks with it",
+      "other": "{{names}} think with it"
+    }
+  },
+  "aiHub.thinksNone": {
+    "value": "No agent thinks with it"
+  },
   "aiHub.bulk.sub": {
     "value": "Pick the AI, then the agents that take it."
   },
@@ -26005,14 +26119,26 @@
   "aiHub.choice.noModel": {
     "value": "No model matches."
   },
+  "aiHub.choice.empty": {
+    "value": "No account yet."
+  },
+  "aiHub.choice.add": {
+    "value": "Add account"
+  },
+  "aiHub.choice.addLine": {
+    "value": "Claude, ChatGPT, Gemini and more, or an API key"
+  },
+  "aiHub.choice.manage": {
+    "value": "Manage accounts"
+  },
   "aiHub.choice.groups.yours": {
-    "value": "Yours"
+    "value": "Your accounts"
   },
   "aiHub.choice.groups.others": {
     "value": "The team's"
   },
   "aiHub.choice.groups.keys": {
-    "value": "The workspace's"
+    "value": "API keys"
   },
   "aiHub.order.title": {
     "value": "Order of use"
@@ -29831,12 +29957,6 @@
   },
   "run.inProgress": {
     "value": "in progress"
-  },
-  "run.quiet": {
-    "value": "no news for {{minutes}} min"
-  },
-  "run.refresh": {
-    "value": "Refresh"
   },
   "run.stop": {
     "value": "Stop"
@@ -39184,6 +39304,9 @@
   "errors.device.tasksOwnerOnly": {
     "value": "Only the person who connected this computer can change how many tasks it runs at once."
   },
+  "errors.device.tasksCloud": {
+    "value": "The Cloud sizes this computer's room for tasks itself."
+  },
   "errors.device.notHome": {
     "value": "Agents live on the workspace computer and use this one when they name it."
   },
@@ -40233,6 +40356,21 @@
   "devices.maxTasksHint": {
     "value": "How many background tasks agents run here at the same time. The rest wait their turn."
   },
+  "devices.tasksAutoRoom": {
+    "value": "Automatic · {{running}} running · room for about {{more}} more"
+  },
+  "devices.tasksAutoFull": {
+    "value": "Automatic · {{running}} running · full for now"
+  },
+  "devices.tasksAutoHint": {
+    "value": "Agents start background tasks while this computer has memory to spare, keeping 1.5 GB free for your own apps. The rest wait their turn."
+  },
+  "devices.pushHarder": {
+    "value": "Push harder"
+  },
+  "devices.pushHarderHint": {
+    "value": "More tasks at once: only 0.5 GB of memory stays free and a busy processor doesn't hold them. Your own apps may slow down."
+  },
   "devices.belongs": {
     "value": "Belongs to the workspace"
   },
@@ -40386,6 +40524,9 @@
   "devices.status.busy": {
     "value": "Busy {{running}}/{{max}}"
   },
+  "devices.status.busyRunning": {
+    "value": "Busy · {{running}} running"
+  },
   "devices.status.needs": {
     "value": "Needs you"
   },
@@ -40442,6 +40583,15 @@
   },
   "devices.line.tasksUpdate": {
     "value": "Tasks at once here: {{max}}. Update its app to change that from here."
+  },
+  "devices.line.tasksNoMemory": {
+    "value": "No room for another task right now: {{gb, number}} GB of memory free. The next one starts when one ends."
+  },
+  "devices.line.tasksNoCpu": {
+    "value": "No room for another task right now: the processor is nearly full. The next one starts when it calms down."
+  },
+  "devices.line.tasksPushing": {
+    "value": "Pushing harder: {{gb, number}} GB of memory free. Your own apps may slow down."
   },
   "devices.line.offline": {
     "value": "Agents wait for it to come back."
@@ -40713,11 +40863,20 @@
   "devices.who.followsHint": {
     "value": "An iPhone follows the rule of the Mac it's plugged into."
   },
-  "devices.who.serverHelp": {
-    "value": "Each agent runs as its own user on it."
+  "devices.share.title": {
+    "value": "Let the whole workspace use it"
   },
-  "devices.who.computerHelp": {
-    "value": "Agents' commands run as your user on it."
+  "devices.share.off": {
+    "value": "Only you for now"
+  },
+  "devices.share.on": {
+    "value": "Everyone in {{org}}"
+  },
+  "devices.share.hint": {
+    "value": "Everyone's agents in {{org}} can run tasks on it, as your user."
+  },
+  "devices.share.hintServer": {
+    "value": "Everyone's agents in {{org}} can run tasks on it, each as its own user."
   },
   "devices.request.title": {
     "value": "{{name}} wants to join {{org}}"
@@ -40733,9 +40892,6 @@
   },
   "devices.request.denied": {
     "value": "{{name}} won't join."
-  },
-  "devices.request.joined": {
-    "value": "{{name}} joined."
   },
   "devices.empty.title": {
     "value": "No devices yet"
@@ -43908,9 +44064,6 @@
   "settings.noKeys": {
     "value": "With an API key, you pay the provider directly and choose the models."
   },
-  "settings.noKeysTitle": {
-    "value": "Bring your own AI key"
-  },
   "settings.platformAvailable": {
     "value": "This server's Claude key is also available."
   },
@@ -46681,6 +46834,12 @@
   },
   "chat.body.done": {
     "value": "Done."
+  },
+  "chat.body.no_reply": {
+    "value": "The AI ended its turn without writing a reply. What it changed is below. Ask again for its answer."
+  },
+  "chat.body.no_reply_limit": {
+    "value": "The AI hit its output limit before writing a reply. What it changed is below. Ask again for its answer."
   },
   "chat.body.stretch_paused_runs": {
     "value": {

@@ -344,6 +344,7 @@ export function runErrorDetail(error: string | null | undefined): {
     "budget_exceeded",
     "too_many_tool_calls",
     "empty_reply",
+    "empty_reply_limit",
     "model_refused",
     "agent_archived",
     NO_AI,

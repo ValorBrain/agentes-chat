@@ -1010,7 +1010,7 @@ export function createMachineHub(deps: MachineHubDeps) {
         paused: conn.pause !== null,
         pausedUntil: conn.pause?.until ? new Date(conn.pause.until) : null,
         pausedByUserId: conn.pause?.by ?? null,
-        ...(frame.maxTasks ? { size: withTaskLimit(frame.maxTasks) } : {}),
+        ...(frame.maxTasks ? { size: withTaskLimit(frame.maxTasks, frame.room) } : {}),
         updatedAt: new Date(),
       })
       .where(eq(machines.id, machineId))

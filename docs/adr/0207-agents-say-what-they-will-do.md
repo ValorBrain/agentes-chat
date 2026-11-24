@@ -126,8 +126,8 @@ that is exactly the line isn't posted again) and sets `answerOwed` in the transc
   stay, and a reply is never emptied unless it is a whole line again. A stopped run's words, a computer turn cut after
   its tools and a run cut by a restart drop it too, reading the lines from the conversation (`linesSaid`), since a
   computer turn's lines reach the transcript only when the turn ends. `closingSummary` (the reply when the last model
-  call wrote nothing) reads only the words that came after the call, but the work called beside the line is work: a
-  run that did it and wrote nothing after closes with "Done." as any other.
+  call wrote nothing) reads only the words that came after the call. A run that wrote nothing after it is asked for its
+  answer, like any other; no closing line is made up for it.
 - **First in its step.** On the API model, `say_now` runs before the other calls of its step, whatever order the
   model wrote them in, so the line goes out before the work it announces; the results go back in the order of the
   calls. The step line shows no words for the call: they would be the line again.

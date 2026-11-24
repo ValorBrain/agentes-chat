@@ -54,6 +54,13 @@
     "offline": "Je bent offline. Controleer je verbinding en probeer het opnieuw.",
     "unreachable": "agentes.chat is nu niet bereikbaar. Probeer het zo opnieuw."
   },
+  "reconnect": {
+    "device": "Opnieuw verbinden… Geen internet op dit apparaat.",
+    "server": "Opnieuw verbinden… De server is onbereikbaar of start opnieuw op.",
+    "signedOut": "Je bent uitgelogd.",
+    "retry": "Nu opnieuw proberen",
+    "signIn": "Inloggen"
+  },
   "roles": {
     "owner": "Eigenaar",
     "admin": "Beheerder",
@@ -424,7 +431,7 @@
     },
     "manage_agents": {
       "title": "Agents bewerken",
-      "desc": "Instructies, brein, budget en wat elke agent gebruikt, bij de agents met wie de persoon praat. Privé-agents van anderen vallen erbuiten.",
+      "desc": "Instructies, brein, budget en wat elke agent gebruikt, bij de agents met wie de persoon praat. Van privé-agents van anderen alleen de naam, de verantwoordelijke en het gebruik.",
       "short": "agents bewerken",
       "say": "bewerkt de agents waarmee hij of zij praat"
     },
@@ -3023,7 +3030,6 @@
       "mineHelp": "Jouw gesprek met {{name}} denkt met jouw abonnement of een abonnement dat met je gedeeld is, en alleen dat van jou.",
       "connectMine": "Mijn abonnement koppelen",
       "useWorkspace": "Die van de workspace gebruiken",
-      "useMine": "Mijn abonnement gebruiken",
       "mineYours": "jouw abonnement",
       "mineOf": "abonnement van {{owner}}",
       "mineKey": "sleutel van de workspace",
@@ -5973,6 +5979,19 @@
           "missed_other": "{{count}} agents zijn niet gewijzigd."
         },
         "add": {
+          "pickTitle": "Account toevoegen",
+          "pickFoot": "Je logt in op de pagina van de AI zelf.",
+          "have_one": "Je hebt er {{count}}",
+          "have_other": "Je hebt er {{count}}",
+          "others": "Ander abonnement",
+          "key": "API-sleutel",
+          "keyLine": "Betalen per gebruik",
+          "titlePlan": "{{plan}} toevoegen",
+          "againTitle": "Opnieuw inloggen bij {{brand}}",
+          "haveNote": "Je hebt hier al {{accounts}}. Om met een ander account in te loggen, log je eerst uit bij {{brand}} in je browser, of kopieer je de link en open je die in een privévenster.",
+          "againNote": "Log opnieuw in als {{account}}. {{name}} denkt er weer mee zodra je klaar bent.",
+          "footSignIn": "Je typt je wachtwoord op de pagina van {{brand}}.",
+          "footKey": "De sleutel gaat versleuteld rechtstreeks naar {{computer}}.",
           "title": {
             "claude_code": "Claude-account toevoegen",
             "codex": "ChatGPT-account toevoegen",
@@ -6054,34 +6073,24 @@
           "title": "Wie denkt voor {{name}}",
           "only": "Alleen voor {{name}}.",
           "more": "Meer opties",
-          "switch": "Account wisselen",
-          "switchTitle": "Account van {{name}} wisselen",
-          "inUse": "In gebruik",
-          "switchTo": "Overstappen naar {{label}}",
-          "teamTitle": "Account van het team wisselen",
-          "teamAria": "Voor wie het is",
-          "justOne": "Alleen {{name}}",
-          "everyone": "Iedereen op dit account",
-          "target": "Overstappen naar",
-          "switchMany_one": "{{count}} agent overzetten",
-          "switchMany_other": "De {{count}} agents overzetten",
-          "limitTitle": "Het account van {{name}} zit aan de limiet",
           "limitBack": "{{account}} is {{when}} terug",
           "limitSoon": "{{account}} is terug als het abonnement vernieuwt",
           "limitHelp": "Tot die tijd kan {{name}} denken met een ander account dat al gekoppeld is.",
           "fullWait": "Op dit account wacht {{name}} tot het abonnement vernieuwt.",
-          "seeUsage": "Gebruik bekijken",
-          "wait": "Wachten",
           "modelTitle": "Model van {{name}}",
           "moreTitle": "Meer opties voor {{name}}",
           "computer": "Computer",
-          "doneTitle": "Alles geregeld",
-          "doneSub": "Wat bezig was, gaat verder met het nieuwe account.",
           "finish": "Klaar",
           "undo": "Ongedaan maken",
           "undone": "Weer zoals het was.",
           "missed_one": "{{names}} houdt het vorige account.",
-          "missed_other": "{{names}} houden hun vorige accounts."
+          "missed_other": "{{names}} houden hun vorige accounts.",
+          "added": "Account toegevoegd. {{name}} denkt nu met {{account}}.",
+          "alsoUses_one": "{{names}} denkt ook met {{account}}.",
+          "alsoUses_other": "{{names}} denken ook met {{account}}.",
+          "alsoSwitch": "Ook wisselen",
+          "signedOut": "{{account}} is uitgelogd bij {{brand}}. {{name}} antwoordt niet tot je opnieuw inlogt of een ander account kiest.",
+          "empty": "{{name}} heeft nog geen AI-account om mee te denken."
         }
       },
       "computer": {
@@ -6258,6 +6267,20 @@
     },
     "copyHandle": "@{{handle}} kopiëren",
     "copied": "@{{handle}} gekopieerd.",
+    "facts": {
+      "private": "Privé",
+      "created": "Gemaakt",
+      "createdBy": "{{name}}, {{date}}",
+      "usage": "Gebruik in {{month}}",
+      "budget": "Budget",
+      "budgetUsed": "{{percent}} gebruikt",
+      "last": "Laatste activiteit",
+      "never": "Nog geen",
+      "title": "Wat hij doet",
+      "locked": "De instructies, het geheugen, de tools, de gesprekken, de routines en de bestanden van {{name}} blijven bij {{owner}}, wie die persoon vraagt om hem te bewerken en de admins.",
+      "lockedNoOwner": "De instructies, het geheugen, de tools, de gesprekken, de routines en de bestanden van {{name}} blijven bij wie hem mag bewerken en de admins.",
+      "ask": "Vraag het {{owner}}"
+    },
     "overview": {
       "approvals_one": "{{count}} goedkeuringsverzoek",
       "approvals_other": "{{count}} goedkeuringsverzoeken",
@@ -6354,6 +6377,22 @@
       "playbook_female": "Hoe {{name}} werkt",
       "playbookNote": "Werkwijzen die het voor zichzelf bewaart. Ze verschijnen niet in de chat. Wat het van buitenaf oppikte en nooit opnieuw gebruikte, gaat vanzelf naar Gearchiveerd.",
       "details": "Technische details",
+      "learning": {
+        "title": "Hoe het leert",
+        "fromYou": "Leert van je gesprekken",
+        "fromYouHint": "Wat het in je DM leert, blijft van jou. Wat het in een kanaal leert, ziet iedereen die dat kanaal leest. Wat het over jou leert, blijft van jou.",
+        "workspaceOff": "Uit voor de hele workspace",
+        "forgetAll": "Alles vergeten",
+        "forgetAllHint": "Wist wat het zelf van je heeft geleerd. Wat je het vroeg te onthouden, blijft.",
+        "forgetTitle": "Vergeten wat het van je heeft geleerd?",
+        "forgetText": "Alles wat het zelf van je heeft geleerd, verdwijnt voorgoed. Wat je het vroeg te onthouden blijft, net als wat het in kanalen heeft geleerd.",
+        "forgotten": "Klaar. Wat het zelf van je heeft geleerd, is weg.",
+        "workspace": "Leert in deze workspace",
+        "workspaceHint": "Uit, leert het van niemand uit zichzelf. Hoe dan ook kan niemand de herinneringen van een ander lezen.",
+        "onlyYou": "Alleen jij",
+        "everyoneIn": "Iedereen in #{{channel}}",
+        "everyone": "Iedereen die het kan zien"
+      },
       "skills": "Skills die hij maakte",
       "skillUses_one": "{{count}} keer geladen",
       "skillUses_other": "{{count}} keer geladen",
@@ -6410,7 +6449,8 @@
         "stuck": "Gestopt omdat hij vastliep.",
         "brain_interrupted": "De AI stopte voordat hij klaar was.",
         "brain_unavailable": "De AI op zijn computer kon niet antwoorden. Controleer de computer en vraag het opnieuw.",
-        "empty_reply": "Het model gaf niets terug.",
+        "empty_reply": "De AI beëindigde zijn beurt zonder een antwoord te schrijven. Probeer het opnieuw, of kies een ander model in de instellingen van de agent.",
+        "empty_reply_limit": "De AI bereikte zijn uitvoerlimiet voordat hij een antwoord schreef. Probeer het opnieuw, of kies een ander model in de instellingen van de agent.",
         "model_refused": "Het model weigerde te antwoorden.",
         "agent_archived": "De agent is gearchiveerd.",
         "code_session_unavailable": "De worktree van de sessie is niet beschikbaar op de computer.",
@@ -9182,6 +9222,7 @@
       "provider_unavailable": "Het model antwoordde niet",
       "gave_up": "Het model antwoordde na meerdere pogingen niet",
       "empty_reply": "Het model antwoordde niets",
+      "empty_reply_limit": "Het model bereikte zijn uitvoerlimiet voordat het antwoordde",
       "model_refused": "Het model weigerde te antwoorden",
       "runner_outdated": "Het programma op de computer moet worden bijgewerkt",
       "too_many_tool_calls": "Over de stappenlimiet voor één run gegaan",
@@ -10739,6 +10780,9 @@
     "of": "van {{name}}",
     "moreSpeed": "Snelheid en contextvenster",
     "whoThinks": "Wie denkt",
+    "thinks_one": "{{names}} denkt ermee",
+    "thinks_other": "{{names}} denken ermee",
+    "thinksNone": "Geen agent denkt ermee",
     "bulk": {
       "sub": "Kies de AI en daarna de agents die hem nemen."
     },
@@ -10748,10 +10792,14 @@
       "search": "Zoek op naam, AI, abonnement of eigenaar",
       "noMatch": "Geen account gevonden.",
       "noModel": "Geen model gevonden.",
+      "empty": "Nog geen account.",
+      "add": "Account toevoegen",
+      "addLine": "Claude, ChatGPT, Gemini en meer, of een API-sleutel",
+      "manage": "Accounts beheren",
       "groups": {
-        "yours": "Van jou",
+        "yours": "Jouw accounts",
         "others": "Van het team",
-        "keys": "Van de werkruimte"
+        "keys": "API-sleutels"
       }
     },
     "order": {
@@ -12307,8 +12355,6 @@
     "steered": "{{name}} kreeg het tijdens de taak",
     "stillWorking": "{{name}} is nog bezig",
     "inProgress": "bezig",
-    "quiet": "al {{minutes}} min geen nieuws",
-    "refresh": "Vernieuwen",
     "stop": "Stoppen",
     "stopping": "Stoppen…",
     "stopHint": "Taak stoppen · Esc",
@@ -16043,6 +16089,7 @@
       "widenForbidden": "Admins kunnen alleen beperken wie iemands eigen apparaat mag gebruiken.",
       "spillOwnerOnly": "Alleen wie deze computer heeft gekoppeld, kan antwoorden hier laten denken. Uitzetten kan wel.",
       "tasksOwnerOnly": "Alleen wie deze computer heeft gekoppeld, kan wijzigen hoeveel taken hij tegelijk uitvoert.",
+      "tasksCloud": "De Cloud bepaalt zelf hoeveel ruimte deze computer heeft voor taken.",
       "notHome": "Agents wonen op de computer van de workspace en gebruiken deze als ze hem bij naam noemen."
     },
     "machine": {
@@ -16461,6 +16508,11 @@
     "phonesHere": "Telefoons op deze computer",
     "maxTasks": "Taken tegelijk",
     "maxTasksHint": "Hoeveel achtergrondtaken agents hier tegelijk uitvoeren. De rest wacht op zijn beurt.",
+    "tasksAutoRoom": "Automatisch · {{running}} bezig · ruimte voor ongeveer {{more}} meer",
+    "tasksAutoFull": "Automatisch · {{running}} bezig · voorlopig vol",
+    "tasksAutoHint": "Agenten starten achtergrondtaken zolang deze computer geheugen over heeft, en houden 1,5 GB vrij voor je eigen apps. De rest wacht op zijn beurt.",
+    "pushHarder": "Harder pushen",
+    "pushHarderHint": "Meer taken tegelijk: er blijft maar 0,5 GB geheugen vrij en een drukke processor houdt ze niet tegen. Je eigen apps kunnen trager worden.",
     "belongs": "Hoort bij de werkruimte",
     "belongsHint": "Het blijft als de persoon die het koppelde vertrekt, en iedereen kan het gebruiken zolang niemand de eigenaar is.",
     "spillOwn": "Jouw antwoorden kunnen hier denken",
@@ -16515,6 +16567,7 @@
       "inUse": "In gebruik",
       "inUseBy": "In gebruik door {{name}}",
       "busy": "Bezet {{running}}/{{max}}",
+      "busyRunning": "Bezet · {{running}} bezig",
       "needs": "Heeft je nodig",
       "preparing": "Wordt voorbereid",
       "paused": "Gepauzeerd",
@@ -16538,6 +16591,9 @@
       "tasksChange": "Taken tegelijk hier: {{max}}. Wijzig het hieronder.",
       "tasksOwner": "Taken tegelijk hier: {{max}}. Wie hem heeft gekoppeld, kan dat wijzigen.",
       "tasksUpdate": "Taken tegelijk hier: {{max}}. Werk zijn app bij om het hiervandaan te wijzigen.",
+      "tasksNoMemory": "Nu geen ruimte voor nog een taak: {{gb, number}} GB geheugen vrij. De volgende start zodra er een klaar is.",
+      "tasksNoCpu": "Nu geen ruimte voor nog een taak: de processor is bijna vol. De volgende start zodra hij rustiger wordt.",
+      "tasksPushing": "Harder pushen: {{gb, number}} GB geheugen vrij. Je eigen apps kunnen trager worden.",
       "offline": "Agents wachten tot het terug is.",
       "offlineSeen": "Laatst gezien {{time}}. Agents wachten tot het terug is.",
       "offlineWithHost": "{{host}} is offline. Agents wachten tot het terug is.",
@@ -16637,17 +16693,21 @@
       "rolesHint": "Iedereen met de rol kan het gebruiken, ook wie die later krijgt.",
       "computerHint": "Wiens agents hier taken mogen uitvoeren. Beheerders kunnen dit beperken, alleen de eigenaar kan het uitbreiden.",
       "phoneHint": "Een telefoon delen deelt nooit {{host}}.",
-      "followsHint": "Een iPhone volgt de regel van de Mac waarop hij is aangesloten.",
-      "serverHelp": "Elke agent draait er als een eigen gebruiker op.",
-      "computerHelp": "De opdrachten van agents draaien er als jouw gebruiker op."
+      "followsHint": "Een iPhone volgt de regel van de Mac waarop hij is aangesloten."
+    },
+    "share": {
+      "title": "Laat de hele werkruimte hem gebruiken",
+      "off": "Voorlopig alleen jij",
+      "on": "Iedereen in {{org}}",
+      "hint": "De agents van iedereen in {{org}} kunnen er taken op draaien, als jouw gebruiker.",
+      "hintServer": "De agents van iedereen in {{org}} kunnen er taken op draaien, elk als een eigen gebruiker."
     },
     "request": {
       "title": "{{name}} wil lid worden van {{org}}",
       "list": "Vraagt om lid te worden",
       "letJoin": "Toelaten",
       "deny": "Weigeren",
-      "denied": "{{name}} wordt geen lid.",
-      "joined": "{{name}} is lid geworden."
+      "denied": "{{name}} wordt geen lid."
     },
     "empty": {
       "title": "Nog geen apparaten",
@@ -17912,7 +17972,6 @@
     "removeUsedNone_one": "{{agents}} denkt met deze sleutel en heeft niets anders. Zonder hem antwoordt de agent niet meer tot je een andere AI verbindt.",
     "removeUsedNone_other": "{{agents}} denken met deze sleutel en hebben niets anders. Zonder hem antwoorden ze niet meer tot je een andere AI verbindt.",
     "noKeys": "Met een API-sleutel betaal je de aanbieder rechtstreeks en kies je de modellen.",
-    "noKeysTitle": "Gebruik je eigen AI-sleutel",
     "platformAvailable": "De Claude-sleutel van deze server is ook beschikbaar.",
     "usageTitle": "API-uitgaven per soort",
     "usageAgentLine": "{{spent}} van {{budget}}",
@@ -18993,6 +19052,8 @@
       "surfaceUnlinked": "{{surface}} is ontkoppeld omdat de identiteit is veranderd. Koppel het opnieuw in Instellingen als jij het was.",
       "surfaceVoiceDropped": "Ik kon dat spraakbericht niet verstaan. Kun je het opnieuw sturen of typen?",
       "done": "Klaar.",
+      "no_reply": "De AI beëindigde zijn beurt zonder een antwoord te schrijven. Wat hij veranderde staat hieronder. Vraag opnieuw om zijn antwoord.",
+      "no_reply_limit": "De AI bereikte zijn uitvoerlimiet voordat hij een antwoord schreef. Wat hij veranderde staat hieronder. Vraag opnieuw om zijn antwoord.",
       "stretch_paused_runs_one": "{{agents}} stopte even om met je te overleggen voordat het verdergaat",
       "stretch_paused_runs_other": "{{agents}} stopten even om met je te overleggen voordat ze verdergaan",
       "stretch_paused_spend_one": "{{agents}} stopte om met je te overleggen · gebruikte {{percent}}% van het maandbudget",

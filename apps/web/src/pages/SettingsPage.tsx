@@ -1,7 +1,6 @@
 import type { Credential, OrgSettings } from "@agenteschat/client";
 import {
   useAddCredential,
-  useAiAccounts,
   useAuthConfig,
   useComposioUsage,
   useComputerSetup,
@@ -53,7 +52,6 @@ import {
   Dialog,
   DialogBody,
   DialogFooter,
-  EmptyState,
   Field,
   Icon,
   InfoHint,
@@ -116,7 +114,6 @@ import { WorkspaceModeDialog } from "@/components/WorkspaceModeDialog";
 import { ZoneSelect } from "@/components/ZoneSelect";
 import { useCentreCurrent } from "@/hooks/useCentreCurrent";
 import { usePersonalView } from "@/hooks/usePersonalView";
-import { useRightHandLook } from "@/hooks/useRightHandLook";
 import { useTextLimit } from "@/hooks/useTextLimit";
 import { useOpenParam } from "@/lib/open-param";
 import { useToast } from "@/lib/toast";
@@ -304,8 +301,7 @@ function Settings({
             person={person}
             accounts={
               <>
-                <AiAccountsTab />
-                <KeysSection />
+                <AiAccountsTab keys={<KeysGroup />} />
                 <WhoPicksSection />
               </>
             }
@@ -848,7 +844,12 @@ function ProblemReportCard() {
   );
 }
 
-function KeysSection() {
+/**
+ * The workspace's API keys, as the last group of "Contas de IA" (the account picker's "Chaves de API"): each key with
+ * its default, its models (an endpoint's) and ⋯ (rotate, remove its copies, remove); "Adicionar chave" on the group's
+ * line. With no key yet the group isn't there: the first one comes with "Adicionar conta", like a plan.
+ */
+function KeysGroup() {
   const { t, i18n } = useTranslation();
   const { org } = useOrg();
   const allowed = can(org, "manage_credentials");
@@ -867,49 +868,29 @@ function KeysSection() {
     | { type: "copies"; cred: Credential }
     | { type: "models"; cred: Credential }
   >(null);
-  const look = useRightHandLook();
   const hold = usePlanHold();
-  const plans = useAiAccounts(org.id).data?.accounts.length ?? 0;
   if (!allowed) return null;
   const all = (credentials.data ?? []).filter((c) => !c.revokedAt);
   const live = shownKeys(credentials.data ?? []);
-  const noKeys = credentials.isSuccess && live.length === 0;
-  // On plans alone the screen is the accounts: the first key is added from "Conectar uma IA", and this card comes
-  // with it.
-  if (live.length === 0 && plans > 0) return null;
+  if (live.length === 0) return null;
+  const label = t("aiHub.choice.groups.keys");
   return (
-    <Card aria-labelledby="sec-keys">
-      <CardHeader
-        id="sec-keys"
-        icon="key"
-        title={t("settings.keysTitle")}
-        hint={{ name: t("common.about", { label: t("settings.keysTitle") }), text: t("settings.keysSubtitle") }}
-        action={
-          !noKeys &&
-          !hold && (
-            <Button size="sm" icon="plus" onClick={() => setDialog({ type: "add" })}>
-              {t("settings.addKey")}
-            </Button>
-          )
-        }
-      />
+    <section className="aa-keys" aria-label={label}>
+      <div className="aa-group__head">
+        <p className="aa-group__label">
+          <span className="ac-hintline">
+            {label}
+            <InfoHint name={t("common.about", { label })}>{t("settings.keysSubtitle")}</InfoHint>
+          </span>
+        </p>
+        {!hold && (
+          <Button size="sm" variant="ghost" icon="plus" onClick={() => setDialog({ type: "add" })}>
+            {t("settings.addKey")}
+          </Button>
+        )}
+      </div>
       {platform.data && <p className="small muted">{t("settings.platformAvailable")}</p>}
-      {credentials.isLoading && <LoadingList count={2} avatar={false} trailing />}
       {hold && <SettingNote icon="alert">{t("connectAi.key.closed")}</SettingNote>}
-      {noKeys && !hold && (
-        <EmptyState
-          size="panel"
-          agent={look}
-          title={t("settings.noKeysTitle")}
-          actions={
-            <Button variant="primary" icon="plus" onClick={() => setDialog({ type: "add" })}>
-              {t("settings.addKey")}
-            </Button>
-          }
-        >
-          {t("settings.noKeys")}
-        </EmptyState>
-      )}
       {live.length > 0 && (
         <List className="key-list">
           {live.map((c) => {
@@ -1063,7 +1044,7 @@ function KeysSection() {
           </Button>
         </DialogFooter>
       </Dialog>
-    </Card>
+    </section>
   );
 }
 

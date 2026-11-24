@@ -732,7 +732,7 @@ describe("in a run", () => {
     expect(saidNowOf(run)).toHaveLength(1);
   });
 
-  test('after its line, a turn that ends without a word closes with "Done." for the work beside the line', async () => {
+  test('after its line, a turn that ends without a word is asked for its answer and fails if none comes, never "Done."', async () => {
     const first = workThenLine("build", LINE, ["Primeiro compilo, depois testo."]);
     f = await setup({
       sayNow: true,
@@ -743,13 +743,13 @@ describe("in a run", () => {
     const events = f.listen(f.general.id);
     // Brought in by the router: it could have stayed quiet, until it told them it was on it.
     const run = await routed("alguém roda o build?");
-    expect(await runById(run.id)).toMatchObject({ status: "done" });
-    // The build it called beside its line is work: no nudge, the run closes as any run that worked and wrote nothing.
+    // Its line promised work: the turn that ends without a word is asked for its answer, and with none the run fails
+    // saying so. No closing line is made up for it, nor taken from the words beside its line.
+    expect(await runById(run.id)).toMatchObject({ status: "failed", error: "empty_reply" });
     const nudged = f.provider.calls.map((c) => JSON.stringify(c.request.messages).includes(ANSWER_NUDGE));
-    expect(nudged).toEqual([false, false]);
-    // No closing line taken from the words beside its line; the build it called beside it is work, so the run closes
-    // with "Done." as any run that worked and wrote nothing after.
-    expect(await agentSaid(f.general.id)).toEqual([LINE, "Done."]);
+    expect(nudged[0]).toBe(false);
+    expect(nudged.slice(1)).toContain(true);
+    expect(await agentSaid(f.general.id)).toEqual([LINE]);
     const steps = await f.db.select().from(schema.agentRunSteps).where(eq(schema.agentRunSteps.runId, run.id));
     expect(steps.filter((s) => s.data.passed !== undefined)).toEqual([]);
     expect(events.some((e) => e.type === "agent.passed")).toBe(false);
