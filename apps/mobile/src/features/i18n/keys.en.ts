@@ -1646,6 +1646,18 @@ export const featureKeysEn = {
       pr: "Branch sent, no pull request yet",
       mergeLocal: "Ready to merge into {{base}}",
     },
+    /** A session's terminal (the web's words are `codeTerminal.*`): the row of keys a phone keyboard lacks. */
+    terminal: {
+      keys: "Terminal keys",
+      /** The row's first button: shows or hides the phone's keyboard. */
+      keyboard: "Keyboard",
+      /** What VoiceOver says for a paste into the shell. */
+      pasteHint: "Paste what you copied into the terminal",
+      key: {
+        CtrlC: "Control-C, interrupt",
+        CtrlD: "Control-D, end of input",
+      },
+    },
   },
   // The task manager (ADR 0128; the rest of its words are shared, `taskManager.*`).
   taskManager: {

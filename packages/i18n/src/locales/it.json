@@ -2567,10 +2567,50 @@
       "gone": "Questo link per annullare non funziona più",
       "sender": "Quel mittente"
     },
+    "page": {
+      "opening": "Apertura della pagina",
+      "gone": "Questo link non funziona più",
+      "lead": "Inserisci il tuo PIN per approvarlo.",
+      "leadFirst": "Scegli un PIN di 6 cifre per approvarlo. Conferma azioni come questa da {{surface}}.",
+      "choosePin": "Scegli un PIN",
+      "repeatPin": "Inseriscilo di nuovo",
+      "pin": "Il tuo PIN",
+      "mismatch": "I due PIN non coincidono. Inserisci di nuovo il secondo.",
+      "approve": "Approva",
+      "refuse": "Rifiuta",
+      "forgot": "Hai dimenticato il PIN?",
+      "emailed": "Ti abbiamo inviato un link via email. Scegli lì il tuo PIN, poi torna su questa pagina.",
+      "notYours": "{{who}} lo decide nell'app.",
+      "notYoursSomeone": "Lo decide nell'app chi può approvarlo.",
+      "approved": "Approvato",
+      "refused": "Rifiutato",
+      "expired": "Questa richiesta è scaduta",
+      "back": "Torna su {{surface}}. Il tuo assistente continua lì.",
+      "setFirst": "Prima scegli il tuo PIN",
+      "setFirstLead": "Per approvare da {{surface}} serve un PIN, e un link dalla chat non può sceglierlo. Sceglilo nell'app, con l'accesso fatto, poi torna su questa pagina.",
+      "setFirstLeadEmail": "Per approvare da {{surface}} serve un PIN, e un link dalla chat non può sceglierlo. Sceglilo nell'app, con l'accesso fatto, o con un link che ti inviamo via email. Poi torna su questa pagina.",
+      "openApp": "Sceglilo nell'app",
+      "emailMe": "Inviami un link via email"
+    },
+    "pinReset": {
+      "title": "Scegli il tuo PIN",
+      "lead": "Sei cifre. Lo digiterai per approvare le azioni che chiedi dalla tua app di chat.",
+      "button": "Salva il mio PIN",
+      "done": "PIN salvato",
+      "doneLead": "Torna alla pagina arrivata da {{surface}} e approva con il PIN.",
+      "gone": "Questo link non funziona più"
+    },
     "via": "tramite {{surface}}",
     "viaTip": "Inviato da {{person}} su {{surface}}",
     "forwarded": "inoltrato tramite {{surface}}",
-    "forwardedTip": "{{person}} ha inoltrato questo da {{surface}}. Le parole sono di qualcun altro."
+    "forwardedTip": "{{person}} ha inoltrato questo da {{surface}}. Le parole sono di qualcun altro.",
+    "pin": {
+      "set": "Imposta PIN",
+      "change": "Cambia PIN",
+      "title": "Il tuo PIN di {{surface}}",
+      "text": "Sei cifre che digiti per approvare le azioni che chiedi da {{surface}}. Non viene mai inviato nella chat.",
+      "save": "Salva PIN"
+    }
   },
   "team": {
     "title": "Team",
@@ -4436,6 +4476,8 @@
     "aloneLine": "Entra nella conversazione da solo",
     "aloneLine_female": "Entra nella conversazione da sola",
     "mentionLine": "Aspetta che qualcuno scriva @{{handle}}",
+    "lead": "Responsabile del canale",
+    "leadHelp": "Riceve ciò che viene detto a tutto il team e fa avanzare il lavoro tra gli agenti",
     "readOnly": "Solo chi ha creato il canale e gli admin cambiano i membri.",
     "people": "Persone",
     "agents": "Agenti"
@@ -6710,7 +6752,7 @@
         "cli_sandbox": "Il programma {{brain}} non riesce ad avviare la sua sandbox su questo computer. Scegli un'altra IA nelle impostazioni dell'agente.",
         "cli_system": "Il programma {{brain}} non funziona ancora sul sistema di questo computer. Scegli un'altra IA nelle impostazioni dell'agente.",
         "account_missing": "L'account scelto per questo agente non è più sul suo computer. Scegline un altro nelle impostazioni dell'agente o aggiungilo di nuovo.",
-        "windows_sandbox": "Questo computer Windows non riesce a isolare i comandi di Codex: serve Windows 11 24H2 o più recente. Aggiorna Windows, scegli Claude o una chiave API per questo agente, oppure spostalo su un computer Linux.",
+        "windows_sandbox": "Codex non è riuscito ad avviare alcun isolamento per i suoi comandi su questo computer Windows. Scegli Claude o una chiave API per questo agente, oppure aggiorna il computer a Windows 11 24H2 o successivo, con gli ultimi aggiornamenti.",
         "our_error": "Qualcosa è andato storto da parte nostra e l'attività si è fermata. Richiedilo tra poco.",
         "unknown": "Non riuscita."
       }
@@ -8384,6 +8426,38 @@
     "vault_write": {
       "label": "Modificare i contatti del Vault",
       "description": "Salvare e aggiornare i contatti nel Vault, cambiare il nome utente di un login salvato o una descrizione, creare password per gli account che apre, ed eliminare ciò che ha salvato."
+    },
+    "gitlab_git_read": {
+      "label": "Clonare repository (git)",
+      "description": "Clonare e aggiornare repository sul computer dell'agente con git, tramite il nostro proxy. Il token di GitLab non entra mai nella macchina."
+    },
+    "gitlab_git_write": {
+      "label": "Fare push di branch (git push)",
+      "description": "Fare push di commit sui branch agentes/{agent}/…: mai sul branch predefinito, niente force push, niente tag. Eliminare branch e fare push sul branch di qualcun altro chiedono prima l'approvazione."
+    },
+    "gitlab_pr_write": {
+      "label": "Aprire merge request",
+      "description": "Aprire merge request e commentarle."
+    },
+    "bitbucket_git_read": {
+      "label": "Clonare repository (git)",
+      "description": "Clonare e aggiornare repository sul computer dell'agente con git, tramite il nostro proxy. Il token di Bitbucket non entra mai nella macchina."
+    },
+    "bitbucket_git_write": {
+      "label": "Fare push di branch (git push)",
+      "description": "Fare push di commit sui branch agentes/{agent}/…: mai sul branch predefinito, niente force push, niente tag. Eliminare branch e fare push sul branch di qualcun altro chiedono prima l'approvazione."
+    },
+    "bitbucket_pr_write": {
+      "label": "Aprire pull request",
+      "description": "Aprire pull request e commentarle."
+    },
+    "git_git_read": {
+      "label": "Clonare repository (git)",
+      "description": "Clonare e aggiornare repository sul computer dell'agente con git, tramite il nostro proxy. Il token di Git non entra mai nella macchina."
+    },
+    "git_git_write": {
+      "label": "Fare push di branch (git push)",
+      "description": "Fare push di commit sui branch agentes/{agent}/…: mai sul branch predefinito, niente force push, niente tag. Eliminare branch e fare push sul branch di qualcun altro chiedono prima l'approvazione."
     },
     "github_git_read": {
       "label": "Clonare repository (git)",
@@ -11825,10 +11899,10 @@
       "agent": "Agente",
       "repo": "Dove lavorare",
       "repoPlaceholder": "Repository o progetto",
-      "repoSearch": "Cerca, o scrivi owner/name o un nome nuovo",
+      "repoSearch": "Cerca, oppure scrivi owner/name, l’indirizzo del repository o un nome nuovo",
       "newLocal": "Nuovo progetto sul computer: {{name}}",
       "useRepo": "Usa {{repo}}",
-      "repoNote": "Un nome senza owner crea un progetto sul computer dell'agente, fuori da GitHub.",
+      "repoNote": "Un nome senza owner crea un progetto solo sul computer dell’agente, senza repository remoto.",
       "hint": "@ chiama qualcuno nella sessione",
       "start": "Avvia"
     },
@@ -11842,7 +11916,7 @@
       "closeHint": "Esce dall'elenco: il worktree se ne va, il branch resta",
       "failed": "Non è stato possibile preparare il worktree.",
       "retry": "Riprova",
-      "githubAccess": "Questo spazio di lavoro non ha accesso GitHub a questo repository. Collega GitHub in Impostazioni › Connettori, o avvia una sessione su un progetto del computer (basta un nome)."
+      "githubAccess": "Questo workspace non ha accesso a questo repository. Collega il servizio dove si trova (GitHub, GitLab o Bitbucket) in Impostazioni › Connettori, oppure avvia una sessione su un progetto del computer (solo un nome)."
     },
     "panel": {
       "label": "Pannello della sessione",
@@ -12908,8 +12982,10 @@
       "home_only": "{{program}} è installato solo per root su {{computer}}, dove gli agenti non arrivano.",
       "not_reported": "{{computer}} sta ancora controllando quali programmi ha. Questo cambia da solo quando ha finito.",
       "system": "{{program}} non funziona ancora sul sistema di {{computer}}.",
+      "windows_sandbox": "Il Windows di {{computer}} non riesce a isolare i comandi di {{program}}. Scegli invece Claude o una chiave API, oppure aggiorna quel computer a Windows 11 24H2 o successivo, con gli ultimi aggiornamenti.",
       "no_computerCloud": "Pronto appena lo è {{computer}}."
     },
+    "sandboxPartial": "Su questo Windows i comandi di Codex scrivono solo nelle cartelle degli agenti, ma internet è bloccato solo in parte per loro. Windows 11 24H2 o successivo, con gli ultimi aggiornamenti, lo blocca del tutto.",
     "notAvailableNow": "Scelto, ma non disponibile in questo momento.",
     "offline": "{{computer}} è offline in questo momento.",
     "modelLabel": "Modello",
@@ -13888,6 +13964,7 @@
       "teamLocked": "Solo chi gestisce i connettori aggiunge quelli del team.",
       "mailLocked": "Una casella di posta è sempre di chi la collega.",
       "done": "I tuoi agenti lo usano solo quando lo chiedi tu.",
+      "githubDone": "Nelle sessioni di codice, i commit, i push e le pull request di ciò che chiedi escono a tuo nome.",
       "worksWhenAsked": "Funziona solo quando lo chiedi tu.",
       "remove": "Rimuovi",
       "removeName": "Rimuovi {{name}}",
@@ -14656,6 +14733,7 @@
     },
     "label": {
       "git_clone": "Clona repository",
+      "list_repositories": "Elenca i repository",
       "create_repository": "Crea repository",
       "delete_repository": "Elimina repository",
       "fork_repository": "Fai il fork di un repository",
@@ -15589,6 +15667,19 @@
       "adjust": "Regola",
       "ok": "Fatto"
     },
+    "git": {
+      "token": "Token di accesso",
+      "address": "Indirizzo",
+      "addressHelp": {
+        "gitlab": "Solo per un GitLab che la tua azienda ospita da sé. Lasciato vuoto, è gitlab.com.",
+        "git": "Dove si trova il server git, ad esempio https://git.company.com."
+      },
+      "tokenHelp": {
+        "gitlab": "Un token di accesso GitLab (personale, di gruppo o di progetto) con gli ambiti api e write_repository. Resta sul server: i computer degli agenti non lo ricevono mai.",
+        "bitbucket": "Un token di accesso del workspace o del repository, con scrittura su repository e pull request. Con il tuo token API, scrivi la tua email Atlassian, due punti e il token: you@company.com:TOKEN.",
+        "git": "Il token che il server accetta come password di git. Se chiede un nome utente, scrivi username:token."
+      }
+    },
     "telegram": {
       "token": "Token del bot",
       "steps": "In Telegram apri @BotFather, invia /newbot, scegli un nome e un username che finisca con “bot”, poi incolla qui il token che ti dà. Per leggere un gruppo aggiungi il bot. Per pubblicare in un canale rendilo admin."
@@ -16240,7 +16331,15 @@
       "linkGone": "Questo collegamento non è più in attesa: è scaduto dopo 10 minuti o è stato annullato. Crea un nuovo codice per ricominciare.",
       "taken": "Questo mittente è collegato a un altro account agentes.chat. Scollegalo lì, poi invia un nuovo codice.",
       "undoGone": "Questo link per annullare è già stato usato o è scaduto. Scollega invece dalle impostazioni delle notifiche.",
-      "codeGone": "Questo codice è sbagliato, già usato o scaduto dopo 10 minuti. Crea un nuovo codice e invialo di nuovo."
+      "codeGone": "Questo codice è sbagliato, già usato o scaduto dopo 10 minuti. Crea un nuovo codice e invialo di nuovo.",
+      "pageGone": "Questo link è scaduto. Chiedine uno nuovo al tuo assistente nella chat.",
+      "pageElsewhere": "Questo link è stato aperto su un altro dispositivo. Chiedine uno nuovo al tuo assistente nella chat.",
+      "pinWrong": "PIN errato. Tentativi rimasti: {{left}}.",
+      "pinLocked": "Troppi PIN sbagliati. Riprova più tardi o scegli un nuovo PIN nell'app.",
+      "pinShape": "Il tuo PIN ha 6 cifre.",
+      "pinResetGone": "Questo link è già stato usato o è scaduto. Chiedine uno nuovo con “Hai dimenticato il PIN?”.",
+      "pinUnset": "Prima scegli il tuo PIN. Sceglilo nell'app, con l'accesso fatto.",
+      "emailUnverified": "Il tuo indirizzo email non è ancora verificato. Scegli il PIN nell'app."
     },
     "wallpaper": {
       "notYours": "Quella foto non è tua.",
@@ -16287,6 +16386,8 @@
       "deleteName": "Scrivi il nome del canale per eliminarlo.",
       "generalKept": "#general non si può eliminare.",
       "generalStays": "Tutti restano in #general.",
+      "leadChannelOnly": "Solo i canali hanno un agente responsabile.",
+      "leadNotMember": "L’agente responsabile deve essere nel canale.",
       "mcpUnreachable": "Impossibile collegarsi al server MCP. Controlla il suo indirizzo e riprova.",
       "notApproved": "Questo servizio non ha ancora approvato agentes.chat.",
       "alreadyInvited": "Questa persona ha già un invito.",
@@ -16561,6 +16662,7 @@
       "tooLarge": "Questo file ha raggiunto il limite di dimensione. Prima rimuovi qualcosa.",
       "assetTooLarge": "L'immagine supera {{max}} MB, il limite per immagine.",
       "assetType": "In questo file vanno solo immagini: PNG, JPEG, WebP o GIF.",
+      "fontInvalid": "Questo font non si può usare: il file non è un font che l'app riesce a leggere. Prova con un file .ttf, .otf o .woff.",
       "liveOnly": "Questo file si modifica direttamente dov'è, quindi non può essere sostituito per intero."
     },
     "office": {
@@ -18411,7 +18513,7 @@
     "telemetry": {
       "title": "Statistiche di utilizzo",
       "label": "Invia statistiche di utilizzo anonime ad agentes.chat",
-      "help": "Conteggi come persone, agenti, dimensioni delle macchine, token IA usati e quanti dati inviano e ricevono i browser degli agenti. Mai messaggi, file, nomi o siti.",
+      "help": "Conteggi come persone, agenti, dimensioni delle macchine, token IA usati, quanti dati inviano e ricevono i browser degli agenti e quanto velocemente si aprono e rispondono le app. Mai messaggi, file, nomi o siti.",
       "envOff": "Disattivate nelle impostazioni di questo server (TELEMETRY=off).",
       "envOffDesktop": "Disattivate nell'app agentes.chat sul computer di questo server (Preferenze › Server).",
       "envOffHere": "Disattivate nell'app agentes.chat di questo computer.",
@@ -19255,6 +19357,7 @@
         "runningCommandAny": "Ha eseguito un comando",
         "usingScreen": "Ha usato lo schermo",
         "cloningRepo": "Ha clonato un repository",
+        "listingRepos": "Ha elencato i repository",
         "openingPullRequest": "Ha aperto una pull request",
         "handingOff": "Ha consegnato un report",
         "recordingFindings": "Ha annotato i risultati",
@@ -19376,6 +19479,7 @@
       "runningCommandAny": "eseguendo un comando",
       "usingScreen": "usando lo schermo",
       "cloningRepo": "clonando un repository",
+      "listingRepos": "elenca i repository",
       "openingPullRequest": "aprendo una pull request",
       "handingOff": "consegnando un report",
       "recordingFindings": "annotando i risultati",

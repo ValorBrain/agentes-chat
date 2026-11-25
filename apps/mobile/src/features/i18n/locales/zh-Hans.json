@@ -1422,6 +1422,15 @@
     "next": {
       "pr": "分支已推送，还没有拉取请求",
       "mergeLocal": "可以合并到 {{base}} 了"
+    },
+    "terminal": {
+      "keys": "终端按键",
+      "keyboard": "键盘",
+      "pasteHint": "将复制的内容粘贴到终端",
+      "key": {
+        "CtrlC": "Control-C，中断",
+        "CtrlD": "Control-D，输入结束"
+      }
     }
   },
   "taskManager": {

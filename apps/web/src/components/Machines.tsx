@@ -17,6 +17,7 @@ import {
   allowedFolders,
   allowsInApp,
   canReduceAccess,
+  codexSandboxNote,
   computerKind,
   computerState,
   folderName,
@@ -602,6 +603,9 @@ function ToolsCard({ machine: m, onReduce }: { machine: Machine; onReduce: (r: R
         {MACHINE_TOOLS.map((tool) => {
           const on = isOn(tool);
           const name = t(`machines.access.tool.${tool}`);
+          const about = t(`machines.access.toolText.${tool}`);
+          // Codex on Windows: what holds its commands there, when that is less than MXC.
+          const note = tool === "codex" ? codexSandboxNote(t, m) : null;
           // Commands, on, has a line under its name: the name rises to its tile's top and its state stays on the
           // name's line. A name alone centres on the tile, its state with it.
           const warn = tool === "commands" && on;
@@ -619,7 +623,9 @@ function ToolsCard({ machine: m, onReduce }: { machine: Machine; onReduce: (r: R
               <span className="ac-mediarow__head">
                 <span className="ac-hintline">
                   <span className="machine-folder__name">{name}</span>
-                  <InfoHint name={t("common.about", { label: name })}>{t(`machines.access.toolText.${tool}`)}</InfoHint>
+                  <InfoHint name={t("common.about", { label: name })}>
+                    {note ? t("common.joinSentences", { a: about, b: note }) : about}
+                  </InfoHint>
                 </span>
               </span>
               {warn && <span className="ac-mediarow__body small muted">{t("machines.access.commandsWarn")}</span>}

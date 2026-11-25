@@ -42,6 +42,7 @@ import { UUID } from "./authority";
 import { TtlCache } from "./cache";
 import { type MachinePhoneRow, publishDevicesChanged, syncMachinePhones } from "./devices";
 import { cutText } from "./format";
+import { codeCommitAuthor } from "./git/person-account";
 import { agentCoAuthorLine } from "./git/signature";
 import {
   applyAccessDecided,
@@ -817,14 +818,16 @@ export function createMachineHub(deps: MachineHubDeps) {
         // Protocol 12: whether it can run the agent browser (ADR 0040), kept with what it found; protocol 18:
         // the same for the agents' desktops and the terminal, and whether each agent is its own OS user (ADR 0058);
         // protocol 21: whether agents can use their desktops (ADR 0062); protocol 50: which Claude sign-ins for all
-        // agents it can make (an older runner says nothing: `claudeLoginMethodsOf` reads that).
+        // agents it can make (an older runner says nothing: `claudeLoginMethodsOf` reads that); protocol 80: a Windows
+        // computer's build.
         ...(frame.executors ||
         frame.browser ||
         frame.desktop ||
         frame.terminal ||
         frame.desktopUse ||
         frame.claudeLoginMethods ||
-        frame.toolchains
+        frame.toolchains ||
+        frame.windowsBuild
           ? {
               executors: {
                 // A runner that hasn't looked yet leaves the CLIs out: the last ones stored stand.
@@ -836,6 +839,7 @@ export function createMachineHub(deps: MachineHubDeps) {
                 ...(frame.terminal ? { terminal: frame.terminal } : {}),
                 ...(frame.desktopUse ? { desktopUse: frame.desktopUse } : {}),
                 ...(system ? { mode: "system" as const } : {}),
+                ...(frame.windowsBuild ? { windowsBuild: frame.windowsBuild } : {}),
                 ...(frame.claudeLoginMethods ? { claudeLoginMethods: frame.claudeLoginMethods } : {}),
                 ...(loginBlocked ? { claudeLoginBlocked: loginBlocked } : {}),
                 ...(frame.authEgressGroup ? { authEgressGroup: true as const } : {}),
@@ -1051,8 +1055,21 @@ export function createMachineHub(deps: MachineHubDeps) {
     if (!agent) return request;
     const runs = request.op === "exec" || request.op === "brain.turn" || request.op === "task.start";
     const line = runs ? await agentCoAuthorLine(db, orgId, agent).catch(() => null) : null;
-    if (scope.name && !line) return request;
-    return { ...request, agent: { ...scope, name: scope.name || agent.name, ...(line ? { coAuthors: [line] } : {}) } };
+    // A code session's turn is authored as the person who asked, by the GitHub account they connected as their own
+    // (ADR 0215 §13); its commands carry theirs already (`withMachineSandbox`).
+    const author =
+      scope.author ??
+      (request.op === "brain.turn" ? await codeCommitAuthor(db, orgId, request.runId).catch(() => null) : null);
+    if (scope.name && !line && !author) return request;
+    return {
+      ...request,
+      agent: {
+        ...scope,
+        name: scope.name || agent.name,
+        ...(line ? { coAuthors: [line] } : {}),
+        ...(author ? { author } : {}),
+      },
+    };
   }
 
   /** Bridge calls of work already on the machine stop with its workspace (`standing.ts`). */

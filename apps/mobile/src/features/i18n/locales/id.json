@@ -1422,6 +1422,15 @@
     "next": {
       "pr": "Branch sudah dikirim, belum ada pull request",
       "mergeLocal": "Siap di-merge ke {{base}}"
+    },
+    "terminal": {
+      "keys": "Tombol terminal",
+      "keyboard": "Papan ketik",
+      "pasteHint": "Tempel yang Anda salin ke terminal",
+      "key": {
+        "CtrlC": "Control-C, hentikan",
+        "CtrlD": "Control-D, akhir input"
+      }
     }
   },
   "taskManager": {

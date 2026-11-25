@@ -419,6 +419,9 @@ const PLAIN_LINE = new Set([
   "message.not_comment",
   // Only an agent writes an SVG picture (ADR 0196 §8): the refusal goes back to its tool call, never to a person.
   "live.svg_invalid",
+  // Only an agent writes the markup `add_html` lays out (ADR 0220 §4): the refusal goes back to its tool call.
+  "live.html_invalid",
+  "live.html_too_large",
   // Only the outside chat surface's service meets these, on its own bridge routes (ADR 0187).
   "surface.busy",
   "surface.claim_limit",

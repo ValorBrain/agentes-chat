@@ -1686,6 +1686,15 @@
     "next": {
       "pr": "Gałąź wypchnięta, jeszcze bez pull requesta",
       "mergeLocal": "Gotowa do scalenia z {{base}}"
+    },
+    "terminal": {
+      "keys": "Klawisze terminala",
+      "keyboard": "Klawiatura",
+      "pasteHint": "Wklej do terminala to, co skopiowano",
+      "key": {
+        "CtrlC": "Control-C, przerwij",
+        "CtrlD": "Control-D, koniec wejścia"
+      }
     }
   },
   "taskManager": {

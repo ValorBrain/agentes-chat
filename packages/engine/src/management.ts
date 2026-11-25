@@ -552,6 +552,20 @@ export async function setAgentChannels(
           ),
         ),
       );
+      // Out of a channel, it is no longer responsible for it.
+      await tx
+        .update(channels)
+        .set({ leadAgentId: null })
+        .where(
+          and(
+            eq(channels.orgId, orgId),
+            eq(channels.leadAgentId, agentId),
+            inArray(
+              channels.id,
+              removing.map((c) => c.id),
+            ),
+          ),
+        );
     }
     for (const c of adding) {
       await tx
@@ -567,6 +581,8 @@ export async function setAgentChannels(
     }
   });
   caches.channelMembers.deletePrefix(`${orgId}:`);
+  // The rows of the channels it left: their responsible agent may have gone with it.
+  for (const c of removing) caches.channels.delete(`${orgId}:${c.id}`);
   caches.scopes.deletePrefix(`${orgId}:${agentId}:visible`);
   // Each channel's members column follows, as when it is added or taken out from the channel itself.
   const member = (autoReply?: boolean) => ({
@@ -611,6 +627,8 @@ export async function updateChannel(
     visibility?: "public" | "private";
     audienceRoleIds?: string[];
     replyInThreads?: boolean;
+    /** The agent responsible for the channel, one of its member agents; null: none. */
+    leadAgentId?: string | null;
   },
   options: { pubsub?: PubSub } = {},
 ) {
@@ -631,6 +649,8 @@ export async function updateChannel(
   if (channel.kind === "dm") throw new ValidationError("A direct conversation keeps its participants");
   if (input.replyInThreads !== undefined && channel.kind !== "channel")
     throw new ValidationError("Only a channel can reply in threads", "channel.reply_in_threads");
+  if (input.leadAgentId !== undefined && channel.kind !== "channel")
+    throw new ValidationError("Only channels have a responsible agent", "channel.lead_channel_only");
   const accessChanges = input.visibility !== undefined || input.audienceRoleIds !== undefined;
   const visibility = input.visibility ?? channel.visibility;
   const asked =
@@ -655,12 +675,32 @@ export async function updateChannel(
         dropped = audienceRoleIds.length > 0 ? before.filter((id) => !audienceRoleIds.includes(id)) : [];
         access = { visibility, audienceRoleIds };
       }
+      if (input.leadAgentId) {
+        // Its member row FOR SHARE (ADR 0095): taking the agent out of the channel either went first and the row is
+        // gone here, or waits for this save and then clears the lead it wrote.
+        const [member] = await tx
+          .select({ id: channelMembers.id })
+          .from(channelMembers)
+          .innerJoin(agents, eq(agents.id, channelMembers.agentId))
+          .where(
+            and(
+              eq(channelMembers.orgId, orgId),
+              eq(channelMembers.channelId, channelId),
+              eq(channelMembers.agentId, input.leadAgentId),
+              isNull(agents.archivedAt),
+            ),
+          )
+          .for("share", { of: channelMembers });
+        if (!member)
+          throw new ValidationError("The responsible agent must be in the channel", "channel.lead_not_member");
+      }
       const [row] = await tx
         .update(channels)
         .set({
           ...(name !== undefined ? { name } : {}),
           ...(input.topic !== undefined ? { topic: input.topic } : {}),
           ...(input.replyInThreads !== undefined ? { replyInThreads: input.replyInThreads } : {}),
+          ...(input.leadAgentId !== undefined ? { leadAgentId: input.leadAgentId } : {}),
           ...access,
         })
         .where(eq(channels.id, channelId))

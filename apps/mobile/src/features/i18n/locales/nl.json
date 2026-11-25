@@ -1510,6 +1510,15 @@
     "next": {
       "pr": "Branch gepusht, nog geen pull request",
       "mergeLocal": "Klaar om in {{base}} te mergen"
+    },
+    "terminal": {
+      "keys": "Terminaltoetsen",
+      "keyboard": "Toetsenbord",
+      "pasteHint": "Plak wat je hebt gekopieerd in de terminal",
+      "key": {
+        "CtrlC": "Control-C, onderbreken",
+        "CtrlD": "Control-D, einde van invoer"
+      }
     }
   },
   "taskManager": {

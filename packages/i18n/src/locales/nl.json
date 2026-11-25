@@ -2482,10 +2482,50 @@
       "gone": "Deze link om ongedaan te maken werkt niet meer",
       "sender": "Die afzender"
     },
+    "page": {
+      "opening": "Pagina openen",
+      "gone": "Deze link werkt niet meer",
+      "lead": "Typ je pincode om het goed te keuren.",
+      "leadFirst": "Kies een pincode van 6 cijfers om het goed te keuren. Daarmee bevestig je acties zoals deze via {{surface}}.",
+      "choosePin": "Kies een pincode",
+      "repeatPin": "Typ hem nog eens",
+      "pin": "Je pincode",
+      "mismatch": "De twee pincodes komen niet overeen. Typ de tweede nog eens.",
+      "approve": "Goedkeuren",
+      "refuse": "Weigeren",
+      "forgot": "Pincode vergeten?",
+      "emailed": "We hebben je een link gemaild. Kies daar je pincode en kom dan terug naar deze pagina.",
+      "notYours": "{{who}} beslist hierover in de app.",
+      "notYoursSomeone": "Iemand die het mag goedkeuren beslist hierover in de app.",
+      "approved": "Goedgekeurd",
+      "refused": "Geweigerd",
+      "expired": "Dit verzoek is verlopen",
+      "back": "Ga terug naar {{surface}}. Je assistent gaat daar verder.",
+      "setFirst": "Kies eerst je pincode",
+      "setFirstLead": "Goedkeuren via {{surface}} vraagt een pincode, en een link uit de chat kan die niet kiezen. Kies hem in de app terwijl je ingelogd bent en kom dan terug naar deze pagina.",
+      "setFirstLeadEmail": "Goedkeuren via {{surface}} vraagt een pincode, en een link uit de chat kan die niet kiezen. Kies hem in de app terwijl je ingelogd bent, of via een link die we je mailen. Kom dan terug naar deze pagina.",
+      "openApp": "Kiezen in de app",
+      "emailMe": "Mail me een link"
+    },
+    "pinReset": {
+      "title": "Kies je pincode",
+      "lead": "Zes cijfers. Je typt hem om acties goed te keuren die je via je chat-app vraagt.",
+      "button": "Mijn pincode opslaan",
+      "done": "Pincode opgeslagen",
+      "doneLead": "Ga terug naar de pagina uit {{surface}} en keur goed met je pincode.",
+      "gone": "Deze link werkt niet meer"
+    },
     "via": "via {{surface}}",
     "viaTip": "Verstuurd door {{person}} via {{surface}}",
     "forwarded": "doorgestuurd via {{surface}}",
-    "forwardedTip": "{{person}} heeft dit doorgestuurd vanuit {{surface}}. Het zijn de woorden van iemand anders."
+    "forwardedTip": "{{person}} heeft dit doorgestuurd vanuit {{surface}}. Het zijn de woorden van iemand anders.",
+    "pin": {
+      "set": "Pincode instellen",
+      "change": "Pincode wijzigen",
+      "title": "Je {{surface}}-pincode",
+      "text": "Zes cijfers die je typt om acties goed te keuren die je via {{surface}} vraagt. Hij wordt nooit in de chat verstuurd.",
+      "save": "Pincode opslaan"
+    }
   },
   "team": {
     "title": "Team",
@@ -4280,6 +4320,8 @@
     "aloneLine": "Doet uit zichzelf mee aan het gesprek",
     "aloneLine_female": "Doet uit zichzelf mee aan het gesprek",
     "mentionLine": "Wacht tot iemand @{{handle}} schrijft",
+    "lead": "Verantwoordelijk voor het kanaal",
+    "leadHelp": "Krijgt wat tegen het hele team wordt gezegd en houdt het werk tussen de agents gaande",
     "readOnly": "Alleen de maker van het kanaal en beheerders wijzigen de leden.",
     "people": "Mensen",
     "agents": "Agents"
@@ -6488,7 +6530,7 @@
         "cli_sandbox": "Het programma {{brain}} kan zijn sandbox niet starten op deze computer. Kies een andere AI in de instellingen van de agent.",
         "cli_system": "Het programma {{brain}} werkt nog niet op het systeem van deze computer. Kies een andere AI in de instellingen van de agent.",
         "account_missing": "Het account dat voor deze agent gekozen is staat niet meer op zijn computer. Kies een ander in de instellingen van de agent of voeg het opnieuw toe.",
-        "windows_sandbox": "Deze Windows-computer kan de opdrachten van Codex niet isoleren: hij heeft Windows 11 24H2 of nieuwer nodig. Werk Windows bij, kies Claude of een API-sleutel voor deze agent, of verplaats hem naar een Linux-computer.",
+        "windows_sandbox": "Codex kon op deze Windows-computer geen isolatie voor zijn opdrachten starten. Kies Claude of een API-sleutel voor deze agent, of werk de computer bij naar Windows 11 24H2 of nieuwer, met de nieuwste updates.",
         "our_error": "Er ging iets mis aan onze kant en de taak is gestopt. Vraag het over een poosje opnieuw.",
         "unknown": "Mislukt."
       }
@@ -8123,6 +8165,38 @@
     "vault_write": {
       "label": "Contacten in de Vault bewerken",
       "description": "Contactgegevens in de Vault opslaan en bijwerken, de gebruikersnaam van een opgeslagen login of een beschrijving wijzigen, wachtwoorden maken voor accounts die hij aanmaakt, en verwijderen wat hij heeft opgeslagen."
+    },
+    "gitlab_git_read": {
+      "label": "Repositories klonen (git)",
+      "description": "Repositories klonen en bijwerken op de computer van de agent met git, via onze proxy. Het GitLab-token komt nooit op de machine."
+    },
+    "gitlab_git_write": {
+      "label": "Branches pushen (git push)",
+      "description": "Commits pushen naar agentes/{agent}/…-branches: nooit naar de standaardbranch, geen force push, geen tags. Branches verwijderen en naar de branch van iemand anders pushen vragen eerst om goedkeuring."
+    },
+    "gitlab_pr_write": {
+      "label": "Merge requests openen",
+      "description": "Merge requests openen en erop reageren."
+    },
+    "bitbucket_git_read": {
+      "label": "Repositories klonen (git)",
+      "description": "Repositories klonen en bijwerken op de computer van de agent met git, via onze proxy. Het Bitbucket-token komt nooit op de machine."
+    },
+    "bitbucket_git_write": {
+      "label": "Branches pushen (git push)",
+      "description": "Commits pushen naar agentes/{agent}/…-branches: nooit naar de standaardbranch, geen force push, geen tags. Branches verwijderen en naar de branch van iemand anders pushen vragen eerst om goedkeuring."
+    },
+    "bitbucket_pr_write": {
+      "label": "Pull requests openen",
+      "description": "Pull requests openen en erop reageren."
+    },
+    "git_git_read": {
+      "label": "Repositories klonen (git)",
+      "description": "Repositories klonen en bijwerken op de computer van de agent met git, via onze proxy. Het Git-token komt nooit op de machine."
+    },
+    "git_git_write": {
+      "label": "Branches pushen (git push)",
+      "description": "Commits pushen naar agentes/{agent}/…-branches: nooit naar de standaardbranch, geen force push, geen tags. Branches verwijderen en naar de branch van iemand anders pushen vragen eerst om goedkeuring."
     },
     "github_git_read": {
       "label": "Repositories klonen (git)",
@@ -11435,10 +11509,10 @@
       "agent": "Agent",
       "repo": "Waar te werken",
       "repoPlaceholder": "Repository of project",
-      "repoSearch": "Zoek, of typ eigenaar/naam of een nieuwe naam",
+      "repoSearch": "Zoek, of typ owner/name, het adres van een repository of een nieuwe naam",
       "newLocal": "Nieuw project op de computer: {{name}}",
       "useRepo": "{{repo}} gebruiken",
-      "repoNote": "Een naam zonder eigenaar start een project op de computer van de agent, buiten GitHub.",
+      "repoNote": "Een naam zonder owner maakt een project alleen op de computer van de agent, zonder externe repository.",
       "hint": "@ haalt iemand bij de sessie",
       "start": "Starten"
     },
@@ -11452,7 +11526,7 @@
       "closeHint": "Verdwijnt uit de lijst: de worktree gaat weg, de branch blijft",
       "failed": "De worktree kon niet worden voorbereid.",
       "retry": "Opnieuw proberen",
-      "githubAccess": "Deze werkruimte heeft geen toegang tot deze repository op GitHub. Koppel GitHub in Instellingen › Connectors, of start een sessie in een project op de computer (alleen een naam)."
+      "githubAccess": "Deze workspace heeft geen toegang tot deze repository. Verbind de plek waar die staat (GitHub, GitLab of Bitbucket) in Instellingen › Connectoren, of start een sessie in een project op de computer (alleen een naam)."
     },
     "panel": {
       "label": "Sessiepaneel",
@@ -12489,8 +12563,10 @@
       "home_only": "{{program}} is op {{computer}} alleen voor root geïnstalleerd, waar de agents niet bij kunnen.",
       "not_reported": "{{computer}} controleert nog welke programma's erop staan. Dit verandert vanzelf als het klaar is.",
       "system": "{{program}} werkt nog niet op het systeem van {{computer}}.",
+      "windows_sandbox": "Windows op {{computer}} kan de opdrachten van {{program}} niet isoleren. Kies in plaats daarvan Claude of een API-sleutel, of werk die computer bij naar Windows 11 24H2 of nieuwer, met de nieuwste updates.",
       "no_computerCloud": "Klaar zodra {{computer}} klaar is."
     },
+    "sandboxPartial": "Op deze Windows schrijven de opdrachten van Codex alleen in de mappen van de agents, maar internet is maar deels voor ze geblokkeerd. Windows 11 24H2 of nieuwer, met de nieuwste updates, blokkeert het helemaal.",
     "notAvailableNow": "Gekozen, maar nu niet beschikbaar.",
     "offline": "{{computer}} is nu offline.",
     "modelLabel": "Model",
@@ -13434,6 +13510,7 @@
       "teamLocked": "Alleen wie connectors beheert voegt die van het team toe.",
       "mailLocked": "Een mailbox is altijd van wie hem verbindt.",
       "done": "Je agenten gebruiken het alleen als jij erom vraagt.",
+      "githubDone": "In codesessies gaan de commits, pushes en pull requests voor wat je vraagt op jouw naam de deur uit.",
       "worksWhenAsked": "Werkt alleen als jij erom vraagt.",
       "remove": "Verwijderen",
       "removeName": "{{name}} verwijderen",
@@ -14197,6 +14274,7 @@
     },
     "label": {
       "git_clone": "Repository klonen",
+      "list_repositories": "Repository's weergeven",
       "create_repository": "Repository maken",
       "delete_repository": "Repository verwijderen",
       "fork_repository": "Repository forken",
@@ -15111,6 +15189,19 @@
       "adjust": "Aanpassen",
       "ok": "Klaar"
     },
+    "git": {
+      "token": "Toegangstoken",
+      "address": "Adres",
+      "addressHelp": {
+        "gitlab": "Alleen voor een GitLab dat je bedrijf zelf host. Leeg gelaten is het gitlab.com.",
+        "git": "Waar de git-server staat, bijvoorbeeld https://git.company.com."
+      },
+      "tokenHelp": {
+        "gitlab": "Een GitLab-toegangstoken (persoonlijk, van een groep of project) met de scopes api en write_repository. Het blijft op de server: de computers van agents krijgen het nooit.",
+        "bitbucket": "Een toegangstoken van de workspace of de repository, met schrijfrechten voor repository's en pull requests. Met je eigen API-token typ je je Atlassian-e-mailadres, een dubbele punt en het token: you@company.com:TOKEN.",
+        "git": "Het token dat de server als git-wachtwoord accepteert. Als hij een gebruikersnaam wil, typ je username:token."
+      }
+    },
     "telegram": {
       "token": "Bottoken",
       "steps": "Open in Telegram @BotFather, stuur /newbot, kies een naam en een gebruikersnaam die op “bot” eindigt en plak hier de token die je krijgt. Om een groep te lezen, voeg je de bot toe. Om in een kanaal te posten, maak je hem daar admin."
@@ -15745,7 +15836,15 @@
       "linkGone": "Deze koppeling wacht niet meer: hij is na 10 minuten verlopen of geannuleerd. Maak een nieuwe code om opnieuw te beginnen.",
       "taken": "Die afzender is gekoppeld aan een ander agentes.chat-account. Ontkoppel hem daar en stuur dan een nieuwe code.",
       "undoGone": "Deze ongedaan-maken-link is al gebruikt of verlopen. Ontkoppel in plaats daarvan in je meldingsinstellingen.",
-      "codeGone": "Deze code is fout, al gebruikt of na 10 minuten verlopen. Maak een nieuwe code en stuur hem opnieuw."
+      "codeGone": "Deze code is fout, al gebruikt of na 10 minuten verlopen. Maak een nieuwe code en stuur hem opnieuw.",
+      "pageGone": "Deze link is verlopen. Vraag je assistent in de chat om een nieuwe.",
+      "pageElsewhere": "Deze link is op een ander apparaat geopend. Vraag je assistent in de chat om een nieuwe.",
+      "pinWrong": "Verkeerde pincode. Pogingen over: {{left}}.",
+      "pinLocked": "Te vaak een verkeerde pincode. Probeer het later opnieuw of kies een nieuwe pincode in de app.",
+      "pinShape": "Je pincode heeft 6 cijfers.",
+      "pinResetGone": "Deze link is al gebruikt of verlopen. Vraag een nieuwe aan met ‘Pincode vergeten?’.",
+      "pinUnset": "Kies eerst je pincode. Kies hem in de app terwijl je ingelogd bent.",
+      "emailUnverified": "Je e-mailadres is nog niet bevestigd. Kies je pincode in de app."
     },
     "wallpaper": {
       "notYours": "Die foto is niet van jou.",
@@ -15792,6 +15891,8 @@
       "deleteName": "Typ de naam van het kanaal om het te verwijderen.",
       "generalKept": "#general kan niet worden verwijderd.",
       "generalStays": "Iedereen blijft in #general.",
+      "leadChannelOnly": "Alleen kanalen hebben een verantwoordelijke agent.",
+      "leadNotMember": "De verantwoordelijke agent moet in het kanaal zitten.",
       "mcpUnreachable": "Kon geen verbinding maken met de MCP-server. Controleer het adres en probeer het opnieuw.",
       "notApproved": "Deze dienst heeft agentes.chat nog niet goedgekeurd.",
       "alreadyInvited": "Deze persoon heeft al een uitnodiging.",
@@ -16066,6 +16167,7 @@
       "tooLarge": "Dit bestand heeft de maximale grootte bereikt. Haal er eerst iets uit.",
       "assetTooLarge": "De afbeelding is groter dan {{max}} MB, de limiet per afbeelding.",
       "assetType": "In dit bestand passen alleen afbeeldingen: PNG, JPEG, WebP of GIF.",
+      "fontInvalid": "Dit lettertype kan niet worden gebruikt: het bestand is geen lettertype dat de app kan lezen. Probeer een .ttf-, .otf- of .woff-bestand.",
       "liveOnly": "Dit bestand wordt ter plekke gewijzigd en kan dus niet in zijn geheel worden vervangen."
     },
     "office": {
@@ -17896,7 +17998,7 @@
     "telemetry": {
       "title": "Gebruiksstatistieken",
       "label": "Anonieme gebruiksstatistieken naar agentes.chat sturen",
-      "help": "Aantallen zoals mensen, agents, machinegroottes, gebruikte AI-tokens en hoeveel data de browsers van de agents versturen en ontvangen. Nooit berichten, bestanden, namen of sites.",
+      "help": "Aantallen zoals mensen, agents, machinegroottes, gebruikte AI-tokens, hoeveel data de browsers van de agents versturen en ontvangen en hoe snel de apps openen en reageren. Nooit berichten, bestanden, namen of sites.",
       "envOff": "Uitgezet in de instellingen van deze server (TELEMETRY=off).",
       "envOffDesktop": "Uitgezet in de agentes.chat-app op de computer van deze server (Voorkeuren › Servers).",
       "envOffHere": "Uitgezet in de agentes.chat-app op deze computer.",
@@ -18720,6 +18822,7 @@
         "runningCommandAny": "Een opdracht uitgevoerd",
         "usingScreen": "Het scherm gebruikt",
         "cloningRepo": "Een repository gekloond",
+        "listingRepos": "Heeft de repository's weergegeven",
         "openingPullRequest": "Een pull request geopend",
         "handingOff": "Een rapport geleverd",
         "recordingFindings": "De bevindingen genoteerd",
@@ -18841,6 +18944,7 @@
       "runningCommandAny": "een opdracht aan het uitvoeren",
       "usingScreen": "het scherm aan het gebruiken",
       "cloningRepo": "een repository aan het klonen",
+      "listingRepos": "geeft de repository's weer",
       "openingPullRequest": "een pull request aan het openen",
       "handingOff": "een rapport aan het leveren",
       "recordingFindings": "de bevindingen aan het noteren",

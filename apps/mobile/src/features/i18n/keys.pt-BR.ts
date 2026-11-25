@@ -1564,6 +1564,15 @@ export const featureKeysPtBR = {
       pr: "Branch enviada, ainda sem PR",
       mergeLocal: "Pronta para juntar na {{base}}",
     },
+    terminal: {
+      keys: "Teclas do terminal",
+      keyboard: "Teclado",
+      pasteHint: "Colar no terminal o que você copiou",
+      key: {
+        CtrlC: "Control-C, interromper",
+        CtrlD: "Control-D, fim da entrada",
+      },
+    },
   },
   // The task manager (ADR 0128; the rest of its words are shared, `taskManager.*`).
   taskManager: {

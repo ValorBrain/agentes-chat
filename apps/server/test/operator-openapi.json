@@ -224,6 +224,9 @@
                       "heapBytes": {
                         "$ref": "#/components/schemas/OperatorClientVitalStat"
                       },
+                      "webviewBytes": {
+                        "$ref": "#/components/schemas/OperatorClientVitalStat"
+                      },
                       "getsPerReturn": {
                         "$ref": "#/components/schemas/OperatorClientVitalStat"
                       },
@@ -233,7 +236,7 @@
                     },
                     "required": ["reports"]
                   },
-                  "description": "What the apps that reported to it over its last minute measured, by platform (`ios`, `android`, `web`): cold start to the first frame and to the first rows, JavaScript stalls, heap, reads after each return to the app, socket reconnects. Null: no report."
+                  "description": "What the apps that reported to it over its last minute measured, by platform (`ios`, `android`, `web`, and the desktop app on each system: `macos`, `windows`, `linux`): cold start to the first screen and to the first rows, JavaScript stalls, heap, the desktop's web view memory (`webviewBytes`), reads after each return to the app, socket reconnects. Null: no report."
                 }
               },
               "required": [

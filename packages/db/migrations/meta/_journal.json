@@ -2346,6 +2346,41 @@
       "when": 1795521807122,
       "tag": "0339_audio_file_wave",
       "breakpoints": true
+    },
+    {
+      "idx": 337,
+      "version": "7",
+      "when": 1795550171282,
+      "tag": "0340_channel_lead",
+      "breakpoints": true
+    },
+    {
+      "idx": 338,
+      "version": "7",
+      "when": 1795555369214,
+      "tag": "0341_surface_pin_pages",
+      "breakpoints": true
+    },
+    {
+      "idx": 339,
+      "version": "7",
+      "when": 1795555379831,
+      "tag": "0342_surface_pin_lockouts",
+      "breakpoints": true
+    },
+    {
+      "idx": 340,
+      "version": "7",
+      "when": 1795558902756,
+      "tag": "0343_client_vitals_day",
+      "breakpoints": true
+    },
+    {
+      "idx": 341,
+      "version": "7",
+      "when": 1795568902756,
+      "tag": "0344_live_asset_fonts",
+      "breakpoints": true
     }
   ]
 }

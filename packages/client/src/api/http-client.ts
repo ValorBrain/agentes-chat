@@ -249,6 +249,7 @@ import type {
   SurfaceLink,
   SurfaceLinkCode,
   SurfaceLinks,
+  SurfacePage,
   TaskManagerView,
   TaskOutput,
   TaskSteps,
@@ -663,10 +664,17 @@ export function createHttpApi(options: TransportOptions = {}): HttpApi {
       mintCode: (orgId) => request<SurfaceLinkCode>(`${org(orgId)}/surface-link/code`, { json: {} }),
       confirm: (linkId) => request<SurfaceLink>(`/api/app/me/surface-links/${enc(linkId)}/confirm`, { json: {} }),
       remove: (linkId) => request<void>(`/api/app/me/surface-links/${enc(linkId)}`, { method: "DELETE" }),
+      setPin: (linkId, pin) =>
+        request<void>(`/api/app/me/surface-links/${enc(linkId)}/pin`, { method: "PUT", json: { pin } }),
       undo: (token) =>
         request<{ unlinked: boolean; surface: string; display: string | null }>("/api/app/surface-undo", {
           json: { token },
         }),
+      openPage: (token) => request<SurfacePage>("/api/app/surface-page/open", { json: { token } }),
+      decidePage: (token, decision, pin) =>
+        request<SurfacePage>("/api/app/surface-page/decide", { json: { token, decision, ...(pin ? { pin } : {}) } }),
+      emailPin: (token) => request<void>("/api/app/surface-page/pin-email", { json: { token } }),
+      pinFromEmail: (token, pin) => request<{ surface: string }>("/api/app/surface-pin", { json: { token, pin } }),
     },
     push: {
       webKey: async () =>

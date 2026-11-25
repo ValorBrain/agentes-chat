@@ -7,7 +7,7 @@ import type { MergeDone } from "./command-policy";
  */
 
 /** Bumped on breaking changes; the server refuses runners older than `MIN_RUNNER_PROTOCOL`. */
-export const MACHINE_PROTOCOL_VERSION = 78;
+export const MACHINE_PROTOCOL_VERSION = 80;
 export const MIN_RUNNER_PROTOCOL = 1;
 /** From this protocol on, requests carry `agent` and each agent works in its own folder. */
 export const AGENT_FOLDERS_PROTOCOL = 2;
@@ -295,6 +295,15 @@ export interface MachineSize {
   /** `TASK_ROOM_PROTOCOL`: tasks start on room here. */
   room?: TaskRoomReport;
 }
+
+/** A memory size as `MachineSize` says it: in GB (2^30 bytes), to 0.5. */
+export const halfGb = (bytes: number) => Math.round((bytes / 2 ** 30) * 2) / 2;
+
+/**
+ * A system's version as its numbers alone (`6.8.0-45-generic` → `6.8.0`): what a kernel's own name adds after them
+ * (a distribution's flavour, a custom build's name) stays home. Undefined when it doesn't start with a number.
+ */
+export const versionNumbers = (version: string) => /^\d{1,6}(?:\.\d{1,6}){0,3}/.exec(version)?.[0];
 
 /**
  * Protocol 22: how busy a computer got over the last day (`pong.load`): the 5-minute load average per
@@ -634,6 +643,17 @@ export const SHARED_GEMINI_PROTOCOL = 58;
  * A Windows runner before it refuses every Codex turn, so the server reads it as too old for Codex there.
  */
 export const CODEX_WINDOWS_PROTOCOL = 60;
+/**
+ * Codex where Windows has no MXC (ADR 0053's addendum of 2026-11-24): a `plan` or `work` turn runs in Codex's own
+ * `unelevated` sandbox there instead of failing with `windows_sandbox`. `hello.windowsBuild` says a Windows computer's
+ * build, and `executors.codex.sandbox` what holds Codex's commands there once the runner has checked (in the
+ * background, after start). An older runner says neither, and runs Codex on Windows only inside MXC.
+ */
+export const CODEX_UNELEVATED_PROTOCOL = 80;
+/** What holds Codex's commands on a Windows computer (`executors.codex.sandbox`): `none`, nothing it could start. */
+export const CODEX_SANDBOXES = ["mxc", "unelevated", "none"] as const;
+export type CodexSandbox = (typeof CODEX_SANDBOXES)[number];
+export const isCodexSandbox = (v: unknown): v is CodexSandbox => (CODEX_SANDBOXES as readonly unknown[]).includes(v);
 /**
  * `keep_running` (ADR 0176): `keep.start` and `keep.end` take and end an agent's hold, the computer's standard "don't go
  * idle" lock, bound to one of its programs, its browser or a time; `hello.holds` says which live and which ended since,
@@ -1845,6 +1865,18 @@ export const isGitRepoName = (v: unknown): v is string =>
   /^[A-Za-z0-9_.-]{1,100}\/[A-Za-z0-9_.-]{1,100}$/.test(v) &&
   v.split("/").every((part) => part !== "." && part !== "..");
 
+/**
+ * Protocol 79: `git.sync` takes a repository of any git host (ADR 0227), whose path may be deeper or shallower than
+ * GitHub's `owner/name` (`group/subgroup/project`, `project.git`); the proxy address it comes with says which host. An
+ * older runner refuses those, so the server asks it only for two-part paths.
+ */
+export const GIT_HOST_PATH_PROTOCOL = 79;
+/** A repository's path on its host: one to twenty-one parts, none of them `.` or `..`. */
+export const isGitRepoPath = (v: unknown): v is string =>
+  typeof v === "string" &&
+  /^[A-Za-z0-9_.-]{1,100}(\/[A-Za-z0-9_.-]{1,100}){0,20}$/.test(v) &&
+  v.split("/").every((part) => part !== "." && part !== "..");
+
 /** Largest pieces of a `git.sync`. */
 export const GIT_SYNC_LIMITS = {
   repos: 50,
@@ -2103,6 +2135,8 @@ export interface RunnerExecutorInfo {
   version: string;
   /** `codex` only: the copy the runner starts, the newest of those it found. */
   path?: string;
+  /** `CODEX_UNELEVATED_PROTOCOL`, `codex` on Windows: what holds its commands there; absent until the runner knows. */
+  sandbox?: CodexSandbox;
   /** Protocol 8, `claude` only: `claude auth status` says it is logged in (absent: unknown). */
   loggedIn?: boolean;
   /** Protocol 8, `claude` only: how it is logged in (`claude.ai`, `api_key`…) and the plan (`pro`, `max`, `ultra`…). */
@@ -2735,6 +2769,8 @@ export interface RunnerInfo {
   protocol: number;
   os: MachineOs;
   arch: string;
+  /** `CODEX_UNELEVATED_PROTOCOL`, Windows only: its build (`os.release()`, `10.0.19045`). */
+  windowsBuild?: string;
   hostname: string;
   /** Absolute path of the workspace on the machine (shown to admins only). */
   workspace: string;
@@ -2822,6 +2858,18 @@ export interface AgentScope {
    * lines its commits end with. The runner hands them to git in the agent's own processes alone (`co-authors.ts`).
    */
   coAuthors?: string[];
+  /**
+   * On a code session's work (`exec`, `brain.turn`): the person its commits are authored as, when they connected a
+   * GitHub account as their own (ADR 0215 §13). The runner hands it to git in the agent's own processes alone, never
+   * to a repository's config. A runner that doesn't know it leaves the checkout's author, the agent.
+   */
+  author?: CommitAuthor;
+}
+
+/** Who a commit is authored as: a name and an address, each one line. */
+export interface CommitAuthor {
+  name: string;
+  email: string;
 }
 
 /** What the server asks. Paths are always relative to the workspace (the agent's folder when `agent` is set). */
@@ -3739,7 +3787,8 @@ export function parseCursorModels(v: unknown): CursorModelInfo[] {
 
 /**
  * `hello.executors`: only `claude`, `codex`, `cursor`, `opencode`, `grok` and `antigravity`, each with a short version
- * line (and Claude Code's login), and `broken`: the error line of each of them that is there and can't start.
+ * line (and Claude Code's login, Codex's sandbox on Windows), and `broken`: the error line of each of them that is there
+ * and can't start.
  */
 export function parseExecutors(v: Record<string, unknown>): NonNullable<RunnerInfo["executors"]> {
   const out: NonNullable<RunnerInfo["executors"]> = {};
@@ -3753,6 +3802,7 @@ export function parseExecutors(v: Record<string, unknown>): NonNullable<RunnerIn
     out[name] = {
       version: e.version.replace(/\s+/g, " ").trim().slice(0, 80),
       ...(path ? { path } : {}),
+      ...(name === "codex" && isCodexSandbox(e.sandbox) ? { sandbox: e.sandbox } : {}),
       ...(typeof e.loggedIn === "boolean" ? { loggedIn: e.loggedIn } : {}),
       ...(authMethod ? { authMethod } : {}),
       ...(plan ? { plan } : {}),
@@ -4067,6 +4117,9 @@ export function parseRunnerFrame(raw: string): RunnerFrame | null {
         protocol: f.protocol,
         os: (["linux", "darwin", "windows"] as const).find((o) => o === f.os) ?? "other",
         arch: isString(f.arch) ? f.arch.slice(0, 40) : "",
+        ...(isString(f.windowsBuild) && /^\d{1,3}\.\d{1,3}\.\d{1,6}$/.test(f.windowsBuild)
+          ? { windowsBuild: f.windowsBuild }
+          : {}),
         hostname: isString(f.hostname) ? f.hostname.slice(0, 200) : "",
         workspace: isString(f.workspace) ? f.workspace.slice(0, 500) : "",
         exec: f.exec !== false,

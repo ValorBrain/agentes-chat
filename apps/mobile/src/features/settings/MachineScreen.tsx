@@ -26,6 +26,7 @@ import {
   allowedFolders,
   allowsInApp,
   canReduceAccess,
+  codexSandboxNote,
   commandInReason,
   computerKind,
   computerState,
@@ -586,13 +587,17 @@ function ToolsSection({ machine: m, onReduce }: { machine: Machine; onReduce: (r
           ]
             .filter(Boolean)
             .join(" ");
+          const label = t(`machines.access.tool.${tool}`);
+          // Codex on Windows: what holds its commands there, when that is less than MXC.
+          const note = tool === "codex" ? codexSandboxNote(t, m) : null;
           return (
             <GroupedRow
               key={tool}
               {...(tool === "commands"
                 ? { icon: "code" as const }
                 : { leading: <ProviderLogo id={tool} size="sm" off={!on} /> })}
-              label={t(`machines.access.tool.${tool}`)}
+              label={label}
+              {...(note ? { hint: { name: t("common.about", { label }), text: note } } : {})}
               sub={sub}
               subLines={3}
               media

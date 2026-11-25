@@ -230,7 +230,7 @@
     "openTailscale": "Buka Tailscale",
     "getTailscale": "Dapatkan Tailscale",
     "usage": "Kirim statistik pemakaian anonim ke agentes.chat",
-    "usageText": "Angka seperti jumlah orang, agen, ukuran mesin, token AI yang dipakai, dan berapa banyak data yang dikirim dan diterima browser agen. Tidak pernah pesan, file, nama, atau situs.",
+    "usageText": "Angka seperti jumlah orang, agen, ukuran mesin, token AI yang dipakai, berapa banyak data yang dikirim dan diterima browser agen, dan seberapa cepat aplikasi terbuka dan berjalan. Tidak pernah pesan, file, nama, atau situs.",
     "start": "Mulai",
     "setting": "Menyiapkan semuanya",
     "rest": "Saat kamu menutup aplikasi, agenmu beristirahat. Mereka kembali begitu kamu membukanya lagi.",

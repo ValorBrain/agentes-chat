@@ -1594,6 +1594,15 @@
     "next": {
       "pr": "Rama enviada, aún sin pull request",
       "mergeLocal": "Lista para hacer merge en {{base}}"
+    },
+    "terminal": {
+      "keys": "Teclas del terminal",
+      "keyboard": "Teclado",
+      "pasteHint": "Pegar en el terminal lo que copiaste",
+      "key": {
+        "CtrlC": "Control-C, interrumpir",
+        "CtrlD": "Control-D, fin de la entrada"
+      }
     }
   },
   "taskManager": {

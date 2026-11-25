@@ -471,7 +471,8 @@ const styles = StyleSheet.create({
   shrink: { flexShrink: 1 },
   fill: { flex: 1 },
   lead: { paddingHorizontal: SCREEN_X, marginTop: -4 },
-  search: { paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 },
+  // 10 between the field and the agents' chips under it, as Drive and Routines: with 4 they touched the field.
+  search: { paddingHorizontal: SCREEN_X, paddingTop: 12, paddingBottom: 10 },
   body: { paddingHorizontal: SCREEN_X, paddingTop: 14, gap: 10 },
   who: { flexDirection: "row", alignItems: "center", gap: 6 },
   chips: { flexDirection: "row", flexWrap: "wrap", gap: 6 },

@@ -119,6 +119,7 @@ import { desktopNotice, inDesktopApp, thisMac } from "@/lib/desktop";
 import { feedIsland, island } from "@/lib/island";
 import { notificationAudience } from "@/lib/sounds";
 import { useToast } from "@/lib/toast";
+import { countReconnect } from "@/lib/vitals";
 import { settleShownPushes } from "@/lib/web-push";
 
 /** Live state shared by the channel and the sidebar: runs, receipts and who is typing. */
@@ -467,7 +468,10 @@ export function RealtimeProvider({
       ...(batchFrames() ? {} : { catchUpSpreadMs: 0, backoffMs: [500] }),
     });
     // A reconnect is often a deploy: is this tab still on the app the server serves?
-    const offReconnect = conn.onReconnect(() => void checkAppVersion());
+    const offReconnect = conn.onReconnect(() => {
+      void checkAppVersion();
+      countReconnect();
+    });
     // Catch up over HTTP after a reconnect or a server's resync: events sent meanwhile are gone.
     const offCatchUp = conn.onCatchUp((full) => {
       if (!full) {

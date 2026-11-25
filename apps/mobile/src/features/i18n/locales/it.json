@@ -1594,6 +1594,15 @@
     "next": {
       "pr": "Branch inviato, ancora senza pull request",
       "mergeLocal": "Pronto per il merge in {{base}}"
+    },
+    "terminal": {
+      "keys": "Tasti del terminale",
+      "keyboard": "Tastiera",
+      "pasteHint": "Incolla nel terminale ciò che hai copiato",
+      "key": {
+        "CtrlC": "Control-C, interrompi",
+        "CtrlD": "Control-D, fine dell’input"
+      }
     }
   },
   "taskManager": {

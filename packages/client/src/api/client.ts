@@ -343,6 +343,7 @@ import type {
   SurfaceLink,
   SurfaceLinkCode,
   SurfaceLinks,
+  SurfacePage,
   TaskManagerView,
   TaskOutput,
   TaskSteps,
@@ -547,8 +548,25 @@ export interface ApiClient {
     confirm(linkId: string): Promise<SurfaceLink>;
     /** Cancels a pending link or unlinks an active one. `surface.link_gone` (404). */
     remove(linkId: string): Promise<void>;
+    /** Chooses my PIN (ADR 0226), replacing any. `surface.pin_shape` (400), `surface.link_gone` (404), `rate_limited`. */
+    setPin(linkId: string, pin: string): Promise<void>;
     /** "Not you? Unlink it" from the "linked" email: no session needed. `surface.undo_gone` (404), `rate_limited` (429). */
     undo(token: string): Promise<{ unlinked: boolean; surface: string; display: string | null }>;
+    /**
+     * A page the surface linked to (ADR 0226), no session needed: the first open binds it to this browser.
+     * `surface.page_gone` (404), `surface.page_elsewhere` (403), `rate_limited` (429).
+     */
+    openPage(token: string): Promise<SurfacePage>;
+    /**
+     * Approve (with the PIN; choosing it only where `pin.canChoose`) or refuse the page's action. `surface.pin_unset`
+     * (409), `surface.pin_wrong` (403, `left`), `surface.pin_locked` (429, `until`), `surface.pin_shape` (400), and
+     * `openPage`'s.
+     */
+    decidePage(token: string, decision: "approve" | "refuse", pin?: string): Promise<SurfacePage>;
+    /** Emails a link to choose the PIN. `surface.email_unverified` (403), `rate_limited` (429). */
+    emailPin(token: string): Promise<void>;
+    /** The emailed link chooses the PIN. `surface.pin_shape` (400), `surface.pin_reset_gone` (404). */
+    pinFromEmail(token: string, pin: string): Promise<{ surface: string }>;
   };
   /** Where my pushes go: phones (ADR 0035) and browsers (ADR 0071). Per person, not per organization. */
   push: {
@@ -1156,10 +1174,13 @@ export interface ApiClient {
     catalog(): Promise<ConnectorCatalog>;
     /** The team's connections and the person's own (no secrets). `others`: also everyone else's personal ones (who manages connectors gets them, as read-only rows). */
     list(orgId: string, options?: { others?: boolean }): Promise<Connection[]>;
-    /** `personal`: the person's own connection, which any member adds (GitHub connects for the team only). */
+    /**
+     * `personal`: the person's own connection, which any member adds. `serverUrl`: a git host at an address of one's
+     * own (a company's GitLab, a git server).
+     */
     connectWithKey(
       orgId: string,
-      input: { connector: string; apiKey: string; label?: string; personal?: boolean },
+      input: { connector: string; apiKey: string; label?: string; personal?: boolean; serverUrl?: string },
     ): Promise<Connection>;
     /** Returns the provider URL to open; the server redirects back to `returnTo`. `personal`: the person's own. */
     startOAuth(orgId: string, connector: string, input: { returnTo: string; personal?: boolean }): Promise<string>;

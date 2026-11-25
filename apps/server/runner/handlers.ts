@@ -887,6 +887,7 @@ async function routeRequest(ctx: HandlerContext, req: MachineRequest, scope: Req
         {
           folder: ctx.workspaceReal,
           gitDir: ctx.gitDir,
+          ...(ctx.server ? { server: ctx.server } : {}),
           agent: req.agent,
           signal: scope.signal,
           ...(req.stream === true ? { output: scope.output } : {}),

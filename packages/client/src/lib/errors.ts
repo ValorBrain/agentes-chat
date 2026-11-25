@@ -33,6 +33,14 @@ const KNOWN = {
   "surface.link_gone": "errors.surface.linkGone",
   "surface.taken": "errors.surface.taken",
   "surface.undo_gone": "errors.surface.undoGone",
+  "surface.page_gone": "errors.surface.pageGone",
+  "surface.page_elsewhere": "errors.surface.pageElsewhere",
+  "surface.pin_wrong": "errors.surface.pinWrong",
+  "surface.pin_locked": "errors.surface.pinLocked",
+  "surface.pin_shape": "errors.surface.pinShape",
+  "surface.pin_unset": "errors.surface.pinUnset",
+  "surface.email_unverified": "errors.surface.emailUnverified",
+  "surface.pin_reset_gone": "errors.surface.pinResetGone",
   "surface.code_gone": "errors.surface.codeGone",
   // A new-password link an owner can't make (ADR 0158).
   "password_link.email": "errors.passwordLink.email",
@@ -106,6 +114,7 @@ const KNOWN = {
   "live.too_large": "errors.live.tooLarge",
   "live.asset_too_large": "errors.live.assetTooLarge",
   "live.asset_type": "errors.live.assetType",
+  "live.font_invalid": "errors.live.fontInvalid",
   "artifact.live_only": "errors.live.liveOnly",
   // Uploaded Office files (ADR 0198): damaged, past what the server reads, of a kind only downloaded, locked with a
   // password, or past what a live file holds.
@@ -622,6 +631,8 @@ const KNOWN = {
   "channel.delete_name": "errors.said.deleteName",
   "channel.general": "errors.said.generalKept",
   "channel.general_stays": "errors.said.generalStays",
+  "channel.lead_channel_only": "errors.said.leadChannelOnly",
+  "channel.lead_not_member": "errors.said.leadNotMember",
   "connector.mcp_status": "errors.said.mcpUnreachable",
   "connector.mcp_unreachable": "errors.said.mcpUnreachable",
   "connector.not_approved": "errors.said.notApproved",

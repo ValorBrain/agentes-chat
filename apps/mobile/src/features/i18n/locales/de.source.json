@@ -3744,6 +3744,21 @@
   "coding.next.mergeLocal": {
     "value": "Ready to merge into {{base}}"
   },
+  "coding.terminal.keys": {
+    "value": "Terminal keys"
+  },
+  "coding.terminal.keyboard": {
+    "value": "Keyboard"
+  },
+  "coding.terminal.pasteHint": {
+    "value": "Paste what you copied into the terminal"
+  },
+  "coding.terminal.key.CtrlC": {
+    "value": "Control-C, interrupt"
+  },
+  "coding.terminal.key.CtrlD": {
+    "value": "Control-D, end of input"
+  },
   "taskManager.loadFailed": {
     "value": "Couldn't load the tasks."
   },

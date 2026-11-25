@@ -195,9 +195,9 @@ export async function renderSteered(
         : `[New message from ${name}, while you were working]: ${m.body}`;
     return {
       id: m.id,
-      // A background task that ended while it worked: the notice with its result.
+      // A background task that ended while it worked: the notice with its result, as news for a run already at work.
       text:
-        taskNotice({ body: m.body, meta: m.meta }, true) ??
+        taskNotice({ body: m.body, meta: m.meta }, true, false, true) ??
         `${line}${attachedLine(m)}${passedOn ? `\n${PASSED_ON_NOTE}` : sayHow.has(m.id) ? `\n${SAY_HOW_YOU_TAKE_IT}` : ""}`,
     };
   });

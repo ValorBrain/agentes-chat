@@ -909,6 +909,27 @@ describe("Conectar uma IA: one picker, plans first", () => {
     expect(payWith(dialog, "Com chave de API").getAttribute("aria-checked")).toBe("true");
   });
 
+  test("a Windows computer where nothing holds Codex: ChatGPT dims, its panel says what Windows lacks and the way out", async () => {
+    const { dialog, choose } = await connect({
+      // The computer still takes a ChatGPT sign-in (the team's right hand thinks with it there): the agent's own view
+      // says it can't.
+      computers: [MAC],
+      brain: {
+        options: fakeAgentBrain(ADA_ID).options.map((o) =>
+          o.kind === "codex" ? { ...o, available: false, reason: "windows_sandbox" as const } : o,
+        ),
+      },
+    });
+    const rows = await openAiSelect(dialog);
+    expect(rows.find((o) => o.textContent === "ChatGPT")?.querySelector(".ac-brand--off")).not.toBeNull();
+    await closeAiSelect();
+    await choose("ChatGPT");
+    expect(dialog.textContent).toContain(
+      "O Windows do MacBook não consegue isolar os comandos do Codex. Escolha o Claude ou uma chave de API, ou atualize esse computador para o Windows\u00a011\u00a024H2 ou mais novo, com as atualizações em dia.",
+    );
+    expect(within(dialog).getByRole("button", { name: "Usar uma chave de API agora" })).toBeTruthy();
+  });
+
   test("OpenCode not installed on its computer: said so, with no API key offered, since the key row can't take OpenCode's", async () => {
     const { dialog, choose } = await connect({
       computers: [{ ...MAC, keys: false, brains: { claude_code: true, codex: true, opencode: false } }],

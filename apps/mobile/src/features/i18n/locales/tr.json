@@ -1510,6 +1510,15 @@
     "next": {
       "pr": "Dal gönderildi, henüz pull request yok",
       "mergeLocal": "{{base}} dalına birleştirmeye hazır"
+    },
+    "terminal": {
+      "keys": "Terminal tuşları",
+      "keyboard": "Klavye",
+      "pasteHint": "Kopyaladığınızı terminale yapıştırın",
+      "key": {
+        "CtrlC": "Control-C, kes",
+        "CtrlD": "Control-D, girdinin sonu"
+      }
     }
   },
   "taskManager": {

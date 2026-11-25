@@ -114,6 +114,7 @@ export function chatRoutes(deps: AppDeps) {
             categoryId: r.categoryId,
             position: r.position,
             replyInThreads: r.replyInThreads,
+            leadAgentId: r.leadAgentId,
             unreadCount: r.unreadCount,
             mentionCount: r.mentionCount,
             lastReadAt: iso(r.lastReadAt),
@@ -234,6 +235,7 @@ export function chatRoutes(deps: AppDeps) {
           categoryId: r.categoryId,
           position: r.position,
           replyInThreads: r.replyInThreads,
+          leadAgentId: r.leadAgentId,
         },
         201,
       );

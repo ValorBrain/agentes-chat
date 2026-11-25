@@ -1422,6 +1422,15 @@
     "next": {
       "pr": "브랜치 푸시됨, 아직 풀 리퀘스트 없음",
       "mergeLocal": "{{base}}에 머지할 준비가 됐어요"
+    },
+    "terminal": {
+      "keys": "터미널 키",
+      "keyboard": "키보드",
+      "pasteHint": "복사한 내용을 터미널에 붙여넣기",
+      "key": {
+        "CtrlC": "Control-C, 중단",
+        "CtrlD": "Control-D, 입력 끝"
+      }
     }
   },
   "taskManager": {

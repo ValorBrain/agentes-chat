@@ -101,6 +101,7 @@ import type {
   StoragePlatform,
   StorageUsage,
   SurfaceLink,
+  SurfacePage,
   TaskManagerView,
   TaskSteps,
   TeamProposalCard,
@@ -224,6 +225,10 @@ export interface FakeState {
     confirmError?: ApiError;
     removeError?: ApiError;
     undo?: { unlinked: boolean; display: string | null } | ApiError;
+    /** The page a link sent on the surface opens; the decision's answer replaces it, or `decideError` is thrown. */
+    page?: SurfacePage | ApiError;
+    decideError?: ApiError;
+    pinReset?: ApiError;
   };
   /** Another workspace's agents, by its id (default: `agents`, whatever the workspace). */
   agentsOf?: Record<string, Agent[]>;
@@ -1771,6 +1776,42 @@ export function createFakeHttpApi(state: FakeState): Omit<HttpApi, FakedParts> {
         if (!undo) throw new ApiError(404, "surface.undo_gone", "This link expired or was already used");
         if (undo instanceof ApiError) throw undo;
         return { ...undo, surface: state.surface?.name ?? "" };
+      },
+      openPage: async (token) => {
+        log("surfaces.openPage", token);
+        const page = state.surface?.page;
+        if (!page) throw new ApiError(404, "surface.page_gone", "This link ran out");
+        if (page instanceof ApiError) throw page;
+        return page;
+      },
+      decidePage: async (token, decision, pin) => {
+        log("surfaces.decidePage", { token, decision, pin });
+        const sf = state.surface;
+        if (sf?.decideError) throw sf.decideError;
+        const page = sf?.page;
+        if (!sf || !page || page instanceof ApiError || !page.approval) {
+          throw new ApiError(404, "surface.page_gone", "This link ran out");
+        }
+        sf.page = {
+          ...page,
+          pin: { ...page.pin, set: true, lockedUntil: null },
+          approval: { ...page.approval, status: decision === "approve" ? "approved" : "refused" },
+        };
+        return sf.page;
+      },
+      emailPin: async (token) => {
+        log("surfaces.emailPin", token);
+      },
+      pinFromEmail: async (token, pin) => {
+        log("surfaces.pinFromEmail", { token, pin });
+        if (state.surface?.pinReset) throw state.surface.pinReset;
+        return { surface: state.surface?.name ?? "" };
+      },
+      setPin: async (linkId, pin) => {
+        log("surfaces.setPin", { linkId, pin });
+        const sf = state.surface;
+        if (!sf?.links.some((l) => l.id === linkId)) throw new ApiError(404, "surface.link_gone", "This link is gone");
+        sf.links = sf.links.map((l) => (l.id === linkId ? { ...l, pinSet: true } : l));
       },
     },
     push: {

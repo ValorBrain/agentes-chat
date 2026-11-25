@@ -614,6 +614,8 @@ async function machineViews(db: Database, actorId: string, orgId: string, only?:
       cliInstall: !managed && m.protocol >= CLI_INSTALL_PROTOCOL,
       /** The coding CLIs there that can't start, with their own error line; admins and the pairer only. */
       cliErrors: (admin || mine) && !managed ? (m.executors?.broken ?? null) : null,
+      /** What holds Codex's commands on a Windows computer (`CODEX_UNELEVATED_PROTOCOL`); null elsewhere or unknown. */
+      codexSandbox: m.os === "windows" ? (m.executors?.codex?.sandbox ?? null) : null,
       pairedBy: m.pairedByUserId ? { id: m.pairedByUserId, name: pairedByName ?? "" } : null,
       // A private agent stays out for whom it is unlisted (`listsAgentTo`), but not on the computer of who paired it.
       agents: using

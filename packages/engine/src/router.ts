@@ -38,6 +38,8 @@ import type { ModelGateway } from "./gateway";
 import { PLATFORM_CAP } from "./limits";
 import type { MachineCaller } from "./machine-hub";
 import { AGENT_CHIME_IN_MAX_HOP, getMessage, type Message, type ReplyRef } from "./messages";
+import { agentOnlyNoticeSql } from "./notices";
+import { LEAD } from "./reply-policy";
 import { isRightHand, RIGHT_HAND_AUTO, RIGHT_HAND_ROUTING_ABOUT, rightHandReaches } from "./right-hand";
 import { ACTIVE_RUN_STATUSES } from "./run-inbox";
 import { type AgentRun, KEPT_ON_HOLD, NO_AI } from "./runs";
@@ -731,6 +733,11 @@ export interface RouteResult {
     | "system_line"
     /** An agent's message that names nobody and asks nothing: no other agent chimes in on it. */
     | "asks_nobody"
+    /**
+     * The channel's responsible agent spoke (ADR 0095): it answers for the team, so no colleague chimes in on it. It
+     * asks one (`ask_agent`) or hands it work (`tell_agent`) when it needs one.
+     */
+    | "lead_spoke"
     /** The same person's next message right after it is one the router decides on too: that one decides for both. */
     | "continued";
   selected?: string[];
@@ -1006,11 +1013,17 @@ export async function routeMessage(
   }
 
   const [channelRow] = await db
-    .select({ id: channels.id, name: channels.name, topic: channels.topic, kind: channels.kind })
+    .select({
+      id: channels.id,
+      name: channels.name,
+      topic: channels.topic,
+      kind: channels.kind,
+      leadAgentId: channels.leadAgentId,
+    })
     .from(channels)
     .where(and(eq(channels.id, message.channelId), eq(channels.orgId, message.orgId)));
   if (!channelRow) return { runs: [], skipped: "message_missing" };
-  const { kind: channelKind, ...channel } = channelRow;
+  const { kind: channelKind, leadAgentId, ...channel } = channelRow;
   const historyOf = (where: ReturnType<typeof and>) =>
     db
       .select({
@@ -1047,6 +1060,8 @@ export async function routeMessage(
     historyOf(
       and(
         isNull(messages.deletedAt),
+        // A notice only its agent reads (ADR 0095) is no line anyone said: it never decides who was talking.
+        sql`not ${agentOnlyNoticeSql(sql`${messages.meta}`)}`,
         // A top-level message: the channel as people see it, replies under earlier messages included.
         message.threadId ? eq(messages.threadId, message.threadId) : undefined,
         ne(messages.id, message.id),
@@ -1066,6 +1081,7 @@ export async function routeMessage(
     // A personal workspace (ADR 0159): the person mostly talks to their agents, not to other people.
     isPersonalWorkspace(db, message.orgId),
   ]);
+  if (byAgent && leadAgentId && message.authorAgentId === leadAgentId) return { runs: [], skipped: "lead_spoke" };
   if (byAgent) {
     // Bringing someone in: agents that already spoke here aren't new voices.
     const spoke = new Set(
@@ -1684,6 +1700,40 @@ export async function routeMessage(
       chosen = [agentId];
     }
   }
+  // The channel's responsible agent (ADR 0095, addendum of 2026-11-23) takes what a person says to the room: a
+  // message the policy gave several agents without listing them by name gets its one answer, and a default pick is
+  // its, not the best placed one's. What speaks to another agent, replies to it, follows a talk with it or clearly
+  // fits it keeps its pick, and so does the room while the lead is at work here: the message would wait for its turn.
+  const leadId =
+    !byAgent && !options.forSomeoneElse && leadAgentId && candidateIds.has(leadAgentId) ? leadAgentId : null;
+  const other = (id: string | null | undefined) => Boolean(id) && id !== leadId;
+  let led = false;
+  if (
+    leadId &&
+    !other(spokenTo) &&
+    !other(repliedAgentId) &&
+    ((chosen.length >= 2 && !namedAll) ||
+      ((fallback === "best" || (fallback === "alone" && !other(talkingWith))) &&
+        chosen[0] !== leadId &&
+        !(decided.best && other(decided.best.agentId) && decided.best.confidence >= CLEAR_CHOICE))) &&
+    !(await leadAtWork(db, message, leadId))
+  ) {
+    chosen = [leadId];
+    led = true;
+  }
+  // The step's own pick of the lead alone, for what was said to the room (not to it by name, not a reply to it, not a
+  // follow-up of a talk with it), is its turn as the lead too: it answers for the team, with the agents of the
+  // channel, instead of passing on a question its colleagues know or bringing in agents from elsewhere.
+  if (
+    leadId &&
+    !led &&
+    chosen.length === 1 &&
+    chosen[0] === leadId &&
+    spokenTo !== leadId &&
+    repliedAgentId !== leadId &&
+    !followUp
+  )
+    led = true;
   // Who read it, as the receipts show it: the channel's agents, and the right hand only when it answers.
   const seen = candidates.filter((c) => !c.rightHand || chosen.includes(c.agentId));
   const stepName = decided.strategy ?? deps.strategy.name;
@@ -1710,9 +1760,11 @@ export async function routeMessage(
         selectedAgentIds: chosen,
         reason:
           [
+            // First, like FOLLOW_UP: `reply-policy.ts` reads a leading LEAD as the lead's turn (`routedToLead`).
+            led ? LEAD : null,
             (followUp && selected.length > 0) || (fallback === "talk" && !mayPass) ? FOLLOW_UP : null,
             fallback === "alone" ? "alone" : fallback ? "default" : null,
-            fallback === "talk" ? "talking to" : fallback ? "best" : null,
+            fallback === "talk" ? "talking to" : fallback && !led ? "best" : null,
             followUp && resumes && selected.length > 0 ? "last talked to" : null,
             duplicate ? "already answered by another agent" : null,
             forPeople ? "for people" : heldBack ? "held back" : null,
@@ -1752,6 +1804,27 @@ export async function routeMessage(
     continuityAgentId: talkingTo,
     ...(decidedBy ? { decidedBy } : {}),
   };
+}
+
+/**
+ * The channel's responsible agent has a run working in this channel (not a routine's): a room message given to it
+ * would wait for that turn to end, so the room keeps its own pick meanwhile. One still queued reads it when it starts.
+ */
+async function leadAtWork(db: Database, message: Pick<Message, "orgId" | "channelId">, leadId: string) {
+  const [busy] = await db
+    .select({ id: agentRuns.id })
+    .from(agentRuns)
+    .where(
+      and(
+        eq(agentRuns.orgId, message.orgId),
+        eq(agentRuns.agentId, leadId),
+        eq(agentRuns.channelId, message.channelId),
+        eq(agentRuns.status, "running"),
+        eq(agentRuns.background, false),
+      ),
+    )
+    .limit(1);
+  return Boolean(busy);
 }
 
 /** The marker a decision's `reason` starts with when the router kept the person with the agent they talk to. */

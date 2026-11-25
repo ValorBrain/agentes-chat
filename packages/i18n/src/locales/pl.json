@@ -2651,10 +2651,50 @@
       "gone": "Ten link do cofnięcia już nie działa",
       "sender": "Ten nadawca"
     },
+    "page": {
+      "opening": "Otwieranie strony",
+      "gone": "Ten link już nie działa",
+      "lead": "Wpisz PIN, aby to zatwierdzić.",
+      "leadFirst": "Wybierz 6-cyfrowy PIN, aby to zatwierdzić. Potwierdza on takie działania z {{surface}}.",
+      "choosePin": "Wybierz PIN",
+      "repeatPin": "Wpisz go ponownie",
+      "pin": "Twój PIN",
+      "mismatch": "Oba PIN-y się różnią. Wpisz drugi ponownie.",
+      "approve": "Zatwierdź",
+      "refuse": "Odrzuć",
+      "forgot": "Nie pamiętasz PIN-u?",
+      "emailed": "Wysłaliśmy Ci link e-mailem. Wybierz tam PIN, a potem wróć na tę stronę.",
+      "notYours": "{{who}} decyduje o tym w aplikacji.",
+      "notYoursSomeone": "Decyduje o tym w aplikacji osoba, która może to zatwierdzić.",
+      "approved": "Zatwierdzono",
+      "refused": "Odrzucono",
+      "expired": "Ta prośba wygasła",
+      "back": "Wróć do {{surface}}. Asystent kontynuuje tam.",
+      "setFirst": "Najpierw wybierz PIN",
+      "setFirstLead": "Zatwierdzanie z {{surface}} wymaga PIN-u, a link z czatu nie może go wybrać. Wybierz go w aplikacji po zalogowaniu, a potem wróć na tę stronę.",
+      "setFirstLeadEmail": "Zatwierdzanie z {{surface}} wymaga PIN-u, a link z czatu nie może go wybrać. Wybierz go w aplikacji po zalogowaniu albo przez link, który wyślemy Ci e-mailem. Potem wróć na tę stronę.",
+      "openApp": "Wybierz w aplikacji",
+      "emailMe": "Wyślij mi link e-mailem"
+    },
+    "pinReset": {
+      "title": "Wybierz PIN",
+      "lead": "Sześć cyfr. Wpiszesz go, aby zatwierdzać działania, o które prosisz w aplikacji czatu.",
+      "button": "Zapisz mój PIN",
+      "done": "PIN zapisany",
+      "doneLead": "Wróć na stronę otwartą z {{surface}} i zatwierdź tym PIN-em.",
+      "gone": "Ten link już nie działa"
+    },
     "via": "przez {{surface}}",
     "viaTip": "Wysłane przez {{person}} na {{surface}}",
     "forwarded": "przekazane przez {{surface}}",
-    "forwardedTip": "{{person}} przekazał(a) to z {{surface}}. To słowa kogoś innego."
+    "forwardedTip": "{{person}} przekazał(a) to z {{surface}}. To słowa kogoś innego.",
+    "pin": {
+      "set": "Ustaw PIN",
+      "change": "Zmień PIN",
+      "title": "Twój PIN do {{surface}}",
+      "text": "Sześć cyfr, które wpisujesz, aby zatwierdzać działania, o które prosisz w {{surface}}. Nigdy nie jest wysyłany na czacie.",
+      "save": "Zapisz PIN"
+    }
   },
   "team": {
     "title": "Zespół",
@@ -4579,6 +4619,8 @@
     "aloneLine": "Sam włącza się do rozmowy",
     "aloneLine_female": "Sama włącza się do rozmowy",
     "mentionLine": "Czeka, aż ktoś napisze @{{handle}}",
+    "lead": "Odpowiada za kanał",
+    "leadHelp": "Dostaje to, co jest mówione do całego zespołu, i pilnuje, żeby praca między agentami szła dalej",
     "readOnly": "Członków zmieniają tylko twórca kanału i administratorzy.",
     "people": "Osoby",
     "agents": "Agenci"
@@ -6949,7 +6991,7 @@
         "cli_sandbox": "Program {{brain}} nie może uruchomić swojego sandboxa na tym komputerze. Wybierz inną AI w ustawieniach agenta.",
         "cli_system": "Program {{brain}} nie działa jeszcze w systemie tego komputera. Wybierz inną AI w ustawieniach agenta.",
         "account_missing": "Konta wybranego dla tego agenta nie ma już na jego komputerze. Wybierz inne w ustawieniach agenta albo dodaj je ponownie.",
-        "windows_sandbox": "Ten komputer z Windows nie może odizolować poleceń Codex: potrzebuje Windows 11 24H2 lub nowszego. Zaktualizuj Windows, wybierz Claude albo klucz API dla tego agenta lub przenieś go na komputer z Linuksem.",
+        "windows_sandbox": "Codex nie mógł uruchomić żadnej izolacji dla swoich poleceń na tym komputerze z Windows. Wybierz Claude albo klucz API dla tego agenta lub zaktualizuj komputer do Windows 11 24H2 lub nowszego, z najnowszymi aktualizacjami.",
         "our_error": "Coś poszło nie tak po naszej stronie i zadanie się zatrzymało. Poproś ponownie za chwilę.",
         "unknown": "Błąd."
       }
@@ -8643,6 +8685,38 @@
     "vault_write": {
       "label": "Edycja kontaktów w Vault",
       "description": "Zapisywanie i aktualizowanie danych kontaktowych w Vault, zmiana nazwy użytkownika zapisanego loginu lub opisu, tworzenie haseł do zakładanych przez siebie kont oraz usuwanie tego, co sam zapisał."
+    },
+    "gitlab_git_read": {
+      "label": "Klonowanie repozytoriów (git)",
+      "description": "Klonowanie i aktualizowanie repozytoriów na komputerze agenta przez git, za pośrednictwem naszego proxy. Token GitLaba nigdy nie trafia na maszynę."
+    },
+    "gitlab_git_write": {
+      "label": "Wypychanie gałęzi (git push)",
+      "description": "Wypychanie commitów do gałęzi agentes/{agent}/…: nigdy do gałęzi domyślnej, bez force push, bez tagów. Usuwanie gałęzi i wypychanie do cudzej gałęzi najpierw wymaga zatwierdzenia."
+    },
+    "gitlab_pr_write": {
+      "label": "Otwieranie merge requestów",
+      "description": "Otwieranie merge requestów i komentowanie ich."
+    },
+    "bitbucket_git_read": {
+      "label": "Klonowanie repozytoriów (git)",
+      "description": "Klonowanie i aktualizowanie repozytoriów na komputerze agenta przez git, za pośrednictwem naszego proxy. Token Bitbucketa nigdy nie trafia na maszynę."
+    },
+    "bitbucket_git_write": {
+      "label": "Wypychanie gałęzi (git push)",
+      "description": "Wypychanie commitów do gałęzi agentes/{agent}/…: nigdy do gałęzi domyślnej, bez force push, bez tagów. Usuwanie gałęzi i wypychanie do cudzej gałęzi najpierw wymaga zatwierdzenia."
+    },
+    "bitbucket_pr_write": {
+      "label": "Otwieranie pull requestów",
+      "description": "Otwieranie pull requestów i komentowanie ich."
+    },
+    "git_git_read": {
+      "label": "Klonowanie repozytoriów (git)",
+      "description": "Klonowanie i aktualizowanie repozytoriów na komputerze agenta przez git, za pośrednictwem naszego proxy. Token Gita nigdy nie trafia na maszynę."
+    },
+    "git_git_write": {
+      "label": "Wypychanie gałęzi (git push)",
+      "description": "Wypychanie commitów do gałęzi agentes/{agent}/…: nigdy do gałęzi domyślnej, bez force push, bez tagów. Usuwanie gałęzi i wypychanie do cudzej gałęzi najpierw wymaga zatwierdzenia."
     },
     "github_git_read": {
       "label": "Klonowanie repozytoriów (git)",
@@ -12193,10 +12267,10 @@
       "agent": "Agent",
       "repo": "Gdzie pracować",
       "repoPlaceholder": "Repozytorium lub projekt",
-      "repoSearch": "Szukaj lub wpisz właściciel/nazwa albo nową nazwę",
+      "repoSearch": "Szukaj albo wpisz owner/name, adres repozytorium lub nową nazwę",
       "newLocal": "Nowy projekt na komputerze: {{name}}",
       "useRepo": "Użyj {{repo}}",
-      "repoNote": "Nazwa bez właściciela tworzy projekt na komputerze agenta, poza GitHubem.",
+      "repoNote": "Nazwa bez owner tworzy projekt tylko na komputerze agenta, bez zdalnego repozytorium.",
       "hint": "@ zaprasza kogoś do sesji",
       "start": "Rozpocznij"
     },
@@ -12210,7 +12284,7 @@
       "closeHint": "Znika z listy: worktree znika, gałąź zostaje",
       "failed": "Nie udało się przygotować worktree.",
       "retry": "Spróbuj ponownie",
-      "githubAccess": "Ta przestrzeń robocza nie ma dostępu do tego repozytorium w GitHub. Podłącz GitHub w Ustawienia › Konektory albo rozpocznij sesję w projekcie na komputerze (wystarczy nazwa)."
+      "githubAccess": "Ten workspace nie ma dostępu do tego repozytorium. Połącz miejsce, w którym się znajduje (GitHub, GitLab lub Bitbucket), w Ustawieniach › Konektory albo zacznij sesję w projekcie na komputerze (sama nazwa)."
     },
     "panel": {
       "label": "Panel sesji",
@@ -13349,8 +13423,10 @@
       "home_only": "{{program}} jest zainstalowany na {{computer}} tylko dla roota, do którego agenci nie mają dostępu.",
       "not_reported": "{{computer}} wciąż sprawdza, jakie ma programy. To zmieni się samo, gdy skończy.",
       "system": "{{program}} nie działa jeszcze w systemie komputera {{computer}}.",
+      "windows_sandbox": "Windows na komputerze {{computer}} nie może odizolować poleceń {{program}}. Wybierz zamiast tego Claude albo klucz API lub zaktualizuj ten komputer do Windows 11 24H2 lub nowszego, z najnowszymi aktualizacjami.",
       "no_computerCloud": "Gotowe, gdy tylko {{computer}} będzie gotowy."
     },
+    "sandboxPartial": "W tym Windows polecenia Codex zapisują tylko w folderach agentów, ale internet jest dla nich zablokowany tylko częściowo. Windows 11 24H2 lub nowszy, z najnowszymi aktualizacjami, blokuje go całkowicie.",
     "notAvailableNow": "Wybrane, ale teraz niedostępne.",
     "offline": "{{computer}} jest teraz offline.",
     "modelLabel": "Model",
@@ -14375,6 +14451,7 @@
       "teamLocked": "Połączenia zespołu dodają tylko osoby zarządzające konektorami.",
       "mailLocked": "Skrzynka pocztowa zawsze należy do osoby, która ją łączy.",
       "done": "Twoi agenci używają go tylko wtedy, gdy poprosisz.",
+      "githubDone": "W sesjach kodu commity, pushe i pull requesty dotyczące tego, o co prosisz, wychodzą pod Twoim nazwiskiem.",
       "worksWhenAsked": "Działa tylko, gdy poprosisz.",
       "remove": "Usuń",
       "removeName": "Usuń {{name}}",
@@ -15148,6 +15225,7 @@
     },
     "label": {
       "git_clone": "Sklonuj repozytorium",
+      "list_repositories": "Wyświetl repozytoria",
       "create_repository": "Utwórz repozytorium",
       "delete_repository": "Usuń repozytorium",
       "fork_repository": "Zrób fork repozytorium",
@@ -16104,6 +16182,19 @@
       "adjust": "Dostosuj",
       "ok": "Gotowe"
     },
+    "git": {
+      "token": "Token dostępu",
+      "address": "Adres",
+      "addressHelp": {
+        "gitlab": "Tylko dla GitLaba, który Twoja firma hostuje sama. Puste pole oznacza gitlab.com.",
+        "git": "Gdzie znajduje się serwer git, na przykład https://git.company.com."
+      },
+      "tokenHelp": {
+        "gitlab": "Token dostępu GitLab (osobisty, grupy lub projektu) z zakresami api i write_repository. Zostaje na serwerze: komputery agentów nigdy go nie dostają.",
+        "bitbucket": "Token dostępu workspace’u lub repozytorium z prawem zapisu do repozytoriów i pull requestów. Przy własnym tokenie API wpisz swój e-mail Atlassian, dwukropek i token: you@company.com:TOKEN.",
+        "git": "Token, który serwer przyjmuje jako hasło git. Jeśli wymaga nazwy użytkownika, wpisz username:token."
+      }
+    },
     "telegram": {
       "token": "Token bota",
       "steps": "W Telegramie otwórz @BotFather, wyślij /newbot, wybierz nazwę i nazwę użytkownika kończącą się na „bot”, a potem wklej tu otrzymany token. Aby czytać grupę, dodaj do niej bota. Aby publikować na kanale, zrób go tam administratorem."
@@ -16772,7 +16863,15 @@
       "linkGone": "To połączenie już nie czeka: wygasło po 10 minutach albo zostało anulowane. Utwórz nowy kod, aby zacząć od nowa.",
       "taken": "Ten nadawca jest połączony z innym kontem agentes.chat. Odłącz go tam, a potem wyślij nowy kod.",
       "undoGone": "Ten link do cofnięcia został już użyty albo wygasł. Odłącz zamiast tego w ustawieniach powiadomień.",
-      "codeGone": "Ten kod jest błędny, już użyty albo wygasł po 10 minutach. Utwórz nowy kod i wyślij go ponownie."
+      "codeGone": "Ten kod jest błędny, już użyty albo wygasł po 10 minutach. Utwórz nowy kod i wyślij go ponownie.",
+      "pageGone": "Ten link wygasł. Poproś asystenta na czacie o nowy.",
+      "pageElsewhere": "Ten link został otwarty na innym urządzeniu. Poproś asystenta na czacie o nowy.",
+      "pinWrong": "Błędny PIN. Pozostałe próby: {{left}}.",
+      "pinLocked": "Zbyt wiele błędnych PIN-ów. Spróbuj później albo wybierz nowy PIN w aplikacji.",
+      "pinShape": "PIN ma 6 cyfr.",
+      "pinResetGone": "Ten link został już użyty lub wygasł. Poproś o nowy przez „Nie pamiętasz PIN-u?”.",
+      "pinUnset": "Najpierw wybierz PIN. Wybierz go w aplikacji po zalogowaniu.",
+      "emailUnverified": "Twój adres e-mail nie jest jeszcze potwierdzony. Wybierz PIN w aplikacji."
     },
     "wallpaper": {
       "notYours": "To zdjęcie nie jest twoje.",
@@ -16819,6 +16918,8 @@
       "deleteName": "Wpisz nazwę kanału, żeby go usunąć.",
       "generalKept": "Nie można usunąć #general.",
       "generalStays": "Wszyscy zostają w #general.",
+      "leadChannelOnly": "Tylko kanały mają odpowiedzialnego agenta.",
+      "leadNotMember": "Odpowiedzialny agent musi być na kanale.",
       "mcpUnreachable": "Nie udało się połączyć z serwerem MCP. Sprawdź jego adres i spróbuj ponownie.",
       "notApproved": "Ta usługa nie zatwierdziła jeszcze agentes.chat.",
       "alreadyInvited": "Ta osoba ma już zaproszenie.",
@@ -17093,6 +17194,7 @@
       "tooLarge": "Ten plik osiągnął limit rozmiaru. Najpierw coś z niego usuń.",
       "assetTooLarge": "Obraz ma ponad {{max}} MB, a to limit na jeden obraz.",
       "assetType": "Do tego pliku można dodać tylko obrazy: PNG, JPEG, WebP lub GIF.",
+      "fontInvalid": "Nie można użyć tej czcionki: plik nie jest czcionką, którą aplikacja potrafi odczytać. Spróbuj pliku .ttf, .otf lub .woff.",
       "liveOnly": "Ten plik zmienia się na miejscu, więc nie można go zastąpić w całości."
     },
     "office": {
@@ -18964,7 +19066,7 @@
     "telemetry": {
       "title": "Statystyki użycia",
       "label": "Wysyłaj anonimowe statystyki użycia do agentes.chat",
-      "help": "Liczby, takie jak osoby, agenci, rozmiary maszyn, zużyte tokeny AI i ile danych wysyłają i odbierają przeglądarki agentów. Nigdy wiadomości, pliki, nazwy ani strony.",
+      "help": "Liczby, takie jak osoby, agenci, rozmiary maszyn, zużyte tokeny AI, ile danych wysyłają i odbierają przeglądarki agentów oraz jak szybko aplikacje się otwierają i działają. Nigdy wiadomości, pliki, nazwy ani strony.",
       "envOff": "Wyłączone w ustawieniach tego serwera (TELEMETRY=off).",
       "envOffDesktop": "Wyłączone w aplikacji agentes.chat na komputerze tego serwera (Preferencje › Serwery).",
       "envOffHere": "Wyłączone w aplikacji agentes.chat na tym komputerze.",
@@ -19828,6 +19930,7 @@
         "runningCommandAny": "Uruchomiono polecenie",
         "usingScreen": "Użyto ekranu",
         "cloningRepo": "Sklonowano repozytorium",
+        "listingRepos": "Wyświetlono repozytoria",
         "openingPullRequest": "Otwarto pull request",
         "handingOff": "Dostarczono raport",
         "recordingFindings": "Zapisano ustalenia",
@@ -19949,6 +20052,7 @@
       "runningCommandAny": "uruchamianie polecenia",
       "usingScreen": "korzystanie z ekranu",
       "cloningRepo": "klonowanie repozytorium",
+      "listingRepos": "wyświetla repozytoria",
       "openingPullRequest": "otwieranie pull requesta",
       "handingOff": "dostarczanie raportu",
       "recordingFindings": "zapisywanie ustaleń",

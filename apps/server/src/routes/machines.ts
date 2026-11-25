@@ -179,6 +179,10 @@ export const Machine = z
       description:
         "The coding CLIs there that can't start (`claude`, `codex`…), each with its own last error line; `git_missing`: Claude Code on Windows without Git for Windows. Null unless admin or the person who paired it.",
     }),
+    codexSandbox: z.enum(["mxc", "unelevated", "none"]).nullable().openapi({
+      description:
+        "Windows: what holds Codex's commands there (`mxc`; `unelevated`, Codex's own sandbox where MXC is missing; `none`, nothing could). Null elsewhere, or until its runner knows.",
+    }),
     remotePause: z.boolean().openapi({
       description:
         "Its app takes a pause from here (`POST …/pause`); `false`: update the app on it. Never the workspace's own computer.",

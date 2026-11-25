@@ -233,7 +233,7 @@
     "openTailscale": "Tailscale öffnen",
     "getTailscale": "Tailscale holen",
     "usage": "Anonyme Nutzungsstatistiken an agentes.chat senden",
-    "usageText": "Zahlen wie Personen, Agenten, Maschinengrößen, genutzte KI-Tokens und wie viele Daten die Browser der Agenten senden und empfangen. Nie Nachrichten, Dateien, Namen oder Websites.",
+    "usageText": "Zahlen wie Personen, Agenten, Maschinengrößen, genutzte KI-Tokens, wie viele Daten die Browser der Agenten senden und empfangen, und wie schnell die Apps starten und laufen. Nie Nachrichten, Dateien, Namen oder Websites.",
     "start": "Los geht's",
     "setting": "Alles wird vorbereitet",
     "rest": "Wenn du die App schließt, ruhen deine Agenten. Sie sind zurück, sobald du sie wieder öffnest.",

@@ -2482,10 +2482,50 @@
       "gone": "Bu geri alma bağlantısı artık çalışmıyor",
       "sender": "O gönderen"
     },
+    "page": {
+      "opening": "Sayfa açılıyor",
+      "gone": "Bu bağlantı artık çalışmıyor",
+      "lead": "Onaylamak için PIN'ini yaz.",
+      "leadFirst": "Onaylamak için 6 haneli bir PIN seç. {{surface}} üzerinden bunun gibi işlemleri onaylar.",
+      "choosePin": "PIN seç",
+      "repeatPin": "Tekrar yaz",
+      "pin": "PIN'in",
+      "mismatch": "İki PIN eşleşmiyor. İkincisini tekrar yaz.",
+      "approve": "Onayla",
+      "refuse": "Reddet",
+      "forgot": "PIN'ini mi unuttun?",
+      "emailed": "Sana e-postayla bir bağlantı gönderdik. PIN'ini orada seç, sonra bu sayfaya dön.",
+      "notYours": "Buna uygulamada {{who}} karar verir.",
+      "notYoursSomeone": "Buna uygulamada onaylama yetkisi olan biri karar verir.",
+      "approved": "Onaylandı",
+      "refused": "Reddedildi",
+      "expired": "Bu isteğin süresi doldu",
+      "back": "{{surface}} uygulamasına dön. Asistanın orada devam eder.",
+      "setFirst": "Önce PIN'ini seç",
+      "setFirstLead": "{{surface}} üzerinden onaylamak için PIN gerekir ve sohbetteki bir bağlantı onu seçemez. PIN'i oturum açtığın uygulamada seç, sonra bu sayfaya dön.",
+      "setFirstLeadEmail": "{{surface}} üzerinden onaylamak için PIN gerekir ve sohbetteki bir bağlantı onu seçemez. PIN'i oturum açtığın uygulamada ya da e-postayla gönderdiğimiz bağlantıyla seç. Sonra bu sayfaya dön.",
+      "openApp": "Uygulamada seç",
+      "emailMe": "Bana bağlantı gönder"
+    },
+    "pinReset": {
+      "title": "PIN'ini seç",
+      "lead": "Altı rakam. Sohbet uygulamandan istediğin işlemleri onaylamak için gireceksin.",
+      "button": "PIN'imi kaydet",
+      "done": "PIN kaydedildi",
+      "doneLead": "{{surface}} üzerinden açılan sayfaya dön ve bu PIN'le onayla.",
+      "gone": "Bu bağlantı artık çalışmıyor"
+    },
     "via": "{{surface}} aracılığıyla",
     "viaTip": "{{person}} tarafından {{surface}} üzerinden gönderildi",
     "forwarded": "{{surface}} üzerinden iletildi",
-    "forwardedTip": "{{person}} bunu {{surface}} üzerinden iletti. Bu sözler başka birine ait."
+    "forwardedTip": "{{person}} bunu {{surface}} üzerinden iletti. Bu sözler başka birine ait.",
+    "pin": {
+      "set": "PIN belirle",
+      "change": "PIN'i değiştir",
+      "title": "{{surface}} PIN'in",
+      "text": "{{surface}} üzerinden istediğin işlemleri onaylamak için girdiğin altı rakam. Sohbette asla gönderilmez.",
+      "save": "PIN'i kaydet"
+    }
   },
   "team": {
     "title": "Ekip",
@@ -4260,6 +4300,8 @@
     "aloneLine": "Sohbete kendiliğinden katılır",
     "aloneLine_female": "Sohbete kendiliğinden katılır",
     "mentionLine": "Birinin @{{handle}} yazmasını bekler",
+    "lead": "Kanalın sorumlusu",
+    "leadHelp": "Tüm ekibe söyleneni alır ve ajanlar arasında işin ilerlemesini sağlar",
     "readOnly": "Üyeleri yalnızca kanalı oluşturan kişi ve yöneticiler değiştirebilir.",
     "people": "Kişiler",
     "agents": "Ajanlar"
@@ -6432,7 +6474,7 @@
         "cli_sandbox": "{{brain}} programı bu bilgisayarda sandbox'ını başlatamıyor. Ajanın ayarlarından başka bir yapay zekâ seçin.",
         "cli_system": "{{brain}} programı henüz bu bilgisayarın sisteminde çalışmıyor. Ajanın ayarlarından başka bir yapay zekâ seçin.",
         "account_missing": "Bu ajan için seçilen hesap artık bilgisayarında değil. Ajanın ayarlarından başka bir hesap seçin ya da yeniden ekleyin.",
-        "windows_sandbox": "Bu Windows bilgisayar Codex'in komutlarını yalıtamıyor: Windows 11 24H2 veya daha yenisi gerekiyor. Windows'u güncelleyin, bu ajan için Claude'u ya da bir API anahtarını seçin veya onu bir Linux bilgisayara taşıyın.",
+        "windows_sandbox": "Codex bu Windows bilgisayarda komutları için hiçbir yalıtım başlatamadı. Bu ajan için Claude'u ya da bir API anahtarını seçin veya bilgisayarı en son güncellemeleriyle Windows 11 24H2 ya da daha yeni bir sürüme güncelleyin.",
         "our_error": "Bizim tarafımızda bir şeyler ters gitti ve görev durdu. Birazdan yeniden isteyin.",
         "unknown": "Başarısız oldu."
       }
@@ -8039,6 +8081,38 @@
     "vault_write": {
       "label": "Vault iletişim bilgilerini düzenleme",
       "description": "Vault'ta iletişim bilgilerini kaydetme ve güncelleme, kayıtlı bir girişin kullanıcı adını ya da bir açıklamayı değiştirme, açtığı hesaplar için şifre oluşturma ve kendi kaydettiklerini silme."
+    },
+    "gitlab_git_read": {
+      "label": "Depo klonlama (git)",
+      "description": "Proxy'miz üzerinden git ile ajanın bilgisayarına depo klonlama ve güncelleme. GitLab token'ı asla makineye girmez."
+    },
+    "gitlab_git_write": {
+      "label": "Dal gönderme (git push)",
+      "description": "agentes/{agent}/… dallarına commit gönderme: asla varsayılan dala değil, force push yok, etiket yok. Dal silmek ve başkasının dalına göndermek önce onay ister."
+    },
+    "gitlab_pr_write": {
+      "label": "Merge request açma",
+      "description": "Merge request açma ve yorum yapma."
+    },
+    "bitbucket_git_read": {
+      "label": "Depo klonlama (git)",
+      "description": "Proxy'miz üzerinden git ile ajanın bilgisayarına depo klonlama ve güncelleme. Bitbucket token'ı asla makineye girmez."
+    },
+    "bitbucket_git_write": {
+      "label": "Dal gönderme (git push)",
+      "description": "agentes/{agent}/… dallarına commit gönderme: asla varsayılan dala değil, force push yok, etiket yok. Dal silmek ve başkasının dalına göndermek önce onay ister."
+    },
+    "bitbucket_pr_write": {
+      "label": "Pull request açma",
+      "description": "Pull request açma ve yorum yapma."
+    },
+    "git_git_read": {
+      "label": "Depo klonlama (git)",
+      "description": "Proxy'miz üzerinden git ile ajanın bilgisayarına depo klonlama ve güncelleme. Git token'ı asla makineye girmez."
+    },
+    "git_git_write": {
+      "label": "Dal gönderme (git push)",
+      "description": "agentes/{agent}/… dallarına commit gönderme: asla varsayılan dala değil, force push yok, etiket yok. Dal silmek ve başkasının dalına göndermek önce onay ister."
     },
     "github_git_read": {
       "label": "Depo klonlama (git)",
@@ -11301,10 +11375,10 @@
       "agent": "Ajan",
       "repo": "Nerede çalışılacak",
       "repoPlaceholder": "Depo veya proje",
-      "repoSearch": "Arayın ya da sahip/ad veya yeni bir ad yazın",
+      "repoSearch": "Arayın ya da owner/name, deponun adresini veya yeni bir ad yazın",
       "newLocal": "Bilgisayarda yeni proje: {{name}}",
       "useRepo": "{{repo}} kullan",
-      "repoNote": "Sahibi olmayan bir ad, ajanın bilgisayarında GitHub dışında bir proje başlatır.",
+      "repoNote": "owner içermeyen bir ad, yalnızca ajanın bilgisayarında, uzak depo olmadan bir proje oluşturur.",
       "hint": "@ birini oturuma çağırır",
       "start": "Başlat"
     },
@@ -11318,7 +11392,7 @@
       "closeHint": "Listeden kalkar: worktree silinir, dal kalır",
       "failed": "Worktree hazırlanamadı.",
       "retry": "Tekrar dene",
-      "githubAccess": "Bu çalışma alanının bu depo için GitHub erişimi yok. GitHub'ı Ayarlar › Bağlayıcılar bölümünden bağlayın ya da bilgisayardaki bir projede oturum başlatın (yalnızca bir ad)."
+      "githubAccess": "Bu çalışma alanının bu depoya erişimi yok. Deponun bulunduğu yeri (GitHub, GitLab veya Bitbucket) Ayarlar › Bağlayıcılar’dan bağlayın ya da bilgisayardaki bir projede (yalnızca bir ad) oturum başlatın."
     },
     "panel": {
       "label": "Oturum paneli",
@@ -12352,8 +12426,10 @@
       "home_only": "{{program}}, {{computer}} üzerinde yalnızca root için kurulu ve ajanlar ona erişemez.",
       "not_reported": "{{computer}} hangi programların olduğunu hâlâ kontrol ediyor. Bittiğinde bu kendiliğinden değişir.",
       "system": "{{program}} henüz {{computer}} sisteminde çalışmıyor.",
+      "windows_sandbox": "{{computer}} üzerindeki Windows, {{program}} komutlarını yalıtamıyor. Bunun yerine Claude'u ya da bir API anahtarını seçin veya o bilgisayarı en son güncellemeleriyle Windows 11 24H2 ya da daha yeni bir sürüme güncelleyin.",
       "no_computerCloud": "{{computer}} hazır olur olmaz hazır."
     },
+    "sandboxPartial": "Bu Windows'ta Codex'in komutları yalnızca ajanların klasörlerine yazabilir, ancak internet onlar için yalnızca kısmen engellenir. En son güncellemeleri yüklü Windows 11 24H2 ya da daha yenisi onu tamamen engeller.",
     "notAvailableNow": "Seçildi ama şu anda kullanılamıyor.",
     "offline": "{{computer}} şu anda çevrimdışı.",
     "modelLabel": "Model",
@@ -13296,6 +13372,7 @@
       "teamLocked": "Ekibinkileri yalnızca bağlayıcıları yönetenler ekler.",
       "mailLocked": "Bir posta kutusu her zaman onu bağlayan kişinindir.",
       "done": "Ajanların onu yalnızca sen istediğinde kullanır.",
+      "githubDone": "Kod oturumlarında, istediğiniz işin commit’leri, push’ları ve pull request’leri sizin adınıza gider.",
       "worksWhenAsked": "Yalnızca sen istediğinde çalışır.",
       "remove": "Kaldır",
       "removeName": "{{name}} kaldır",
@@ -14059,6 +14136,7 @@
     },
     "label": {
       "git_clone": "Depoyu klonla",
+      "list_repositories": "Depoları listele",
       "create_repository": "Depo oluştur",
       "delete_repository": "Depoyu sil",
       "fork_repository": "Depoyu fork'la",
@@ -14973,6 +15051,19 @@
       "adjust": "Ayarla",
       "ok": "Tamam"
     },
+    "git": {
+      "token": "Erişim belirteci",
+      "address": "Adres",
+      "addressHelp": {
+        "gitlab": "Yalnızca şirketinizin kendi barındırdığı bir GitLab için. Boş bırakılırsa gitlab.com olur.",
+        "git": "Git sunucusunun bulunduğu yer, örneğin https://git.company.com."
+      },
+      "tokenHelp": {
+        "gitlab": "api ve write_repository kapsamlarına sahip bir GitLab erişim belirteci (kişisel, grup veya proje). Sunucuda kalır: ajanların bilgisayarlarına hiç gitmez.",
+        "bitbucket": "Depolara ve pull request’lere yazma izni olan bir çalışma alanı veya depo erişim belirteci. Kendi API belirtecinizle, Atlassian e-postanızı, iki nokta üst üste ve belirteci yazın: you@company.com:TOKEN.",
+        "git": "Sunucunun git parolası olarak kabul ettiği belirteç. Kullanıcı adı isterse username:token yazın."
+      }
+    },
     "telegram": {
       "token": "Bot token'ı",
       "steps": "Telegram'da @BotFather'ı açın, /newbot gönderin, bir ad ve “bot” ile biten bir kullanıcı adı seçin, sonra verdiği token'ı buraya yapıştırın. Bir grubu okumak için botu gruba ekleyin. Bir kanalda paylaşmak için orada yönetici yapın."
@@ -15607,7 +15698,15 @@
       "linkGone": "Bu bağlantı artık beklemiyor: 10 dakika sonra süresi doldu ya da iptal edildi. Yeniden başlamak için yeni bir kod oluşturun.",
       "taken": "Bu gönderen başka bir agentes.chat hesabına bağlı. Önce oradaki bağlantıyı kaldırın, sonra yeni bir kod gönderin.",
       "undoGone": "Bu geri alma bağlantısı zaten kullanılmış ya da süresi dolmuş. Bunun yerine bildirim ayarlarınızdan bağlantıyı kaldırın.",
-      "codeGone": "Bu kod yanlış, kullanılmış ya da 10 dakika sonra süresi dolmuş. Yeni bir kod oluşturup tekrar gönderin."
+      "codeGone": "Bu kod yanlış, kullanılmış ya da 10 dakika sonra süresi dolmuş. Yeni bir kod oluşturup tekrar gönderin.",
+      "pageGone": "Bu bağlantının süresi doldu. Sohbette asistanından yenisini iste.",
+      "pageElsewhere": "Bu bağlantı başka bir cihazda açıldı. Sohbette asistanından yenisini iste.",
+      "pinWrong": "PIN yanlış. Kalan deneme: {{left}}.",
+      "pinLocked": "Çok fazla yanlış PIN. Daha sonra tekrar dene ya da uygulamada yeni bir PIN seç.",
+      "pinShape": "PIN'in 6 hanelidir.",
+      "pinResetGone": "Bu bağlantı zaten kullanıldı ya da süresi doldu. “PIN'ini mi unuttun?” ile yenisini iste.",
+      "pinUnset": "Önce PIN'ini seç. PIN'i oturum açtığın uygulamada seç.",
+      "emailUnverified": "E-posta adresin henüz doğrulanmadı. PIN'ini uygulamada seç."
     },
     "wallpaper": {
       "notYours": "Bu fotoğraf sizin değil.",
@@ -15654,6 +15753,8 @@
       "deleteName": "Silmek için kanalın adını yazın.",
       "generalKept": "#general silinemez.",
       "generalStays": "Herkes #general kanalında kalır.",
+      "leadChannelOnly": "Yalnızca kanalların sorumlu ajanı olur.",
+      "leadNotMember": "Sorumlu ajan kanalda olmalı.",
       "mcpUnreachable": "MCP sunucusuna bağlanılamadı. Adresini kontrol edip tekrar deneyin.",
       "notApproved": "Bu hizmet henüz agentes.chat için onay vermedi.",
       "alreadyInvited": "Bu kişinin zaten bir daveti var.",
@@ -15928,6 +16029,7 @@
       "tooLarge": "Bu dosya boyut sınırına ulaştı. Önce içinden bir şey kaldırın.",
       "assetTooLarge": "Görsel, görsel başına sınır olan {{max}} MB'ı aşıyor.",
       "assetType": "Bu dosyaya yalnızca görsel eklenebilir: PNG, JPEG, WebP veya GIF.",
+      "fontInvalid": "Bu yazı tipi kullanılamıyor: dosya, uygulamanın okuyabildiği bir yazı tipi değil. Bir .ttf, .otf veya .woff dosyası deneyin.",
       "liveOnly": "Bu dosya bulunduğu yerde düzenlenir, bu yüzden bütünüyle başkasıyla değiştirilemez."
     },
     "office": {
@@ -17758,7 +17860,7 @@
     "telemetry": {
       "title": "Kullanım istatistikleri",
       "label": "agentes.chat'e anonim kullanım istatistikleri gönder",
-      "help": "Kişi ve ajan sayısı, makine boyutları, kullanılan yapay zeka token'ları ve ajanların tarayıcılarının ne kadar veri gönderip aldığı gibi sayılar. Asla mesajlar, dosyalar, adlar ya da siteler değil.",
+      "help": "Kişi ve ajan sayısı, makine boyutları, kullanılan yapay zeka token'ları, ajanların tarayıcılarının ne kadar veri gönderip aldığı ve uygulamaların ne kadar hızlı açılıp çalıştığı gibi sayılar. Asla mesajlar, dosyalar, adlar ya da siteler değil.",
       "envOff": "Bu sunucunun ayarlarında kapatıldı (TELEMETRY=off).",
       "envOffDesktop": "Bu sunucunun bilgisayarındaki agentes.chat uygulamasında kapatıldı (Tercihler › Sunucular).",
       "envOffHere": "Bu bilgisayardaki agentes.chat uygulamasında kapatıldı.",
@@ -18571,6 +18673,7 @@
         "runningCommandAny": "Bir komut çalıştırdı",
         "usingScreen": "Ekranı kullandı",
         "cloningRepo": "Bir depoyu klonladı",
+        "listingRepos": "Depoları listeledi",
         "openingPullRequest": "Bir pull request açtı",
         "handingOff": "Bir rapor teslim etti",
         "recordingFindings": "Bulguları not etti",
@@ -18692,6 +18795,7 @@
       "runningCommandAny": "komut çalıştırıyor",
       "usingScreen": "ekranı kullanıyor",
       "cloningRepo": "depo klonluyor",
+      "listingRepos": "depoları listeliyor",
       "openingPullRequest": "pull request açıyor",
       "handingOff": "rapor teslim ediyor",
       "recordingFindings": "bulguları not ediyor",

@@ -1594,6 +1594,15 @@
     "next": {
       "pr": "Branche poussée, pas encore de pull request",
       "mergeLocal": "Prête à fusionner dans {{base}}"
+    },
+    "terminal": {
+      "keys": "Touches du terminal",
+      "keyboard": "Clavier",
+      "pasteHint": "Coller dans le terminal ce que vous avez copié",
+      "key": {
+        "CtrlC": "Contrôle-C, interrompre",
+        "CtrlD": "Contrôle-D, fin de l’entrée"
+      }
     }
   },
   "taskManager": {

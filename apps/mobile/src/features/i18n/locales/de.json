@@ -1510,6 +1510,15 @@
     "next": {
       "pr": "Branch gepusht, noch kein Pull Request",
       "mergeLocal": "Bereit zum Mergen in {{base}}"
+    },
+    "terminal": {
+      "keys": "Terminaltasten",
+      "keyboard": "Tastatur",
+      "pasteHint": "Kopiertes ins Terminal einfügen",
+      "key": {
+        "CtrlC": "Strg-C, unterbrechen",
+        "CtrlD": "Strg-D, Ende der Eingabe"
+      }
     }
   },
   "taskManager": {

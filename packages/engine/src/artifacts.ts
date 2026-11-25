@@ -43,6 +43,7 @@ import { markdownToDocx } from "./docx";
 import { ConflictError, ForbiddenError, NotFoundError, ValidationError } from "./errors";
 import { publishChannelEvent, publishListChanged } from "./events";
 import { MODEL_FILE_READ_BYTES, type ModelFile, readForModel, tooBigToReadNote, transcriptKey } from "./file-reader";
+import { FontError, fontMediaType, readFont, sniffFont } from "./fonts/sfnt";
 import { formatBytes, tableToCsv } from "./format";
 import { imageSize, pictureSize } from "./image-size";
 import { originOfActor } from "./live/access";
@@ -1747,7 +1748,19 @@ function fileInput(input: { name: string; bytes: Uint8Array; contentType?: strin
     const maxMb = ARTIFACT_LIMITS.fileBytes / 1024 / 1024;
     throw new ValidationError(`the file is too large (max ${maxMb} MB)`, "artifact.file_too_large", { maxMb });
   }
-  const contentType = fileContentType(name, input.contentType);
+  // A font is checked on the way in (ADR 0220 §2): one the server can't read never reaches the Drive as a font.
+  const font = sniffFont(input.bytes);
+  if (font) {
+    try {
+      readFont(input.bytes);
+    } catch (error) {
+      throw new ValidationError(
+        `This font can't be used: ${error instanceof FontError ? error.message : "it couldn't be read"}`,
+        "live.font_invalid",
+      );
+    }
+  }
+  const contentType = font ? fontMediaType(font) : fileContentType(name, input.contentType);
   return { name, stored: { body: input.bytes, contentType, fileName: name } satisfies Stored };
 }
 
