@@ -2,6 +2,7 @@ import {
   archiveChannel,
   CHANNEL_KEYS,
   channelMembersDetail,
+  channelRepliesInThreads,
   createChannelCategory,
   deleteChannel,
   deleteChannelCategory,
@@ -269,7 +270,7 @@ export function channelRoutes(deps: AppDeps) {
             }),
             replyInThreads: z.boolean().optional().openapi({
               description:
-                "Agents asked in its main timeline answer in the thread under that message (ADR 0214). Runs already working stay where they are. 400 `channel.reply_in_threads` outside a regular channel.",
+                "Agents asked in its main timeline answer in the thread under that message (ADR 0214). Until someone chooses, it is on in a team workspace once two people are in the channel. Runs already working stay where they are. 400 `channel.reply_in_threads` outside a regular channel.",
             }),
             leadAgentId: z.uuid().nullable().optional().openapi({
               description:
@@ -295,7 +296,7 @@ export function channelRoutes(deps: AppDeps) {
           createdAt: r.createdAt.toISOString(),
           categoryId: r.categoryId,
           position: r.position,
-          replyInThreads: r.replyInThreads,
+          replyInThreads: await channelRepliesInThreads(db, r.id),
           leadAgentId: r.leadAgentId,
         },
         200,

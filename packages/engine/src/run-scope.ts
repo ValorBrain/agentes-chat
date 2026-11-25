@@ -12,13 +12,24 @@ export const inChannelRun = (r: SQL) =>
   sql`(${r}.thread_root_id = ${r}.trigger_message_id and not ${r}.reply_in_thread)`;
 
 /**
+ * SQL: the channel row `c` replies in threads now (ADR 0214): what someone chose for it (`channels.reply_in_threads`),
+ * else on only where a thread keeps the main timeline clear for someone else, a team workspace with two or more people
+ * in the channel. A personal workspace (ADR 0159) or a channel with one person gets its answers in the main timeline.
+ */
+export const channelRepliesInThreadsSql = (c: SQL) =>
+  sql<boolean>`coalesce(${c}.reply_in_threads, (not exists (select 1 from organization_settings tos
+      where tos.org_id = ${c}.org_id and tos.mode = 'personal')
+    and (select count(*) from (select 1 from channel_members tcm
+      where tcm.channel_id = ${c}.id and tcm.user_id is not null limit 2) tp) = 2))`;
+
+/**
  * SQL: a run asked by a message in `channelId` (in the thread `threadId`, null for the main timeline) answers in the
  * thread under that message (`agent_runs.reply_in_thread`, ADR 0214): asked in a regular channel's main timeline
- * while the channel replies in threads. Read once, when the run is created.
+ * while the channel replies in threads (`channelRepliesInThreadsSql`). Read once, when the run is created.
  */
 export const repliesInThreadSql = (channelId: string, threadId: string | null) =>
   sql<boolean>`(${threadId}::uuid is null and exists (select 1 from channels rc where rc.id = ${channelId}::uuid
-    and rc.kind = 'channel' and rc.reply_in_threads))`;
+    and rc.kind = 'channel' and ${channelRepliesInThreadsSql(sql`rc`)}))`;
 
 /**
  * Where a run that goes on from `from` answers, `message` being its trigger (the place rule, ADR 0214: Continuar, a
@@ -66,7 +77,7 @@ export const joinsRun = (r: SQL, at: Arrival): SQL => {
   const joins = sql`(${inChannelRun(r)} or (${r}.reply_in_thread and ${askedBy(r, userId)}))`;
   if (several === false) return joins;
   return sql`(${joins} and not (${several === true ? sql`true` : several} and exists (select 1 from channels jc
-    where jc.id = ${r}.channel_id and jc.kind = 'channel' and jc.reply_in_threads)))`;
+    where jc.id = ${r}.channel_id and jc.kind = 'channel' and ${channelRepliesInThreadsSql(sql`jc`)})))`;
 };
 
 /**

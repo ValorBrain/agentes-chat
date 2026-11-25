@@ -730,7 +730,7 @@ export const Channel = z
     position: z.number().int().optional().openapi({ description: "Order inside its category, from 0." }),
     replyInThreads: z.boolean().optional().openapi({
       description:
-        "Agents asked in its main timeline answer in the thread under that message, which then shows as one line (ADR 0214). Regular channels only.",
+        "Agents asked in its main timeline answer in the thread under that message, which then shows as one line (ADR 0214). Until someone chooses, on in a team workspace once two people are in the channel. Regular channels only.",
     }),
     leadAgentId: z.uuid().nullable().optional().openapi({
       description:

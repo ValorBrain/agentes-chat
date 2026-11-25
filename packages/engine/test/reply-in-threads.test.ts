@@ -7,6 +7,7 @@ import {
   addChannelMember,
   answerNow,
   cancelRun,
+  channelRepliesInThreads,
   continueRun,
   createAgent,
   createAgentRuns,
@@ -17,6 +18,7 @@ import {
   EARLY_CHECK_JOB,
   getMessage,
   getThread,
+  listChannels,
   type Message,
   openDm,
   postPersonMessage,
@@ -28,6 +30,7 @@ import {
   stretchCardOf,
   type ToolSource,
   updateChannel,
+  updateOrgSettings,
   wakeConversationForTask,
   wakeForAccessDecision,
 } from "../src";
@@ -141,28 +144,65 @@ test("off: the reply stays in the main timeline and no thread opens", async () =
   expect(await threadRow(asking.id)).toBeUndefined();
 });
 
-test("on by default: existing and new channels reply in threads, a DM never does", async () => {
+test("until someone chooses: on in a team workspace once two people are in the channel, never in a DM", async () => {
   f = await setup({ reply: () => ({ chunks: ["Conferi."] }) });
   const dmBefore = await openDm(f.db, f.owner.id, f.org.id, { agentId: f.agent.id });
-  // Test databases keep the old default (packages/db/test/pglite.ts); the migration sets production's.
+  // Test databases keep the old default (packages/db/test/pglite.ts); the migrations set production's: 0325 turned
+  // every channel on, and 0347 hands back to the automatic rule the channels nobody turned off.
   await runMigration(f.db, "channels_reply_in_threads_by_default");
+  await runMigration(f.db, "channels_reply_in_threads_auto");
   const row = async (id: string) => (await f.db.select().from(schema.channels).where(eq(schema.channels.id, id)))[0];
-  expect((await row(f.general.id))?.replyInThreads).toBe(true);
+  expect((await row(f.general.id))?.replyInThreads).toBeNull();
   expect((await row(dmBefore.id))?.replyInThreads).toBe(false);
+  const listed = async () =>
+    (await listChannels(f.db, f.owner.id, f.org.id)).find((c) => c.id === f.general.id)?.replyInThreads;
 
-  const vendas = await createChannel(f.db, f.owner.id, f.org.id, { name: "vendas" });
-  expect(vendas.replyInThreads).toBe(true);
-  await addChannelMember(f.db, f.owner.id, f.org.id, vendas.id, { agentId: f.agent.id });
-  const asking = await say("@dev confere as lojas", { channelId: vendas.id });
+  // Only the owner and @dev in #general: the answer stays in the main timeline.
+  expect(await listed()).toBe(false);
+  await say("@dev confere as lojas");
   await drainOutbox(f.db, f.handlers);
-  expect((await postsOf()).at(-1)).toMatchObject({ channelId: vendas.id, threadId: asking.id });
+  expect((await postsOf()).at(-1)).toMatchObject({ channelId: f.general.id, threadId: null });
 
-  await threadsOn(false, vendas.id);
-  expect((await row(vendas.id))?.replyInThreads).toBe(false);
+  // A second person joins: the next request is answered in its thread.
+  const bia = await addMember(f.db, f.org.id, "member", "bia");
+  await addChannelMember(f.db, f.owner.id, f.org.id, f.general.id, { userId: bia.id });
+  expect(await listed()).toBe(true);
+  const second = await say("@dev confere de novo");
+  await drainOutbox(f.db, f.handlers);
+  expect((await postsOf()).at(-1)).toMatchObject({ channelId: f.general.id, threadId: second.id });
+
+  // A new channel starts with its creator alone.
+  const vendas = await createChannel(f.db, f.owner.id, f.org.id, { name: "vendas" });
+  expect(vendas.replyInThreads).toBeNull();
+  expect(await channelRepliesInThreads(f.db, vendas.id)).toBe(false);
+
+  // Someone's choice wins over the rule, both ways.
+  await threadsOn(true, vendas.id);
+  expect(await channelRepliesInThreads(f.db, vendas.id)).toBe(true);
+  await threadsOn(false);
+  expect(await listed()).toBe(false);
 
   await say("oi", { channelId: dmBefore.id });
   await drainOutbox(f.db, f.handlers);
   expect((await postsOf()).at(-1)).toMatchObject({ channelId: dmBefore.id, threadId: null });
+});
+
+test("a personal workspace answers in the main timeline whoever is in the channel, unless someone turns it on", async () => {
+  f = await setup({ reply: () => ({ chunks: ["Conferi."] }) });
+  await updateOrgSettings(f.db, f.owner.id, f.org.id, { mode: "personal" });
+  await f.db.update(schema.channels).set({ replyInThreads: null }).where(eq(schema.channels.id, f.general.id));
+  const family = await addMember(f.db, f.org.id, "member", "bia");
+  await addChannelMember(f.db, f.owner.id, f.org.id, f.general.id, { userId: family.id });
+  expect(await channelRepliesInThreads(f.db, f.general.id)).toBe(false);
+  await say("@dev confere as lojas");
+  await drainOutbox(f.db, f.handlers);
+  expect((await postsOf()).at(-1)).toMatchObject({ channelId: f.general.id, threadId: null });
+
+  await threadsOn();
+  expect(await channelRepliesInThreads(f.db, f.general.id)).toBe(true);
+  const asking = await say("@dev confere de novo");
+  await drainOutbox(f.db, f.handlers);
+  expect((await postsOf()).at(-1)).toMatchObject({ channelId: f.general.id, threadId: asking.id });
 });
 
 test("its cards, files, question cards and live events land in the thread too", async () => {

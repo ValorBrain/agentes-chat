@@ -54,6 +54,7 @@ import {
 } from "./permissions";
 import { refuseRightHand } from "./right-hand";
 import { isRoutineRoomKey } from "./routine-brief";
+import { channelRepliesInThreadsSql } from "./run-scope";
 import { accountInUse, readRefusal, STANDING_COLUMNS } from "./standing";
 import {
   adminChannelSql,
@@ -232,6 +233,18 @@ export async function createChannel(
   }
 }
 
+/**
+ * Whether agents asked in the channel's main timeline answer in threads now (ADR 0214): its own choice, else on in a
+ * team workspace once two people are in it. What the apps show on its switch.
+ */
+export async function channelRepliesInThreads(db: Executor, channelId: string): Promise<boolean> {
+  const [row] = rowsOf<{ threads: boolean | string }>(
+    await db.execute(sql`select ${channelRepliesInThreadsSql(sql`c`)} as threads from ${channels} c
+      where c.id = ${channelId}::uuid`),
+  );
+  return row?.threads === true || row?.threads === "t";
+}
+
 /** The most unread messages counted per channel (clients show "99+"). */
 export const MAX_CHANNEL_UNREAD = 100;
 
@@ -264,7 +277,10 @@ export interface ChannelListItem {
   categoryId: string | null;
   /** Order inside its category. */
   position: number;
-  /** Agents asked in its main timeline answer in the thread under that message (ADR 0214). */
+  /**
+   * Agents asked in its main timeline answer in the thread under that message (ADR 0214): its own choice, else on
+   * in a team workspace once two people are in it (`channelRepliesInThreadsSql`).
+   */
   replyInThreads: boolean;
   /** The agent responsible for the channel (ADR 0095, addendum of 2026-11-23); null: none. */
   leadAgentId: string | null;
@@ -353,7 +369,7 @@ export async function listChannels(db: Database, userId: string, orgId: string):
     and u.meta->>'mediaAfter' is null`;
   const rows = rowsOf<ChannelListRow>(
     await db.execute(sql`select c.id, c.org_id, c.name, c.topic, c.visibility, c.audience_role_ids, c.created_by_user_id, c.created_at,
-        c.category_id, c.position, c.reply_in_threads, c.lead_agent_id,
+        c.category_id, c.position, ${channelRepliesInThreadsSql(sql`c`)} as reply_in_threads, c.lead_agent_id,
         (cm.id is not null) as is_member,
         (cm.id is null and c.visibility <> 'public' and not ${channelAudienceSql("c", sql`${userId}`)}) as seen_as_admin,
         coalesce(un.n, 0) as unread_count, coalesce(un.m, 0) as mention_count,

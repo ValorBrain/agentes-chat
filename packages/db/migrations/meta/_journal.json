@@ -2395,6 +2395,13 @@
       "when": 1795583938565,
       "tag": "0346_devices_help",
       "breakpoints": true
+    },
+    {
+      "idx": 344,
+      "version": "7",
+      "when": 1795593938565,
+      "tag": "0347_channels_reply_in_threads_auto",
+      "breakpoints": true
     }
   ]
 }

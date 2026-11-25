@@ -84,11 +84,12 @@ export const channels = pgTable(
     /** Order inside its category (or among the channels with none), from 0. */
     position: integer().notNull().default(0),
     /**
-     * Agents asked in the main timeline answer in the thread under the message that called them (ADR 0214). On by
-     * default; read for regular channels only, so the value on other kinds means nothing. Each run keeps the value it
-     * was created with (`agent_runs.reply_in_thread`).
+     * Agents asked in the main timeline answer in the thread under the message that called them (ADR 0214). Null
+     * until someone chooses: then on only in a team workspace with two or more people in the channel (the engine's
+     * `channelRepliesInThreadsSql`). Read for regular channels only, so the value on other kinds means nothing. Each
+     * run keeps the value it was created with (`agent_runs.reply_in_thread`).
      */
-    replyInThreads: boolean().notNull().default(true),
+    replyInThreads: boolean(),
     /**
      * The agent responsible for the channel (ADR 0095, addendum of 2026-11-23): one of its member agents, or none.
      * What a person says to the room goes to it, and it is given the turn when work it didn't hand off ends here.
